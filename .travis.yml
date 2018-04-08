@@ -13,7 +13,7 @@ install:
     - cp -a node_modules nm
     - mv nm node_modules/github-wikito-converter/node_modules
     - rm -rf node_modules/github-wikito-converter/node_modules/github-wikito-converter
-    - wget https://downloads.wkhtmltopdf.org/0.12/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz -O $PWD/wkhtmltopdf.tar.xz
+    - wget --quiet https://downloads.wkhtmltopdf.org/0.12/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz -O $PWD/wkhtmltopdf.tar.xz
     - mkdir wkhtmltopdf
     - tar xf wkhtmltopdf.tar.xz -C $PWD/wkhtmltopdf
     - export PATH=$PWD/wkhtmltopdf/wkhtmltox/bin:$PATH

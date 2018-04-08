@@ -1,0 +1,78 @@
+{
+    "manifest_version": "v1",
+    "name": "api_explorer",
+    "display_name": "API Explorer",
+    "description": "Take the Application Framework for a test drive!",
+    "app_version": "v1",
+    "logo_url": "https://apiexplorer.lab.hhq.cloud/logo.png",
+    "developer": {
+        "name": "Developer Relations",
+        "link": "https://github.com/PaloAltoNetworks/apiexplorer",
+        "social_media": {
+            "facebook": "https://www.facebook.com/PaloAltoNetworks",
+            "twitter": "https://twitter.com/PaloAltoNtwks",
+            "linkedin": "https://www.linkedin.com/company/palo-alto-networks"
+        },
+        "support_contact": {
+            "primary": {
+                "name": "Developer Relations",
+                "email": "devrel@paloaltonetworks.com"
+            },
+            "secondary": {
+                "name": "Technical Business Development",
+                "email": "techbizdev@paloaltonetworks.com"
+            }
+        }
+    },
+    "app_base_url": "https://apiexplorer.lab.hhq.cloud/login",
+    "auth_redirect_uris": [
+        "https://apiexplorer.lab.hhq.cloud/auth-callback"
+    ],
+    "scopes": [
+        "logging-service:read",
+        "event-service:read",
+        "directory-sync-service:read"
+    ],
+    "developer_defined_fields": [
+        {
+            "name": "name",
+            "display": "Developer Name"
+        },
+        {
+            "name": "email",
+            "display": "Email Address"
+        },
+        {
+            "name": "company",
+            "display": "Company"
+        },
+        {
+            "name": "department",
+            "display": "Department"
+        },
+        {
+            "name": "url",
+            "display": "Company URL"
+        }
+    ],
+    "marketplace_content": {
+        "summary": "Take the Application Framework for a test drive! Use the API Explorer to interact with Logging, Event and Directory Sync Service APIs!.",
+        "latest_release": "2018-03-28",
+        "first_release": "2018-03-28",
+        "system_requirements": "Chrome 63, Firefox 52",
+        "categories": ["Developer Relations", "API Explorer", "3rd-party Developers", "Developer Resources"],
+        "tac_link": "https://www.paloaltonetworks.com/legal-notices/terms-of-use",
+        "privacy_link": "https://www.paloaltonetworks.com/content/dam/pan/en_US/assets/pdf/legal/palo-alto-networks-end-user-license-agreement-eula.pdf",
+        "product_link": "https://www.paloaltonetworks.com/products/application-framework/application-developer",
+        "contact_link": "https://www.paloaltonetworks.com/products/application-framework/application-developer",
+        "video_url": "https://www.paloaltonetworks.com/products/application-framework/application-developer",
+        "gallery_image_urls": [],
+        "heading": "API Explorer",
+        "body": [{
+            "heading": "Welcome to the API Explorer!",
+            "paragraphs": [
+            "Here you'll find tutorials and working examples illustrating how to leverage the PAN Cloud Python SDK to interact with the Logging, Event and Directory-Sync Service APIs, an Application Framework playground packaged as a web application!"
+            ]
+        }]
+    }
+}

@@ -1,0 +1,65 @@
+      <template>
+        <entry name="Template1">
+          <settings>
+            <default-vsys>vsys1</default-vsys>
+          </settings>
+          <config>
+            <devices>
+              <entry name="localhost.localdomain">
+                <vsys>
+                  <entry name="vsys1"/>
+                </vsys>
+                <deviceconfig>
+                  <setting>
+                    <logging>
+                      <logging-service-forwarding>
+                        <logging-service-regions>americas</logging-service-regions>
+                        <enable>yes</enable>
+                      </logging-service-forwarding>
+                      <enhanced-application-logging>
+                        <enable>yes</enable>
+                      </enhanced-application-logging>
+                    </logging>
+                  </setting>
+                </deviceconfig>
+              </entry>
+            </devices>
+            <shared>
+              <log-settings>
+                <system>
+                  <match-list>
+                    <entry name="SystemToLS">
+                      <filter>All Logs</filter>
+                      <send-to-panorama>yes</send-to-panorama>
+                    </entry>
+                  </match-list>
+                </system>
+                <config>
+                  <match-list>
+                    <entry name="ConfigToLS">
+                      <filter>All Logs</filter>
+                      <send-to-panorama>yes</send-to-panorama>
+                    </entry>
+                  </match-list>
+                </config>
+                <userid>
+                  <match-list>
+                    <entry name="UserIDToLS">
+                      <filter>All Logs</filter>
+                      <send-to-panorama>yes</send-to-panorama>
+                    </entry>
+                  </match-list>
+                </userid>
+                <hipmatch>
+                  <match-list>
+                    <entry name="HIPMatchToLS">
+                      <filter>All Logs</filter>
+                      <send-to-panorama>yes</send-to-panorama>
+                    </entry>
+                  </match-list>
+                </hipmatch>
+              </log-settings>
+            </shared>
+          </config>
+        </entry>
+      </template>
