@@ -19,7 +19,7 @@ script:
 - echo chngfw=${CHNGFW}
 - echo change=${CHANGE}
 - if [[ "$CHANGE" == "1" ]]; then git commit -m 'autocommit travis[skip ci]'; fi
-- if [[ "$CHANGE" == "1" ]]; then git push; fi
+- if [[ "$CHANGE" == "1" ]]; then git push origin HEAD:master --force; fi
 - if [[ "$CHNGFW" == "1" ]]; then cat build/lftp-ngfw.cmd  | sed "s/BOXUSER BOXPASSWORD/${BOX_USER}
   ${BOX_PASSWORD}/" | lftp; fi
 - if [[ "$CHCONF" == "1" ]]; then cat build/lftp-conf.cmd  | sed "s/BOXUSER BOXPASSWORD/${BOXUSER}
