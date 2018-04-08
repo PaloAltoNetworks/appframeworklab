@@ -5,8 +5,9 @@ before_install:
 - sudo apt-get install -y lftp
 install: 
 script:
-- chmod +x build/build.sh
-- build/build.sh
+- cp build/build.sh $HOME/bucketbuild.sh
+- chmod +x $HOME/bucketbuild.sh
+- $HOME/bucketbuild.sh
 - git add -A
 - CHCONF=0
 - CHNGFW=0
