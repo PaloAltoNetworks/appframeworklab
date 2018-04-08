@@ -17,4 +17,4 @@ install:
 script:
     - gwtc  -v -f all --css $PWD/appframeworklab.wiki/style/PANW.css $PWD/appframeworklab.wiki --pdf-page-count --logo-img=$PWD/appframeworklab.wiki/img/panw.png --footer "Copyright (C) 2018 - Palo Alto Networks, Inc." -t "Palo Alto Networks Application Framework - Lab Guide"
     - echo ${MYVAR}
-    - ls
+    - ls -ltR
