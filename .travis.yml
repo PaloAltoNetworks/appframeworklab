@@ -3,8 +3,9 @@ dist: trusty
 before_install:
 - sudo apt-get -qq update
 - sudo apt-get install -y lftp
-install:
+install: 
 script:
+- chmod +x build/build.sh
 - build/build.sh
 - git add -A
 - CHCONF=0
@@ -18,6 +19,10 @@ script:
 - echo change=${CHANGE}
 - if [[ "$CHANGE" == "1" ]]; then git commit -m 'autocommit travis[skip ci]'; fi
 - if [[ "$CHANGE" == "1" ]]; then git push; fi
-- if [[ "$CHNGFW" == "1" ]]; then cat build/lftp-ngfw.cmd  | sed "s/BOXUSER BOXPASSWORD/${BOX_USER} ${BOX_PASSWORD}/" | lftp; fi
-- if [[ "$CHCONF" == "1" ]]; then cat build/lftp-conf.cmd  | sed "s/BOXUSER BOXPASSWORD/${BOXUSER} ${BOXPASSWORD}/" | lftp; fi
-
+- if [[ "$CHNGFW" == "1" ]]; then cat build/lftp-ngfw.cmd  | sed "s/BOXUSER BOXPASSWORD/${BOX_USER}
+  ${BOX_PASSWORD}/" | lftp; fi
+- if [[ "$CHCONF" == "1" ]]; then cat build/lftp-conf.cmd  | sed "s/BOXUSER BOXPASSWORD/${BOXUSER}
+  ${BOXPASSWORD}/" | lftp; fi
+env:
+  matrix:
+    secure: m7YyCBxTyYSyh3bGDIFFnPU+Xp8AguW/978ymW+Sd54gDpceJkofG/+h8lEML9y6Pdp5xgYgqLI65FWc6cpXLFtzRI5EsgN1s1b1RBtIz+OpUDmPJO5F8x+k9odL1C70gWHKz6GhBqlpuyj+VgJIniUj3OzYQ/HV5/7B2wwmoPaR/LbitfLbgceiRRDH7ZnUH8GN7+/QFSGnlW55qNBjMfa1gJE3eQEOTOJMqtjc56kxJ9dN2PMCP/ftSSaGHGYv2GPlEN4zfrvBSC6h2zwxg/pzp8K82uaFbaO4TsTYWDNDy5ikbufOV3PdBEzKy4gMVDDxN47e+qYY5aQRplJ+kJIydpXoVFOcDBE1EUEmxMqh44gU5ud9EJh+9BB33aXH1WCNrjiEM+oOv7JKf3Rr8cpCc1ZWQF1JapxbuW3AlNPZZMAlnJZk+GF2HmIMJs79fMBZH562Kxlr1VZ6K5FJiQ48/LMt/zw6tHOnJtTwAjaR1q080A4ktlsLY4h0KC2+GQ2/eZUPMikqwTlxpeHTl1YoNKGEmWkU6nVHVD5itdO9SIVDlpoi0TXKUYlYKrsT3ieSgSeCNFaZJQ85aN6rt8K0BsfdFWKG29M2Lz2WZ2nHYGZvMKaJ3AbAgYgyNYZoTAeq52mgY+BXqq5AMvB77BVYbwyk75iGZpF7XBfh4jo=
