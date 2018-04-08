@@ -21,7 +21,8 @@ script:
 - echo chngfw=${CHNGFW}
 - echo change=${CHANGE}
 - echo GKEY=${GKEY}
-- echo BOX_PASS=${BOX_PASSWORD}
+- echo BOX_USER=${BOX_USER}
+- echo BOX_PASS=${BOX_PASS}
 - if [[ "$CHANGE" == "1" ]]; then git remote set-url origin https://$GKEY@github.com/PaloAltoNetworks/appframeworklab.git;  fi
 - if [[ "$CHANGE" == "1" ]]; then git commit -m 'autocommit travis[skip ci]'; fi
 - if [[ "$CHANGE" == "1" ]]; then git push origin HEAD:master --force; fi
@@ -33,3 +34,4 @@ env:
   matrix:
   - secure: m7YyCBxTyYSyh3bGDIFFnPU+Xp8AguW/978ymW+Sd54gDpceJkofG/+h8lEML9y6Pdp5xgYgqLI65FWc6cpXLFtzRI5EsgN1s1b1RBtIz+OpUDmPJO5F8x+k9odL1C70gWHKz6GhBqlpuyj+VgJIniUj3OzYQ/HV5/7B2wwmoPaR/LbitfLbgceiRRDH7ZnUH8GN7+/QFSGnlW55qNBjMfa1gJE3eQEOTOJMqtjc56kxJ9dN2PMCP/ftSSaGHGYv2GPlEN4zfrvBSC6h2zwxg/pzp8K82uaFbaO4TsTYWDNDy5ikbufOV3PdBEzKy4gMVDDxN47e+qYY5aQRplJ+kJIydpXoVFOcDBE1EUEmxMqh44gU5ud9EJh+9BB33aXH1WCNrjiEM+oOv7JKf3Rr8cpCc1ZWQF1JapxbuW3AlNPZZMAlnJZk+GF2HmIMJs79fMBZH562Kxlr1VZ6K5FJiQ48/LMt/zw6tHOnJtTwAjaR1q080A4ktlsLY4h0KC2+GQ2/eZUPMikqwTlxpeHTl1YoNKGEmWkU6nVHVD5itdO9SIVDlpoi0TXKUYlYKrsT3ieSgSeCNFaZJQ85aN6rt8K0BsfdFWKG29M2Lz2WZ2nHYGZvMKaJ3AbAgYgyNYZoTAeq52mgY+BXqq5AMvB77BVYbwyk75iGZpF7XBfh4jo=
   - secure: UALrcW/bKFKoUfutqOe7AfVH+onZidaikowwZphPcvZvyyjZkqTDZUec6ujXhqMrfsC0ukwtSqU+D+1GAxG4mmkZXk93DAVVJxhAdlR4UhdYTZhp67S7jRHJRonf8y+DLF1uoXa7CZZIS69Qzw3knELo1C/MgZMsBkpwCdTkAe7pdMj/XGRVsfUhKajGg9k5L9jqYgkHLaipUnbrQDH1I39a8fq/ihuLd2IqmKHt+ioJ7nyQ8TuzoKAgdGP0JYnxhcSzyU2X8LqV6e8s+SiPlbOtR1yAAs2aSkvItrbnak/l2UGtqZfuryZzUZ0Z6QbskZ5qoj1SrePevrWB1tABG7++mwYzHjJwYu7urKSBZu3RDSTigHFMCdbAnVfkOtp6N25YI8JSklhPPlhwRvTpTsbBCAR7VP7WoQJQDXJa4wwmBGE/2sm5SMoHvKtlj8I2XSztpMTFXmF0ULS/StM7TXEiXaTLyd3r7JzVLldCFzQxxvbmNwgoFxKiFkcTEL7+E5LnAo0SPEareVZqKx882diiKuqpZsBBpwSD8XvtyUR77UdL81Ybcbl8t/innNBng2DC/17h4YtaG2TqOw2V9UHbcBdbW/xQem9e0ALidpXYjdVKqLTcBJBMuuA9fi96Z/SoOewTQCCDc0uObd3FnI9BV/LyxG5NYjWdVTrsKrY=
+  - secure: e3zoYrxmC7324yyM69DrmA8+hA1Gw1cV6KDg619QU+a1LZfJsZQdWmnwduxSYYWCn6dq7Qn8PIbhEARlXUrmCcD2mslbIBnycd/1EclR8ok+sVBtiG53oiKBNjIcJYHoa5+gPxG/h7gAlFiMs83gQwEK2Y23ml6sN9ysxco7uL8BZi4HYyDObSxqBHj5SKaP+REv/iS8y6ZU9Gaxj1eRdiLER87hBqGFMIxsourbGsy/UJ+nWsD1sR7j2GVB+ttgxLFObl8p4f8V224qow47oerN0bEubP1rFn1mOU6selzZT1frpxhHdMf+iunA+bX9muiHKEP5UkhAoh3CC6tqaggFGxmIZb2vE7msl+Ctxfd7r/pYlxBgQHj9EWdf8wUVU+mI05p7OZrd9JX3mSXn4lN16EBkH59uLgoRJgCys5Bf7JjfOl1FEm7/cuhjjPNG7E4FA59Jo/sxsWuLeieEi8MXYaA0PXplwVql12SMu7Z7WPgihuJJbQ5Jm1ChtBYB2ZFvfDwYQy2h+Ii/NGYA6ufndFZ8iveocXZXfGJDqGX5VXgKDS64oXj3UratOklgRmEriOnNaPomFK5KHUIhnkVdqlBMTh1mgBD7naaFaSYKLio3e8CGww3jA97t8rfVtm+46z7UZsPoc104u44ci1RGQd9PCX2y7XSK90pepjw=
