@@ -1,12 +1,4 @@
 #!/bin/bash
-echo "Checking if NGFW bucket has changed..."
-BNGFW=0
-git diff-tree --quiet HEAD HEAD^ -r buckets/appframework-ngfw || BNGFW=1
-if [[ "$BNGFW" == "1" ]]; then
-  echo "NGFW bucket has changed, regenerating ZIP file..."
-  zip -r buckets/appframework-ngfw.zip buckets/appframework-ngfw
-fi
-
 BRES=0
 echo "Checking if resources have changed..."
 git diff-tree --quiet HEAD HEAD^ -r resources || BRES=1
