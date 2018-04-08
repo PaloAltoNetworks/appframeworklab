@@ -7,7 +7,7 @@ node_js:
 before_install:
     - sudo apt-get -qq update
     - sudo apt-get install -y lftp
-    - git clone https://github.com/PaloAltoNetworks/appframeworklab.wiki.git
+    - git clone --depth=50 --branch=master git@github.com:PaloAltoNetworks/appframeworklab.wiki.git
 install:
     - sudo npm install -g github-wikito-converter
     - wget https://downloads.wkhtmltopdf.org/0.12/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz -O $PWD/wkhtmltopdf.tar.xz
