@@ -1,22 +1,23 @@
 sudo: required
 dist: trusty
-language: node_js
-node_js:
-  - "8"
-
 before_install:
-    - sudo apt-get -qq update
-    - sudo apt-get install -y lftp
-    - git clone --depth=50 --branch=master git@github.com:PaloAltoNetworks/appframeworklab.wiki.git
+- sudo apt-get -qq update
+- sudo apt-get install -y lftp
 install:
-    - npm install github-wikito-converter
-    - cp -a node_modules nm
-    - mv nm node_modules/github-wikito-converter/node_modules
-    - rm -rf node_modules/github-wikito-converter/node_modules/github-wikito-converter
-    - wget --quiet https://downloads.wkhtmltopdf.org/0.12/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz -O $PWD/wkhtmltopdf.tar.xz
-    - mkdir wkhtmltopdf
-    - tar xf wkhtmltopdf.tar.xz -C $PWD/wkhtmltopdf
-    - export PATH=$PWD/wkhtmltopdf/wkhtmltox/bin:$PATH
 script:
-    - gwtc  -v -f all --css $PWD/appframeworklab.wiki/style/PANW.css $PWD/appframeworklab.wiki --pdf-page-count --logo-img=$PWD/appframeworklab.wiki/img/panw.png --footer "Copyright (C) 2018 - Palo Alto Networks, Inc." -t "Palo Alto Networks Application Framework - Lab Guide"
-    - cat lftp.cmd  | sed "s/BOXUSER BOXPASSWORD/${BOXUSER} ${BOXPASSWORD}/" | lftp 
+- build/build.sh
+- git add -A
+- CHCONF=0
+- CHNGFW=0
+- CHANGE=0
+- git diff-tree --quiet HEAD -r buckets/appframework-conf.zip || CHCONF=1
+- git diff-tree --quiet HEAD -r buckets/appframework-ngfw.zip || CHNGFW=1
+- git diff-index --quiet HEAD || CHANGE=1
+- echo chconf=${CHCONF}
+- echo chngfw=${CHNGFW}
+- echo change=${CHANGE}
+- if [[ "$CHANGE" == "1" ]]; then git commit -m 'autocommit travis[skip ci]'; fi
+- if [[ "$CHANGE" == "1" ]]; then git push; fi
+- if [[ "$CHNGFW" == "1" ]]; then cat build/lftp-ngfw.cmd  | sed "s/BOXUSER BOXPASSWORD/${BOX_USER} ${BOX_PASSWORD}/" | lftp; fi
+- if [[ "$CHCONF" == "1" ]]; then cat build/lftp-conf.cmd  | sed "s/BOXUSER BOXPASSWORD/${BOXUSER} ${BOXPASSWORD}/" | lftp; fi
+
