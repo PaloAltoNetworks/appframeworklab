@@ -11,6 +11,7 @@ before_install:
 install: 
 script:
 - $HOME/bucketbuild.sh
+- git remote set-url origin https://$GKEY@github.com/PaloAltoNetworks/appframeworklab.git
 - git add -A
 - CHCONF=0
 - CHANGE=0
@@ -21,7 +22,6 @@ script:
 - echo GKEY=${GKEY}
 - echo BOX_USER=${BOX_USER}
 - echo BOX_PASS=${BOX_PASS}
-- if [[ "$CHANGE" == "1" ]]; then git remote set-url origin https://$GKEY@github.com/PaloAltoNetworks/appframeworklab.git;  fi
 - if [[ "$CHANGE" == "1" ]]; then git commit -m 'autocommit travis [skip ci]'; fi
 - if [[ "$CHANGE" == "1" ]]; then git push origin HEAD:master --force; fi
 - if [[ "$CHCONF" == "1" ]]; then cat build/lftp-conf.cmd  | sed "s/BOXUSER BOXPASSWORD/${BOX_USER}
