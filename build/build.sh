@@ -12,7 +12,7 @@ fi
 
 echo "Checking if CONF bucket has changed..."
 if [[ "$BCONF" == "0" ]]; then
-  git diff-tree --quiet HEAD HEAD^ -r buckets/appframework-ngfw || BCONF=1
+  git diff-tree --quiet HEAD HEAD^ -r buckets/appframework-conf || BCONF=1
 fi
 if [[ "$BCONF" == "1" ]]; then
   echo "CONF bucket has changed, regenerating ZIP file..."
