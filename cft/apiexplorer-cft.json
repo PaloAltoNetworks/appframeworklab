@@ -1,6 +1,6 @@
 {
 	"AWSTemplateFormatVersion": "2010-09-09",
-	"Description": "Palo Alto Networks Application Framework API Explorer",
+	"Description": "Palo Alto Networks Application Framework API Explorer Standalone",
 	"Metadata": {
 		"AWS::CloudFormation::Interface": {
 			"ParameterGroups": [
