@@ -12,12 +12,12 @@ install:
 script:
 - $HOME/bucketbuild.sh
 - git remote set-url origin https://$GKEY@github.com/PaloAltoNetworks/appframeworklab.git
-- git add -A
 - CHCONF=0
 - CHANGE=0
 - git diff-files
 - git diff-files buckets/appframework-conf.zip
 - git diff-files --quiet buckets/appframework-conf.zip || CHCONF=1
+- git add -A .
 - git diff-index --quiet HEAD || CHANGE=1
 - echo chconf=${CHCONF}
 - echo change=${CHANGE}
