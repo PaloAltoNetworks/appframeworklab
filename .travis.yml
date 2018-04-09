@@ -5,8 +5,6 @@ before_install:
 - export BOX_PASS=$BOX_PASSWORD
 - export BOX_USER=$BOX_USERNAME
 - cp build/build.sh $HOME/bucketbuild.sh
-- cp build/lftp-conf.cmd $HOME/lftp-conf.cmd
-- cp build/lftp-cft.cmd $HOME/lftp-cft.cmd
 - chmod +x $HOME/bucketbuild.sh
 install: 
 script:
