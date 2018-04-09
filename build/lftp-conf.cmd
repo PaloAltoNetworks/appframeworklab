@@ -5,4 +5,4 @@ open ftps://ftp.box.com:990
 user BOXUSER BOXPASSWORD
 cd Business\ Development\ -\ Shared/Francesco/RefAppCFTBuckets;
 put buckets/appframework-conf.zip;
-exit;
+quit;
