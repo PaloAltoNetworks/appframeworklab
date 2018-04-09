@@ -31,7 +31,7 @@
 			],
 			"ParameterLabels": {
 				"ServerKeyName": {
-				  "default": "EC2 VMs Key Name"
+				  "default": "EC2 VM Key Name"
 				},
 				"AdminPassword": {
 					"default": "Admin Password"
