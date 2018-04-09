@@ -63,7 +63,7 @@
 	"Parameters": {
 	
 		"ServerKeyName": {
-		  "Description": "Name of an existing EC2 KeyPair to enable SSH access to VMs.",
+		  "Description": "Name of an existing EC2 KeyPair to enable SSH access to the VM",
 		  "Type": "AWS::EC2::KeyPair::KeyName"
 		},
 

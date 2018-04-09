@@ -1,8 +1,6 @@
-sudo: required
+sudo: false
 dist: trusty
 before_install:
-- sudo apt-get -qq update
-- sudo apt-get install -y lftp
 - export GKEY=$GITHUB_API_KEY
 - export BOX_PASS=$BOX_PASSWORD
 - export BOX_USER=$BOX_USERNAME
@@ -26,10 +24,8 @@ script:
 - echo change=${CHANGE}
 - if [[ "$CHANGE" == "1" ]]; then git commit -m 'autocommit travis [skip ci]'; fi
 - if [[ "$CHANGE" == "1" ]]; then git push origin HEAD:master --force; fi
-- if [[ "$CHCONF" == "1" ]]; then sed -i "s/BOXUSER BOXPASSWORD/${BOX_USER} ${BOX_PASS}/" $HOME/lftp-conf.cmd; fi
-- if [[ "$CHCONF" == "1" ]]; then lftp -f $HOME/lftp-conf.cmd; fi
-- if [[ "$CHCFT" == "1" ]]; then sed -i "s/BOXUSER BOXPASSWORD/${BOX_USER} ${BOX_PASS}/" $HOME/lftp-cft.cmd; fi
-- if [[ "$CHCFT" == "1" ]]; then lftp -f $HOME/lftp-cft.cmd; fi
+- if [[ "$CHCONF" == "1" ]]; then for i in `cat build/conf-uploadlist`; do echo "uploading $i..."; curl -u ${BOX_USER}:${BOX_PASS} -T $i "https://dav.box.com/dav/Business%20Development%20-%20Shared/Francesco/RefAppCFTBuckets/"; done; fi
+- if [[ "$CHCFT" == "1" ]]; then for i in `cat build/cft-uploadlist`; do echo "uploading $i..."; curl -u ${BOX_USER}:${BOX_PASS} -T $i "https://dav.box.com/dav/Business%20Development%20-%20Shared/Francesco/RefAppCFTBuckets/"; done; fi
 env:
   matrix:
   - secure: NR5Bgn/jvv2T0uzOFFfHwabEHLjGBU+kGafzYGs4wSkhE9Q1fmzEWy/nyi2kufl3Y/ieRMzPtgzI2DSb6iGH6Wi/MJ+nhSmIRbUwfD6msa6k2nuJbbcGCgzxxGlDbJbb0JWHusvyWrFFsoEL0Aou+eOT4ZXivRKCyZMw8cAVvw7Oc9E840PaYpvpXFhAqXkzpzAPp5/D3nkM3jeXhh8kVufOAYQoDb6geCq3IApeB+URtDOgT2jrr4VO8dryGrJkrJkVyteMLUCa3s5zSmyOkHTq9qfar81OSZLyotiax51hB8X/BH0lkz7k9/K3XKoVb4ISfIuNb2TnxnrHuB+nmBMqZQ1blh64tG2olxaG2ZrRLtrkCHFFTb0U56NJfuhAvFHeNIM2tzHCG7n7WnG75Ux0Sg5tH4hYvuHLX/f4Pu198Sde5HmjBrbgC80I3avVgBg7bn7c6CMr5ZqTGcCBklj4sHGZvr8OdjJUqltFLJqCYh+XbQYHwulKfTJvUhuFW86R1oPkodibttRLOlpo8WH+hMMhy2J5MhKuoMVV0fVEf0e4VLuKM9Qc4pU4+TrG6xiL5JVP7v2ViZDlcMvTfXNY63x2Kg3xRmJX8byiRpUTojVB3OSe2iaxXs4fsbsP+62EqSoTH7qRvIpcAYBGvcNhMqfsdD1JrNcgwLKQvHI=
