@@ -541,7 +541,28 @@
                             "c-unpack-dsc-resource": {
                                 "command": "powershell.exe -command c:\\cfn\\scripts\\Unzip-Archive.ps1 -Source c:\\cfn\\modules\\xAdcsDeployment_0.1.0.0.zip -Destination 'C:\\Program Files\\WindowsPowerShell\\Modules'",
                                 "waitAfterCompletion": "0"
-                            }
+                            },
+							"d-download-password": {
+                                "command": {
+                                    "Fn::Join": [
+										"",
+										[
+											"echo ",
+											{ "Fn::Base64" : {"Ref" : "DomainAdminPassword" } },
+											" > c:\\cfn\\scripts\\pw_b64.txt"
+										]
+                                    ]
+                                },								
+								"waitAfterCompletion": "0"
+							},
+							"e-decode-password": {
+								"command": "c:\\windows\\system32\\certutil.exe -decode c:\\cfn\\scripts\\pw_b64.txt c:\\cfn\\scripts\\pw.txt",
+								"waitAfterCompletion": "0"
+							},
+							"f-del-b64-pw": {
+								"command": "del c:\\cfn\\scripts\\pw_b64.txt",
+								"waitAfterCompletion": "0"
+							}
                         }
                     },
                     "rename": {
@@ -593,18 +614,12 @@
                                         "",
                                         [
                                             "powershell.exe -Command ",
-                                            "\"Install-ADDSForest -DomainName ",
+                                            "\"$pw=get-content c:\\cfn\\scripts\\pw.txt; Install-ADDSForest -DomainName ",
                                             {
                                                 "Ref": "DomainDNSName"
                                             },
                                             " ",
-                                            "-SafeModeAdministratorPassword (ConvertTo-SecureString ",
-                                            "'",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "'",
-                                            " -AsPlainText -Force) ",
+                                            "-SafeModeAdministratorPassword (ConvertTo-SecureString $pw -AsPlainText -Force) ",
                                             "-DomainMode Win2012R2 ",
                                             "-DomainNetbiosName ",
                                             {
@@ -669,7 +684,7 @@
                                         "",
                                         [
                                             "powershell.exe -Command ",
-                                            "\"New-ADUser ",
+                                            "\"$pw=get-content c:\\cfn\\scripts\\pw.txt; New-ADUser ",
                                             "-Name ",
                                             {
                                                 "Ref": "DomainAdminUser"
@@ -684,13 +699,7 @@
                                                 "Ref": "DomainDNSName"
                                             },
                                             " ",
-                                            "-AccountPassword (ConvertTo-SecureString ",
-                                            "'",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "'",
-                                            " -AsPlainText -Force) ",
+                                            "-AccountPassword (ConvertTo-SecureString $pw -AsPlainText -Force) ",
                                             "-Enabled $true ",
                                             "-PasswordNeverExpires $true\""
                                         ]
@@ -704,19 +713,13 @@
                                         "",
                                         [
                                             "powershell.exe -Command ",
-                                            "\"New-ADUser ",
+                                            "\"$pw=get-content c:\\cfn\\scripts\\pw.txt; New-ADUser ",
                                             "-Name User1 -UserPrincipalName user1@",
                                             {
                                                 "Ref": "DomainDNSName"
                                             },
                                             " ",
-                                            "-AccountPassword (ConvertTo-SecureString ",
-                                            "'",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "'",
-                                            " -AsPlainText -Force) ",
+                                            "-AccountPassword (ConvertTo-SecureString $pw -AsPlainText -Force) ",
                                             "-Enabled $true ",
                                             "-PasswordNeverExpires $true\""
                                         ]
@@ -730,19 +733,13 @@
                                         "",
                                         [
                                             "powershell.exe -Command ",
-                                            "\"New-ADUser ",
+                                            "\"$pw=get-content c:\\cfn\\scripts\\pw.txt; New-ADUser ",
                                             "-Name User2 -UserPrincipalName user2@",
                                             {
                                                 "Ref": "DomainDNSName"
                                             },
                                             " ",
-                                            "-AccountPassword (ConvertTo-SecureString ",
-                                            "'",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "'",
-                                            " -AsPlainText -Force) ",
+                                            "-AccountPassword (ConvertTo-SecureString $pw -AsPlainText -Force) ",
                                             "-Enabled $true ",
                                             "-PasswordNeverExpires $true\""
                                         ]
@@ -756,19 +753,13 @@
                                         "",
                                         [
                                             "powershell.exe -Command ",
-                                            "\"New-ADUser ",
+                                            "\"$pw=get-content c:\\cfn\\scripts\\pw.txt; New-ADUser ",
                                             "-Name User3 -UserPrincipalName user3@",
                                             {
                                                 "Ref": "DomainDNSName"
                                             },
                                             " ",
-                                            "-AccountPassword (ConvertTo-SecureString ",
-                                            "'",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "'",
-                                            " -AsPlainText -Force) ",
+                                            "-AccountPassword (ConvertTo-SecureString $pw -AsPlainText -Force) ",
                                             "-Enabled $true ",
                                             "-PasswordNeverExpires $true\""
                                         ]
@@ -859,20 +850,15 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "powershell.exe -Command c:\\cfn\\scripts\\New-CertificateAuthority.ps1 -Username ",
+                                            "powershell.exe -Command \"$pw=get-content c:\\cfn\\scripts\\pw.txt; c:\\cfn\\scripts\\New-CertificateAuthority.ps1 -Username ",
                                             {
                                                 "Ref": "DomainAdminUser"
                                             },
-                                            " -Password ",
-                                            "'",
-                                            {
-                                                "Ref": "DomainAdminPassword"
-                                            },
-                                            "'",
-                                            " -DomainDNSName ",
+                                            " -Password $pw -DomainDNSName ",
                                             {
                                                 "Ref": "DomainDNSName"
-                                            }
+                                            },
+											"\""
                                         ]
                                     ]
                                 },

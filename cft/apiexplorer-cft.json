@@ -23,8 +23,6 @@
 						"ConfigureRoute53",
 						"APIExplorerLetsEncryptCert",	
 						"APIExplorerHostname",
-						"APIExplorerScriptURL",
-						"APIExplorerPackageURL",
 						"APIExplorerGitHubRepo"						
 					]
 				}				
@@ -41,12 +39,6 @@
 				},
 				"APIExplorerHostname":{
 					"default": "API Explorer Hostname"
-				},
-				"APIExplorerScriptURL":{
-					"default": "API Explorer Script URL"
-				},
-				"APIExplorerPackageURL":{
-					"default": "API Explorer Package URL"
 				},
 				"APIExplorerGitHubRepo":{
 					"default": "API Explorer GitHub Repo"
@@ -66,7 +58,6 @@
 		  "Description": "Name of an existing EC2 KeyPair to enable SSH access to the VM",
 		  "Type": "AWS::EC2::KeyPair::KeyName"
 		},
-
 
 		"AdminPassword": {
 			"AllowedPattern": "(?=^.{6,255}$)((?=.*\\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*",
@@ -88,21 +79,10 @@
 			"Default": "apiexplorer"		
 		},
 
-		"APIExplorerScriptURL":{
-			"Description": "API Explorer Configuration Script File Path",
-			"Type": "String",
-			"Default": "https://gist.githubusercontent.com/fvigo/1c02e93bdb38c06f8f584ff288f7b7c1/raw/ea241fe274672b7924bb9c459978f72b866147fc/apiexplorer.sh.txt"
-		},
-		
-		"APIExplorerPackageURL":{
-			"Description": "API Explorer Software Package URL",
-			"Type": "String",
-			"Default": "https://paloaltonetworks.box.com/shared/static/29mliapljdvt1njyi8jotupkku9yewjt"
-		},
 		"APIExplorerGitHubRepo":{
 			"Description": "API Explorer GitHub Repository URL",
 			"Type": "String",
-			"Default": "https://github.com/PaloAltoNetworks/apiexplorer.git"
+			"Default": "https://github.com/PaloAltoNetworks/apiexplorer-docker.git"
 		},
 
 		"ConfigureRoute53": {
@@ -386,15 +366,14 @@
           }
         ],
         "UserData" : { "Fn::Base64" : { "Fn::Join" : ["", [
-            "#! /bin/bash\n",
-			"sleep 2s\n",
-			"yum install -y wget\n",
-			"export DOWNLOADSCRIPT=\"",{"Ref" : "APIExplorerScriptURL" },"\"\n",
+            "#!/bin/bash\n",
+			"sleep 10s\n",
+			"yum install -y wget git\n",
 			"export APPFQDN=\"",{ "Fn::Join" : [ "", [ {"Ref" : "APIExplorerHostname"}, ".", {"Ref" : "AppHostedZone"} ] ] },"\"\n",
 			"export APPEIP=\"",{"Ref" : "APIExplorerElasticIP" },"\"\n",
-			"export PACKAGE=\"",{"Ref" : "APIExplorerPackageURL" },"\"\n",
 			"export APIEXPREPO=\"",{"Ref" : "APIExplorerGitHubRepo" },"\"\n",
-			"export ADMINPWD=\"",{"Ref" : "AdminPassword" },"\"\n",
+			"ENCPWD=\"",{ "Fn::Base64" : {"Ref" : "AdminPassword" } },"\"\n",
+			"export ADMINPWD=$(echo \"${ENCPWD}\" | /usr/bin/base64 -d -)\n",
 			"export AWSREGION=\"",{ "Ref" : "AWS::Region" },"\"\n",
 			"export APIEXPLORERLETSENCRYPTCERT=\"",{ "Ref" : "APIExplorerLetsEncryptCert" },"\"\n",
 			"export LETSENCRYPTEMAIL=\"",{ "Ref" : "LetsEncryptEmail" },"\"\n",
@@ -402,9 +381,20 @@
 			"yum -y install https://centos7.iuscommunity.org/ius-release.rpm\n",
 			"yum -y install python36u-devel\n",
 			"sleep 2s\n",
-			"yum -y install python36u-pip\n",
-			"wget -O /opt/apiexplorer.tar.gz ${PACKAGE}\n",			
-            "wget -O - ${DOWNLOADSCRIPT} | /bin/bash\n"
+            "yum -y install python36u-pip\n",
+			"yum-config-manager --enable extras\n",
+			"yum install -y yum-utils device-mapper-persistent-data lvm2\n",
+			"yum -y --enablerepo=rhui-REGION-rhel-server-extras install container-selinux\n",
+			"yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo\n",
+			"yum -y install docker-ce\n",
+			"pip3.6 install docker-compose\n",
+			"systemctl start docker\n",
+			"cd /tmp && git clone --recurse-submodules ${APIEXPREPO}\n",
+			"SEDADMINPWD=$(echo ${ADMINPWD} | sed -e 's/[\\/&]/\\\\&/g' | sed -e 's/[\\x27]/\\\\\\\\\\x27/g' )\n",
+			"sed -i s/password='\\x27paloalto\\x27/password=\\x27'${SEDADMINPWD}'\\x27/' apiexplorer-docker/gunicorn/api_explorer/main.py\n",
+			"cd apiexplorer-docker && docker-compose build --build-arg APPEIP=${APPEIP} --build-arg APPFQDN=${APPFQDN}\n",
+			"docker-compose up -d\n",
+			"if [[ $APIEXPLORERLETSENCRYPTCERT == 'true' ]]; then docker run --rm -v apiexplorer-docker_certs:/etc/ssl/certs -v apiexplorer-docker_nginx-www:/usr/share/nginx certbot/certbot certonly --webroot --deploy-hook /etc/ssl/certs/copy_certs.sh -w /usr/share/nginx/html -d ${APPFQDN} -n --agree-tos --email ${LETSENCRYPTEMAIL} --renew-by-default; docker restart $(docker ps --filter name=apiexplorer-docker_nginx -q); fi\n"
           ]]}
         }		
 	  },

@@ -81,8 +81,6 @@
 						"CloudPluginName",
 						"PanoramaTemplateFileURL",
 						"PanoramaScriptURL",
-						"APIExplorerScriptURL",
-						"APIExplorerPackageURL",
 						"APIExplorerGitHubRepo"
 					]
 				}				
@@ -164,12 +162,6 @@
 				"PanoramaHostname":{
 					"default": "Panorama Hostname"
 				},
-				"APIExplorerScriptURL":{
-					"default": "API Explorer Script File"
-				},
-				"APIExplorerPackageURL":{
-					"default": "API Explorer Package File"
-				},
 				"APIExplorerGitHubRepo":{
 					"default": "API Explorer GitHub Repo"
 				},
@@ -214,7 +206,7 @@
 	},
 	"Parameters": {
 		"BootstrapBucketName":{
-			"Description": "S3 Bucket name for FW bootstrap configuration (i.e. myappframeworkbucket-conf)",
+			"Description": "S3 Bucket name for FW bootstrap configuration (i.e. myappframeworkbucket-ngfw)",
 			"Type": "String"
 		},
 		"BootstrapBucketRegion":{
@@ -267,7 +259,7 @@
 		"AdminPassword": {
 			"AllowedPattern": "(?=^.{6,255}$)((?=.*\\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*",
 			"Description": "Password for API Explorer, NGFW/Panorama admin, VMs ec2-user/ubuntu users (SSH password auth enabled), Windows DC admin and users. Must be at least 8 characters containing letters, numbers and symbols",
-			"MaxLength": "32",
+			"MaxLength": "31",
 			"MinLength": "8",
 			"NoEcho": "true",
 			"Type": "String"
@@ -313,12 +305,6 @@
 			"Default": "panorama"
 		},
 
-		"APIExplorerScriptURL":{
-			"Description": "API Explorer Configuration Script File Path",
-			"Type": "String",
-			"Default": "opt/apiexplorer.sh.txt"
-		},
-
 		"PanoramaScriptURL":{
 			"Description": "Panorama Configuration Script File Path",
 			"Type": "String",
@@ -349,16 +335,12 @@
 			"Default": "cloud_services-1.0.2"
 		},
 
-		"APIExplorerPackageURL":{
-			"Description": "API Explorer Software Package File Path",
-			"Type": "String",
-			"Default": "opt/apiexplorer.tar.gz"
-		},
 		"APIExplorerGitHubRepo":{
 			"Description": "API Explorer GitHub Repository URL",
 			"Type": "String",
-			"Default": "https://github.com/PaloAltoNetworks/apiexplorer.git"
+			"Default": "https://github.com/PaloAltoNetworks/apiexplorer-docker.git"
 		},
+
 		"DomainNetBIOSName": {
 			"AllowedPattern": "[a-zA-Z0-9\\-]+",
 			"Default": "PANWDOMAIN",
@@ -367,6 +349,7 @@
 			"MinLength": "1",
 			"Type": "String"
 		},
+
 		"ConfigureRoute53": {
 			"AllowedValues": [
 				"true",
@@ -1282,18 +1265,18 @@
           }
         ],
         "UserData" : { "Fn::Base64" : { "Fn::Join" : ["", [
-            "#! /bin/bash\n",
-			"sleep 2s\n",			
-			"yum install -y wget\n",
-			"export DOWNLOADSCRIPT=\"",{"Ref" : "APIExplorerScriptURL" },"\"\n",
+            "#!/bin/bash\n",
+			"exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1\n",
+			"sleep 10s\n",			
+			"yum install -y wget git\n",
 			"export PANORAMASCRIPT=\"",{"Ref" : "PanoramaScriptURL" },"\"\n",
 			"export TEMPLATEURL=\"",{"Ref" : "PanoramaTemplateFileURL" },"\"\n",
 			"export TEMPLATEFILENAME=\"/tmp/panorama_template.xml\"\n",
 			"export APPFQDN=\"",{ "Fn::Join" : [ "", [ {"Ref" : "APIExplorerHostname"}, ".", {"Ref" : "AppHostedZone"} ] ] },"\"\n",
 			"export APPEIP=\"",{"Ref" : "APIExplorerElasticIP" },"\"\n",
-			"export PACKAGE=\"",{"Ref" : "APIExplorerPackageURL" },"\"\n",
 			"export APIEXPREPO=\"",{"Ref" : "APIExplorerGitHubRepo" },"\"\n",
-			"export ADMINPWD=\"",{"Ref" : "AdminPassword" },"\"\n",
+			"ENCPWD=\"",{ "Fn::Base64" : {"Ref" : "AdminPassword" } },"\"\n",
+			"export ADMINPWD=$(echo \"${ENCPWD}\" | /usr/bin/base64 -d -)\n",
 			"export PANORAMASERIAL=\"",{"Ref" : "PanoramaSerial" },"\"\n",
 			"export S3BUCKETNAME=\"",{"Ref" : "EnvironmentBucketName" },"\"\n",
 			"export S3KEYFILENAME=\"",{"Ref" : "EnvironmentPrivateKeyFile" },"\"\n",
@@ -1311,10 +1294,23 @@
 			"systemctl restart sshd\n",
 			"yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(rpm -E '%{rhel}').noarch.rpm\n",
 			"yum -y install https://centos7.iuscommunity.org/ius-release.rpm\n",
-			"yum -y install python36u\n",
+			"yum -y install python36u-devel\n",
 			"sleep 2s\n",
-			"yum -y install python36u-pip\n",
+            "yum -y install python36u-pip\n",
 			"pip3.6 install boto3 awscli\n",
+			"yum-config-manager --enable extras\n",
+			"yum install -y yum-utils device-mapper-persistent-data lvm2\n",
+			"yum -y --enablerepo=rhui-REGION-rhel-server-extras install container-selinux\n",
+			"yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo\n",
+			"yum -y install docker-ce\n",
+			"pip3.6 install docker-compose\n",
+			"systemctl start docker\n",
+			"cd /tmp && git clone --recurse-submodules ${APIEXPREPO}\n",
+			"SEDADMINPWD=$(echo ${ADMINPWD} | sed -e 's/[\\/&]/\\\\&/g' | sed -e 's/[\\x27]/\\\\\\\\\\x27/g' )\n",
+			"sed -i s/password='\\x27paloalto\\x27/password=\\x27'${SEDADMINPWD}'\\x27/' apiexplorer-docker/gunicorn/api_explorer/main.py\n",
+			"cd apiexplorer-docker && docker-compose build --build-arg APPEIP=${APPEIP} --build-arg APPFQDN=${APPFQDN}\n",
+			"docker-compose up -d\n",
+			"if [[ $APIEXPLORERLETSENCRYPTCERT == 'true' ]]; then docker run --rm -v apiexplorer-docker_certs:/etc/ssl/certs -v apiexplorer-docker_nginx-www:/usr/share/nginx certbot/certbot certonly --webroot --deploy-hook /etc/ssl/certs/copy_certs.sh -w /usr/share/nginx/html -d ${APPFQDN} -n --agree-tos --email ${LETSENCRYPTEMAIL} --renew-by-default; docker restart $(docker ps --filter name=apiexplorer-docker_nginx -q); fi\n",
 			"S3BUCKETLOCATION=$(aws s3api get-bucket-location --bucket ${S3BUCKETNAME} --output text)\n",
 			"if [[ $S3BUCKETLOCATION == 'None' ]]; then S3BUCKETLOCATION='us-east-1'; fi\n",
 			"export S3BUCKETLOCATION\n",
@@ -1326,7 +1322,6 @@
 			"aws --region ${S3BUCKETLOCATION} s3 cp s3://${S3BUCKETNAME}/${PACKAGE} /opt/apiexplorer.tar.gz\n",
 			"chown ec2-user:ec2-user /home/ec2-user/echomalware\n",
 			"chmod 755 /home/ec2-user/echomalware\n",
-            "cat /tmp/downloadscript.sh | /bin/bash\n",
 			"pip3.6 install pandevice paramiko boto3 pan-python\n",
 			"python3.6 /tmp/panorama_setup.py\n",
 			"rm /tmp/panwkey.pem\n"
@@ -1369,8 +1364,11 @@
           }
         ],
         "UserData" : { "Fn::Base64" : { "Fn::Join" : ["", [
-            "#! /bin/bash\n",
-			"export ADMINPWD=\"",{"Ref" : "AdminPassword" },"\"\n",
+            "#!/bin/bash\n",
+			"sleep 10s\n",
+			"ENCPWD=\"",{ "Fn::Base64" : {"Ref" : "AdminPassword" } },"\"\n",
+			"export ADMINPWD=$(echo \"${ENCPWD}\" | /usr/bin/base64 -d -)\n",
+			"export URLENCODEDPWD=$(/usr/bin/python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.argv[1]))' \"${ADMINPWD}\")\n",
 			"export FIREWALLIP=\"",{"Fn::GetAtt" : [ "FWManagementNetworkInterface", "PrimaryPrivateIpAddress" ]},"\"\n",
 			"export FIREWALLCERTURL=\"",{"Ref" : "FirewallCertURL" },"\"\n",
 			"export NETBIOSDOMAIN=\"",{"Ref" : "DomainNetBIOSName" },"\"\n",
@@ -1383,7 +1381,7 @@
             "ifup eth0\n",
 			"while true\n",
 			"  do\n",
-			"    resp=$(curl -s -S -g --insecure -X POST -m 10 --connect-timeout 10 -k \"https://${FIREWALLIP}/api/?password=${ADMINPWD}&type=keygen&user=admin\")\n",
+			"    resp=$(curl -s -S -g --insecure -X POST -m 10 --connect-timeout 10 -k \"https://${FIREWALLIP}/api/?password=${URLENCODEDPWD}&type=keygen&user=admin\")\n",
 			"    if [[ \"$resp\" =~ \"success\" ]]; then\n",
 			"      APIKEY=$(echo $resp | sed \"s/^.*<key>\\(.*\\)<\\/key>.*$/\\1/\")\n",
 			"      break\n",
@@ -1404,7 +1402,7 @@
 			"/usr/sbin/update-ca-certificates\n",
 			"apt-get update\n",
 			"apt install -y wget python python-pip\n",
-			"pip install --cert=/usr/local/share/ca-certificates/panca.crt --upgrade pip\n",
+			"pip install --cert=/usr/local/share/ca-certificates/panca.crt --upgrade pip==9.0.3\n",
 			"pip install --cert=/usr/local/share/ca-certificates/panca.crt pan-python\n",
 			"pip install --cert=/usr/local/share/ca-certificates/panca.crt boto3 requests awscli\n",
 			"S3BUCKETLOCATION=$(aws --ca-bundle /usr/local/share/ca-certificates/panca.crt s3api get-bucket-location --bucket ${S3BUCKETNAME} --output text)\n",

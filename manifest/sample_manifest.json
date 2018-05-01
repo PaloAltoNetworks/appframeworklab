@@ -1,10 +1,10 @@
 {
     "manifest_version": "v1",
-    "name": "api_explorer",
+    "name": "apixp_your_name",
     "display_name": "API Explorer",
     "description": "Take the Application Framework for a test drive!",
     "app_version": "v1",
-    "logo_url": "https://apiexplorer.lab.hhq.cloud/logo.png",
+    "logo_url": "https://apiexplorer.YOUR_DOMAIN/logo.png",
     "developer": {
         "name": "Developer Relations",
         "link": "https://github.com/PaloAltoNetworks/apiexplorer",
@@ -24,9 +24,9 @@
             }
         }
     },
-    "app_base_url": "https://apiexplorer.lab.hhq.cloud/login",
+    "app_base_url": "https://apiexplorer.YOUR_DOMAIN/login",
     "auth_redirect_uris": [
-        "https://apiexplorer.lab.hhq.cloud/auth-callback"
+        "https://apiexplorer.YOUR_DOMAIN/auth-callback"
     ],
     "scopes": [
         "logging-service:read",
