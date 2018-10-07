@@ -482,21 +482,21 @@
 		},
 
 		 "KaliRegionMap" : {
-			"ap-south-1" :  {"AMI": "ami-0d580762" },
-			"eu-west-3" :  {"AMI": "ami-8166d0fc" },
-			"eu-west-2" :  {"AMI": "ami-f31df994" },
-			"eu-west-1" :  {"AMI": "ami-ba3c79c3" },
-			"ap-northeast-2" :  {"AMI": "ami-096ec367" },
-			"ap-northeast-1" :  {"AMI": "ami-4b13552d" },
-			"sa-east-1" :  {"AMI": "ami-8e1e55e2" },
-			"ca-central-1" :  {"AMI": "ami-14820570" },
-			"ap-southeast-1" :  {"AMI": "ami-d4fbb3a8" },
-			"ap-southeast-2" :  {"AMI": "ami-6bd41209" },
-			"eu-central-1" :  {"AMI": "ami-8b8ae7e4" },
-			"us-east-1" :  {"AMI": "ami-10e00b6d" },
-			"us-east-2" :  {"AMI": "ami-a1ffc8c4" },
-			"us-west-1" :  {"AMI": "ami-e3efe483" },
-			"us-west-2" :  {"AMI": "ami-aaf078d2" }
+			"ap-south-1" :  {"AMI": "ami-0830bbf8438910e39" },
+			"eu-west-3" :  {"AMI": "ami-0546c2296e5c1f10a" },
+			"eu-west-2" :  {"AMI": "ami-0effb6b7c7602646a" },
+			"eu-west-1" :  {"AMI": "ami-0281a537e64a74d1f" },
+			"ap-northeast-2" :  {"AMI": "ami-02a50c50fb2aeef9c" },
+			"ap-northeast-1" :  {"AMI": "ami-05083a4c0e199bd15" },
+			"sa-east-1" :  {"AMI": "ami-0ea47f147c5dd10ec" },
+			"ca-central-1" :  {"AMI": "ami-0e3a605dc6111bcfe" },
+			"ap-southeast-1" :  {"AMI": "ami-08aca6e68749c4ba8" },
+			"ap-southeast-2" :  {"AMI": "ami-04c879e4c1bc41d98" },
+			"eu-central-1" :  {"AMI": "ami-0fbb40f398aef1e61" },
+			"us-east-1" :  {"AMI": "ami-07360d1b1c9e13198" },
+			"us-east-2" :  {"AMI": "ami-0b2b9a650987b7d0c" },
+			"us-west-1" :  {"AMI": "ami-0ca147ef9bdebe4be" },
+			"us-west-2" :  {"AMI": "ami-0f95cde6ebe3f5ec3" }
 		},
 
 		"UbuntuRegionMap" : {
