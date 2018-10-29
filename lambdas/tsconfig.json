@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "target": "es6",
+        "module": "commonjs",
+        "allowJs": true,
+        "sourceMap": true,
+        "watch": false,
+        "skipLibCheck": true
+    },
+    "exclude": [
+        "devel",
+        "dist",
+        "webpack.config.js"
+    ]
+}

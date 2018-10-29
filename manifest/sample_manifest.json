@@ -1,78 +1,87 @@
 {
     "manifest_version": "v1",
-    "name": "apixp_your_name",
-    "display_name": "API Explorer",
-    "description": "Take the Application Framework for a test drive!",
+    "name": "TBD",
+    "display_name": "TBD",
+    "description": "TBD",
     "app_version": "v1",
-    "logo_url": "https://apiexplorer.YOUR_DOMAIN/logo.png",
+    "logo_url": "TBD",
     "developer": {
-        "name": "Developer Relations",
-        "link": "https://github.com/PaloAltoNetworks/apiexplorer",
+        "name": "TBD",
+        "link": "TBD",
         "social_media": {
-            "facebook": "https://www.facebook.com/PaloAltoNetworks",
-            "twitter": "https://twitter.com/PaloAltoNtwks",
-            "linkedin": "https://www.linkedin.com/company/palo-alto-networks"
+            "facebook": "TBD",
+            "twitter": "TBD",
+            "linkedin": "TBD"
         },
         "support_contact": {
             "primary": {
-                "name": "Developer Relations",
-                "email": "devrel@paloaltonetworks.com"
+                "name": "TBD",
+                "email": "TBD"
             },
             "secondary": {
-                "name": "Technical Business Development",
-                "email": "techbizdev@paloaltonetworks.com"
+                "name": "TBD",
+                "email": "TBD"
             }
         }
     },
-    "app_base_url": "https://apiexplorer.YOUR_DOMAIN/login",
+	"restricted_accounts": [245, 110044, 117270, 1000000],
+    "app_base_url": "TBD",
     "auth_redirect_uris": [
-        "https://apiexplorer.YOUR_DOMAIN/auth-callback"
+        "TBD"
     ],
     "scopes": [
         "logging-service:read",
-        "event-service:read",
-        "directory-sync-service:read"
+		"logging-service:writeTBD",
+        "event-service:readTBD",
+        "directory-sync-service:readTBD"
     ],
+	"log_spec": {
+	   "vendor_name": "TBD",
+	   "log_type_field_name": "type",
+	   "log_type": "TBD",
+	   "timestamp_field_name": "TBD",
+	   "timestamp_format": "secondsSinceEpoch",
+	   "uuid_field_name": "TBD"
+	},
     "developer_defined_fields": [
         {
-            "name": "name",
-            "display": "Developer Name"
-        },
-        {
-            "name": "email",
-            "display": "Email Address"
-        },
-        {
-            "name": "company",
-            "display": "Company"
-        },
-        {
-            "name": "department",
-            "display": "Department"
-        },
-        {
-            "name": "url",
-            "display": "Company URL"
+            "name": "TBD",
+            "display": "TBD"
         }
     ],
     "marketplace_content": {
-        "summary": "Take the Application Framework for a test drive! Use the API Explorer to interact with Logging, Event and Directory Sync Service APIs!.",
-        "latest_release": "2018-03-28",
-        "first_release": "2018-03-28",
-        "system_requirements": "Chrome 63, Firefox 52",
-        "categories": ["Developer Relations", "API Explorer", "3rd-party Developers", "Developer Resources"],
-        "tac_link": "https://www.paloaltonetworks.com/legal-notices/terms-of-use",
-        "privacy_link": "https://www.paloaltonetworks.com/content/dam/pan/en_US/assets/pdf/legal/palo-alto-networks-end-user-license-agreement-eula.pdf",
-        "product_link": "https://www.paloaltonetworks.com/products/application-framework/application-developer",
-        "contact_link": "https://www.paloaltonetworks.com/products/application-framework/application-developer",
-        "video_url": "https://www.paloaltonetworks.com/products/application-framework/application-developer",
+        "summary": "TBD",
+        "latest_release": "2018-09-01TBD",
+        "first_release": "2018-09-01TBD",
+        "system_requirements": "TBD",
+		"video_url": "TBD",
+        "categories": ["App"],
+        "tac_link": "TBD",
+        "privacy_link": "TBD",
+        "product_link": "TBD",
+        "contact_link": "TBD",
         "gallery_image_urls": [],
-        "heading": "API Explorer",
-        "body": [{
-            "heading": "Welcome to the API Explorer!",
-            "paragraphs": [
-            "Here you'll find tutorials and working examples illustrating how to leverage the PAN Cloud Python SDK to interact with the Logging, Event and Directory-Sync Service APIs, an Application Framework playground packaged as a web application!"
-            ]
-        }]
-    }
+        "heading": "TBD",
+        "body": [
+            {
+                "heading": "TBD",
+                "paragraphs": [
+                    "TBD"
+                ]
+            },
+            {
+                "heading": "TBD",
+                "paragraphs": [
+                    "TBD"
+                ]
+            },
+            {
+                "heading": "TBD",
+                "paragraphs": [
+                    "TBD",
+                    "TBD"
+                ]
+            }
+		]
+	}
 }
