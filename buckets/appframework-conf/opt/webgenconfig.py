@@ -18,7 +18,6 @@ rootURLs = [
 		"https://www.nhl.com",
 		"https://www.jpmorgan.com",
 		"https://www.paloaltonetworks.com",
-		"https://www.apple.com",
 		"https://www.avherald.com",
 		"https://en.wikipedia.org/wiki/Main_Page",
 		"https://austin.craigslist.org/"
