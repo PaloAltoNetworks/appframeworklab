@@ -1,0 +1,9 @@
+node_modules
+lambdas/src/*.js
+.env
+lambdas/src/*.js.map
+lambdas/dist
+lambdas/devel
+lambdas/test/*.js
+lambdas/test/*.js.map
+test.txt

@@ -113,9 +113,6 @@
 				"RestoreModePassword": {
 					"default": "Restore Mode Password"
 				},
-				"FirewallCertURL" : {
-					"default": "Firewall Default Certificate URL"
-				},
 				"BootstrapBucketName":{
 					"default": "Bootstrap S3 Bucket Name"
 				},
@@ -320,7 +317,7 @@
 		"CloudPluginURL":{
 			"Description": "Cloud Plugin File Name",
 			"Type": "String",
-			"Default": "opt/cloud_services-1.0.2"
+			"Default": "opt/cloud_services-1.2.0-h2"
 		},
 
 		"FirewallCertURL":{

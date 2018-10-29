@@ -1,0 +1,387 @@
+
+{
+	"AWSTemplateFormatVersion": "2010-09-09",
+	"Description": "Palo Alto Networks AppFramework Lab Bucket Preparation",
+	"Metadata": {
+		"AWS::CloudFormation::Interface": {
+			"ParameterGroups": [
+				{
+					"Label": {
+						"default": "Basic Configuration - REQUIRED"
+					},
+					"Parameters": [
+                        "keyName",
+                        "companyName",
+                        "apikey"
+					]
+				},
+				{
+					"Label": {
+						"default": "Advanced Configuration - General"
+					},
+					"Parameters": [
+                        "sourceConfBucket",
+                        "sourceNgfwBucket"
+                    ]
+                }	
+            ],	
+			"ParameterLabels": {
+				"keyName": {
+					"default": "panw-appframeworklab"
+				},
+				"confBucketName": {
+					"default": "appframework-test2"
+                },
+				"apikey": {
+					"default": "Key12345"
+                },
+				"sourceBucket": {
+					"default": "appf-bootstrap-conf"
+                },
+				"targetBucket": {
+					"default": "appframework-test2"
+				}
+			}
+		}
+    },
+createKeyPair:
+    keyName: 'ngfwkeytest',
+    targetBucket: 'appframework-test2',
+    keyPath: 'keys
+deleteKeyPair: 
+    keyName: 'ngfwkeytest'
+writeAuthCode:
+    keyName: 'license/authcodes',
+    targetBucket: 'appframework-test2',
+    authCode: 'I123456'
+copyRoute53:
+    sourceBucket: 'appf-bootstrap-conf',
+    targetBucket: 'appframework-test2'
+getRoute53:
+    DNSZone: 'Z2UUVZVTWDCZZ1',
+    company: 'test111',
+    apiKey: apiKey
+
+	"Parameters": {
+		"Company":{
+			"Description": "Company",
+			"Type": "String"
+		},
+		"Bla2":{
+			"Description": "Region",
+			"Type": "String",
+            "AllowedValues": [
+				"ap-south-1",
+				"eu-west-2",
+				"eu-west-1",
+				"ap-northeast-2",
+				"ap-northeast-1",
+				"sa-east-1",
+				"ca-central-1",
+				"ap-southeast-1",
+				"ap-southeast-2",
+				"eu-central-1",
+				"us-east-1",
+				"us-east-2",
+				"us-west-1",
+				"us-west-2"
+            ],
+			"Default" : "us-west-1"
+		},
+		"Bla3": {
+		  "Description": "KeyName",
+		  "Type": "AWS::EC2::KeyPair::KeyName"
+		},
+		"Bla4": {
+			"AllowedPattern": "(?=^.{6,255}$)((?=.*\\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*",
+			"Description": "Password for API Explorer, NGFW/Panorama admin, VMs ec2-user/ubuntu users (SSH password auth enabled), Windows DC admin and users. Must be at least 8 characters containing letters, numbers and symbols",
+			"MaxLength": "31",
+			"MinLength": "8",
+			"NoEcho": "true",
+			"Type": "String"
+		},
+		"Bla5": {
+			"AllowedValues": [
+				"true",
+				"false"
+			],
+			"Default": "true",
+			"Description": "Dynamically map hostnames to EIPs using Route53?",
+			"Type": "String"
+		}
+	},
+	"Mappings": {
+		"PANFWRegionMap" : {
+			"ap-south-1" :  {"AMI": "ami-e780d988" },
+			"eu-west-2" :  {"AMI": "ami-876a8de0" },
+			"eu-west-1" :  {"AMI": "ami-62b5fb1b" },
+			"ap-northeast-2" :  {"AMI": "ami-49bd1127" },
+			"ap-northeast-1" :  {"AMI": "ami-57662d31" },
+			"sa-east-1" :  {"AMI": "ami-9c0154f0" },
+			"ca-central-1" :  {"AMI": "ami-64038400" },
+			"ap-southeast-1" :  {"AMI": "ami-27baeb5b" },
+			"ap-southeast-2" :  {"AMI": "ami-00d61562" },
+			"eu-central-1" :  {"AMI": "ami-55bfd73a" },
+			"us-east-1" :  {"AMI": "ami-a2fa3bdf" },
+			"us-east-2" :  {"AMI": "ami-11e1d774" },
+			"us-west-1" :  {"AMI": "ami-a95b4fc9" },
+			"us-west-2" :  {"AMI": "ami-d424b5ac" }
+		}
+	},
+    "Resources": {
+        "LambdaS3Role": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version" : "2012-10-17",
+                    "Statement": [{
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": [ "lambda.amazonaws.com" ]
+                        },
+                        "Action": [ "sts:AssumeRole" ]
+                    }]
+                },
+                "ManagedPolicyArns": [
+                    { "Ref": "S3WritePolicy" },
+                    { "Ref": "LambdaExecutionPolicy"},
+                    { "Ref": "R53GetHostedZonePolicy" }
+                ]
+            }
+        },
+        "LambdaEC2Role": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version" : "2012-10-17",
+                    "Statement": [{
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": [ "lambda.amazonaws.com" ]
+                        },
+                        "Action": [ "sts:AssumeRole" ]
+                    }]
+                },
+                "ManagedPolicyArns": [
+                    { "Ref": "EC2CreateKeyPairPolicy" },
+                    { "Ref": "S3WritePolicy" },
+                    { "Ref": "LambdaExecutionPolicy"}
+                ]
+            }
+        },
+        "LambdaR53Role": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version" : "2012-10-17",
+                    "Statement": [{
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": [ "lambda.amazonaws.com" ]
+                        },
+                        "Action": [ "sts:AssumeRole" ]
+                    }]
+                },
+                "ManagedPolicyArns": [
+                    { "Ref": "R53GetHostedZonePolicy" },
+                    { "Ref": "LambdaExecutionPolicy"}
+                ]
+            }
+        },
+        "S3PopulateBucketsFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Code": {
+                    "S3Bucket": "appframeworklab-lambdas",
+                    "S3Key": "lambdas.zip"
+                },
+                "Description": "Create NGFW Configuration Bucket",
+                "Handler": "buckets.createNgfwBucket",
+                "Role": {"Fn::GetAtt" : [ "LambdaS3Role", "Arn" ] },
+                "Runtime": "nodejs8.10",
+                "Timeout": 30
+            },
+            "DependsOn": [
+                "LambdaS3Role"
+            ]
+        },
+        "RegisterDNSFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Code": {
+                    "S3Bucket": "appframeworklab-lambdas",
+                    "S3Key": "lambdas.zip"
+                },
+                "Description": "Register DNS subdomain in appframework.rocks",
+                "Handler": "dns.registerZone",
+                "Role": {"Fn::GetAtt" : [ "LambdaR53Role", "Arn" ] },
+                "Runtime": "nodejs8.10",
+                "Timeout": 30
+            },
+            "DependsOn": [
+                "LambdaR53Role"
+            ]
+        },
+        "EC2CreateKeysFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Code": {
+                    "S3Bucket": "appframeworklab-lambdas",
+                    "S3Key": "lambdas.zip"
+                },
+                "Description": "Create EC2 KeyPair",
+                "Handler": "compute.createKeyPair",
+                "Role": {"Fn::GetAtt" : [ "LambdaEC2Role", "Arn" ] },
+                "Runtime": "nodejs8.10",
+                "Timeout": 30
+            },
+            "DependsOn": [
+                "LambdaEC2Role"
+            ]
+        },
+        "RunCreateBucket": {
+            "Type": "Custom::S3PopulateBucketsFunction",
+            "Properties": {
+                "ServiceToken": { "Fn::GetAtt" : ["S3PopulateBucketsFunction", "Arn"] },
+                "Bucket": "gino",
+                "Key": "pino",
+                "DNSZoneID": {"Ref": "DNSZone" }
+            },
+            "DependsOn": [
+                "DNSZone"
+            ]
+        },
+        "EC2CreateKeyPairPolicy": {
+            "Type": "AWS::IAM::ManagedPolicy",
+            "Properties": {
+                "Description" : "EC2 KeyPair Creation Policy",
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": "ec2:CreateKeyPair",
+                            "Resource": "*"
+                        }
+                    ]
+                }
+            }
+        },
+        "LambdaExecutionPolicy": {
+            "Type": "AWS::IAM::ManagedPolicy",
+            "Properties": {
+                "Description" : "Lambda Execution Policy",
+                "PolicyDocument" : {
+                    "Version" : "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "logs:CreateLogGroup",
+                                "logs:CreateLogStream",
+                                "logs:PutLogEvents"
+                            ],
+                            "Resource": "arn:aws:logs:*:*:*"
+                        }
+                    ]
+                }
+            }
+        },
+        "R53GetHostedZonePolicy": {
+            "Type": "AWS::IAM::ManagedPolicy",
+            "Properties": {
+                "Description" : "Lambda Execution Policy",
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": "route53:GetHostedZone",
+                            "Resource": { "Fn::GetAtt" : [ "DNSZone", "Arn"] }
+                        }
+                    ]
+                }
+            },
+            "DependsOn": [
+                "DNSZone"
+            ]
+        },
+        "S3WritePolicy": {
+            "Type": "AWS::IAM::ManagedPolicy",
+            "Properties": {
+                "Description" : "S3 List and Write Policy",
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": "s3:ListBucket",
+                            "Resource": "arn:aws:s3:::*"
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "s3:ListAllMyBuckets",
+                                "s3:HeadBucket"
+                            ],
+                            "Resource": "*"
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "s3:PutObject",
+                                "s3:DeletObject"
+                            ],
+                            "Resource": { "Fn::GetAtt" : [ "NGFWBucket", "Arn"] }
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "s3:PutObject",
+                                "s3:DeletObject"
+                            ],
+                            "Resource": { "Fn::GetAtt" : [ "ConfigBucket", "Arn"] }
+                        }                                
+                    ]
+                }
+            },
+            "DependsOn": [
+                "NGFWBucket",
+                "ConfigBucket"
+            ]
+        },
+        "NGFWBucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "BucketName": {
+                    "Fn::Sub": "panw2-appframework-ngfw-${AWS::Region}-${AWS::AccountId}"
+                }
+            },
+            "DeletionPolicy": "Delete"
+        },
+        "ConfigBucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "BucketName": {
+                    "Fn::Sub": "panw2-appframework-conf-${AWS::Region}-${AWS::AccountId}"
+                }
+            },
+            "DeletionPolicy": "Delete"
+        },
+        "DNSZone" : {
+            "Type" : "AWS::Route53::HostedZone",
+            "Properties": {
+                "HostedZoneConfig": {
+                  "Comment": "Developers Developers Developers Developers"
+                },
+                "Name": "ballmer.appframework.rocks"
+            }
+        }    
+    },
+    "Outputs": {
+        "DNSZoneId": {
+            "Description": "DNS Hosted Zone ID",
+            "Value": {"Ref": "DNSZone" }
+        }
+    }
+}
