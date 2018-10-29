@@ -19,7 +19,6 @@ rootURLs = [
 		"https://www.jpmorgan.com",
 		"https://www.paloaltonetworks.com",
 		"https://www.avherald.com",
-                "https://www.apple.com",
 		"https://en.wikipedia.org/wiki/Main_Page",
 		"https://austin.craigslist.org/"
         ]
