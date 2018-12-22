@@ -1,0 +1,10 @@
+        <entry name="TS1">
+          <settings>
+            <default-vsys>vsys1</default-vsys>
+          </settings>
+          <templates>
+            <member>Template1</member>
+          </templates>
+          <description>Template Stack 1</description>
+          <devices/>
+        </entry>

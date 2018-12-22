@@ -10,11 +10,14 @@ async function createKeyPair(event: CreateEvent, context: Context): Promise<void
     //console.log('createKeyPair event:', inspect(event, false, null));
     //console.log('createKeyPair context:', inspect(context, false, null));    
 
-    if(!event.ResourceProperties.keyName || !event.ResourceProperties.targetBucket || !event.ResourceProperties.keyPath || !event.ResourceProperties.stackName) {
+    if(!event.ResourceProperties.keyName || !event.ResourceProperties.stackName) {
         console.log('createKeyPair: missing input parameter');
         await cfnResponse(event, context, cfnResponseStatus.FAILED, {status: 'Error', error: 'missing input parameter'});
         return;
     };
+
+    let uploadToS3: boolean = false;
+    if(event.ResourceProperties.targetBucket && event.ResourceProperties.keyPath) uploadToS3=true;
 
     let ec2 : aws.EC2 = new aws.EC2({apiVersion: '2016-11-15'});
 
@@ -28,22 +31,17 @@ async function createKeyPair(event: CreateEvent, context: Context): Promise<void
     let keypair: aws.EC2.KeyPair = undefined;
     try {
         keypair = await ec2.createKeyPair(params).promise();
-    }
-    catch(err) {
-        console.log('createKeyPair: got error', err);
-        await cfnResponse(event, context, cfnResponseStatus.FAILED, {status: 'Error', error:err});
-        return;
-    };
-    console.log('createKeyPair created keypair:', keypair.KeyName);
- 
-    if(keypair.KeyMaterial) {
-        let fullKeyPath: string = event.ResourceProperties.keyPath + '/' + event.ResourceProperties.keyName + '.pem';
-        console.log('createKeyPair targetBucket:', event.ResourceProperties.targetBucket);
-        console.log('createKeyPair fullKeyPath:', fullKeyPath);
+        if(!keypair.KeyMaterial) throw('no key material')
 
-        // keypair created
-        let s3Client: aws.S3 = new aws.S3();
-        try {
+        console.log('createKeyPair created keypair:', keypair.KeyName);
+
+        if(uploadToS3) {
+            let fullKeyPath: string = event.ResourceProperties.keyPath + '/' + event.ResourceProperties.keyName + '.pem';
+            console.log('createKeyPair targetBucket:', event.ResourceProperties.targetBucket);
+            console.log('createKeyPair fullKeyPath:', fullKeyPath);
+
+            let s3Client: aws.S3 = new aws.S3();
+
             let s3params: aws.S3.PutObjectRequest = {
                 Bucket: event.ResourceProperties.targetBucket,
                 Key: fullKeyPath,
@@ -52,13 +50,17 @@ async function createKeyPair(event: CreateEvent, context: Context): Promise<void
             let out: aws.S3.PutObjectOutput = await s3Client.putObject(s3params).promise();
             console.log('createKeyPair putObject output is:', JSON.stringify(out));
         }
-        catch(err) {
-            console.log('createKeyPair: got error', err);
-            await cfnResponse(event, context, cfnResponseStatus.FAILED, {status: 'Error', error:err});
-            return;
+        else {
+            console.log('Not uploading KeyPair to S3 as no bucket and path have been specified')
         }
     }
-    await cfnResponse(event, context, cfnResponseStatus.SUCCESS, {status:'OK'});
+    catch(err) {
+        console.log('createKeyPair: got error', err);
+        await cfnResponse(event, context, cfnResponseStatus.FAILED, {status: 'Error', error:err});
+        return;
+    }
+
+    await cfnResponse(event, context, cfnResponseStatus.SUCCESS, {status:'OK', keyPair: keypair.KeyMaterial, keyName: keypair.KeyName});
     return;
 }
 
@@ -80,7 +82,6 @@ async function deleteKeyPair(event: DeleteEvent, context: Context): Promise<void
         KeyName: keyPairName
     };
 
-    let keypair: aws.EC2.KeyPair = undefined;
     try {
         await ec2.deleteKeyPair(params).promise();
     }

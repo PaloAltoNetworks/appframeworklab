@@ -10,15 +10,11 @@
 					},
 					"Parameters": [
 						"AdminPassword",
-						"EnvironmentBucketName",
-						"BootstrapBucketName",
-						"BootstrapBucketRegion",	
-						"EnvironmentPrivateKeyFile",	
+                        "AuthCode1",
+                        "AuthCode2",
 						"ServerKeyName",
-						"PanoramaNGFWKeyName",
 						"PanoramaSerial",	
-						"AppHostedZone",	
-						"LetsEncryptEmail"
+						"AppHostedZone"	
 					]
 				},
 				{
@@ -27,7 +23,6 @@
 					},
 					"Parameters": [
 						"ConfigureRoute53",
-						"APIExplorerLetsEncryptCert",						
 						"DeployKali",
 						"DeployWindowsDC",					
 						"DomainNetBIOSName"
@@ -76,12 +71,19 @@
 						"FirewallCertURL",
 						"EchoMalwareURL",
 						"WebGenConfURL",
-						"PanoramaScriptURL",
-						"CloudPluginURL",
 						"CloudPluginName",
-						"PanoramaTemplateFileURL",
-						"PanoramaScriptURL",
-						"APIExplorerGitHubRepo"
+						"EnvironmentBucketName",
+						"BootstrapBucketName",
+						"BootstrapBucketRegion",
+                        "AnsibleRepo",
+                        "SharedFile",
+                        "DevGroupFile",
+                        "TemplateFile",
+                        "TemplateStackFile",
+                        "DevGroupName",
+                        "TemplateName",
+                        "TemplateStackName",
+                        "keyPairPrefix"
 					]
 				}				
 			],
@@ -111,7 +113,7 @@
 					"default": "Quick Start S3 Key Prefix"
 				},
 				"RestoreModePassword": {
-					"default": "Restore Mode Password"
+					"default": "Active Directory Restore Mode Password"
 				},
 				"BootstrapBucketName":{
 					"default": "Bootstrap S3 Bucket Name"
@@ -122,18 +124,11 @@
 				"EnvironmentBucketName":{
 					"default": "Environment Config S3 Bucket Name"
 				},
-				"EnvironmentPrivateKeyFile":{
-					"default": "Private Key File"
-				},
 				"ADTemplateFile":{
 					"default": "AD Template File"
-
 				},	
 				"ServerKeyName": {
 				  "default": "EC2 VMs Key Name"
-				},
-				"PanoramaNGFWKeyName": {
-				  "default": "Panorama and NGFW Key Name"
 				},
 				"AdminPassword": {
 					"default": "Admin Password"
@@ -145,7 +140,7 @@
 					"default": "DNS Domain Name"
 				},
 				"APIExplorerHostname":{
-					"default": "API Explorer Hostname"
+					"default": "Provisioning VM Hostname"
 				},
 				"FirewallHostname":{
 					"default": "Firewall Hostname"
@@ -159,17 +154,8 @@
 				"PanoramaHostname":{
 					"default": "Panorama Hostname"
 				},
-				"APIExplorerGitHubRepo":{
-					"default": "API Explorer GitHub Repo"
-				},
-				"PanoramaScriptURL":{
-					"default": "Panorama Script File"
-				},
-				"PanoramaTemplateFileURL":{
-					"default": "Panorama Template File"
-				},
-				"CloudPluginURL":{
-					"default": "Cloud Plugin File"
+				"Ansible Repo":{
+					"default": "Ansible Pan GitHub Repo"
 				},
 				"CloudPluginName":{
 					"default": "Cloud Plugin Name"
@@ -183,12 +169,6 @@
 				"DeployWindowsDC": {
 					"default": "Deploy Windows DC"
 				},
-				"APIExplorerLetsEncryptCert": {
-					"default": "Create API Explorer LetsEncrypt Cert"
-				},
-				"LetsEncryptEmail": {
-					"default": "LetsEncrypt Email"
-				},	
 				"DeployKali": {
 					"default": "Deploy Kali VM"
 				},
@@ -197,14 +177,39 @@
 				},	
 				"WebGenConfURL": {
 					"default": "Web Generator Config File"
-				}
+				},
+                "SharedFile": {
+                    "default": "Panorama Shared Configuration File Name"
+                },
+                "DevGroupFile": {
+                    "default": "Panorama Device Group Configuration File Name"
+                },
+                "TemplateFile": {
+                    "default": "Panorama Template Configuration File Name"
+                },
+                "TemplateStackFile": {
+                    "default": "Panorama Template Stack Configuration File Name"
+                },
+                "DevGroupName": {
+                    "default": "Panorama Device Group Name"
+                },
+                "TemplateName": {
+                    "default": "Panorama Template Name"
+                },
+                "TemplateStackName": {
+                    "default": "Panorama Template Stack Name"
+                },
+                "keyPairPrefix": {
+                    "default": "EC2 KeyPair Prefix"
+                }
 			}
 		}
 	},
 	"Parameters": {
 		"BootstrapBucketName":{
-			"Description": "S3 Bucket name for FW bootstrap configuration (i.e. myappframeworkbucket-ngfw)",
-			"Type": "String"
+			"Description": "S3 Bucket name for FW bootstrap configuration",
+			"Type": "String",
+            "Default": "applicationframework-ngfw"
 		},
 		"BootstrapBucketRegion":{
 			"Description": "S3 Region where the FW bootstrap bucket is located",
@@ -225,16 +230,12 @@
 				"us-west-1",
 				"us-west-2"
             ],
-			"Default" : "us-west-1"
+			"Default" : "us-east-1"
 		},
 		"EnvironmentBucketName":{
-			"Description": "Bucket name for non-Firewall configuration (i.e. myappframeworkbucket-conf)",
-			"Type": "String"
-		},
-
-		"EnvironmentPrivateKeyFile":{
-			"Description": "Private Key File with Path in the Environment Configuration S3 Bucket (i.e. keys/paloalto.pem) ",
-			"Type": "String"
+			"Description": "Bucket name for non-Firewall configuration",
+			"Type": "String",
+            "Default": "applicationframework-conf"
 		},
 
 		"ADTemplateFile":{
@@ -245,11 +246,6 @@
 	
 		"ServerKeyName": {
 		  "Description": "Name of an existing EC2 KeyPair to enable SSH access to VMs. Except NGFW and Panorama",
-		  "Type": "AWS::EC2::KeyPair::KeyName"
-		},
-
-		"PanoramaNGFWKeyName": {
-		  "Description": "Name of an existing EC2 KeyPair to enable SSH access to NGFW and Panorama",
 		  "Type": "AWS::EC2::KeyPair::KeyName"
 		},
 
@@ -267,15 +263,25 @@
 			"Type": "String"
 		},
 
+		"AuthCode1":{
+			"Description": "VM-Series Capacity Licence AuthCode (SKU: PAN-VM-100-NFR)",
+			"Type": "String"
+		},
+
+		"AuthCode2":{
+			"Description": "VM-Series Bundle AuthCode (SKU: PAN-VM-100-BND-NFR4)",
+			"Type": "String"
+		},
+
 		"AppHostedZone": {
-			"Description": "DNS Domain Name or Route53 Hosted Zone Name (i.e. panwlab.mycompany.com)",
+			"Description": "DNS Domain Name or Route53 Hosted Zone Name (i.e. appframework.mycompany.com)",
 			"Type": "String"
 		},
 
 		"APIExplorerHostname":{
-			"Description": "API Explorer Hostname",
+			"Description": "Provisioning VM Hostname",
 			"Type": "String",
-			"Default": "apiexplorer"		
+			"Default": "builder"		
 		},
 
 		"FirewallHostname":{
@@ -302,24 +308,6 @@
 			"Default": "panorama"
 		},
 
-		"PanoramaScriptURL":{
-			"Description": "Panorama Configuration Script File Path",
-			"Type": "String",
-			"Default": "opt/panorama_password.py.txt"
-		},
-
-		"PanoramaTemplateFileURL":{
-			"Description": "Panorama Configuration Template File Path",
-			"Type": "String",
-			"Default": "opt/template.xml"
-		},
-
-		"CloudPluginURL":{
-			"Description": "Cloud Plugin File Name",
-			"Type": "String",
-			"Default": "opt/cloud_services-1.2.0-h2"
-		},
-
 		"FirewallCertURL":{
 			"Description": "Firewall SSL Certificate URL for Decryption",
 			"Type": "String",
@@ -327,21 +315,21 @@
 		},
 
 		"CloudPluginName":{
-			"Description": "Panorama Cloud Services Plugin Name",
+			"Description": "Panorama Cloud Services Plugin Name and Version",
 			"Type": "String",
 			"Default": "cloud_services-1.2.0-h2"
 		},
 
-		"APIExplorerGitHubRepo":{
-			"Description": "API Explorer GitHub Repository URL",
+		"AnsibleRepo":{
+			"Description": "Ansible Pan Repository URL",
 			"Type": "String",
-			"Default": "https://github.com/PaloAltoNetworks/apiexplorer-docker.git"
+			"Default": "git+https://github.com/fvigo/ansible-pan.git"
 		},
 
 		"DomainNetBIOSName": {
 			"AllowedPattern": "[a-zA-Z0-9\\-]+",
-			"Default": "PANWDOMAIN",
-			"Description": "NetBIOS name of the domain (up to 15 characters) for users of earlier versions of Windows (i.e. PANWDOMAIN)",
+			"Default": "APPFRAMEWORK",
+			"Description": "NetBIOS name of the domain (up to 15 characters) for users of earlier versions of Windows (i.e. APPFRAMEWORK)",
 			"MaxLength": "15",
 			"MinLength": "1",
 			"Type": "String"
@@ -361,23 +349,10 @@
 				"true",
 				"false"
 			],
-			"Default": "true",
+			"Default": "false",
 			"Description": "Deploy W2012R2 Domain Controller?",
 			"Type": "String"
 		},
-		"APIExplorerLetsEncryptCert": {
-			"AllowedValues": [
-				"true",
-				"false"
-			],
-			"Default": "true",
-			"Description": "Create Letsencrypt certificate for API Explorer? (REQUIRES Route53 DNS Configuration to be enabled)",
-			"Type": "String"
-		},
-		"LetsEncryptEmail": {
-			"Description": "Email address to provide to Letsencrypt for API Explorer SSL certificate generation (i.e. user@mycompany.com)",
-			"Type": "String"
-		},	
 		"DeployKali": {
 			"AllowedValues": [
 				"true",
@@ -420,8 +395,8 @@
         },
         "DomainDNSName": {
             "AllowedPattern": "[a-zA-Z0-9\\-]+\\..+",
-            "Default": "panwdomain.local",
-            "Description": "Fully qualified domain name (FQDN) of the AD root domain (i.e. panwdomain.local)",
+            "Default": "appframework.local",
+            "Description": "Fully qualified domain name (FQDN) of the AD root domain (i.e. appframework.local)",
             "MaxLength": "25",
             "MinLength": "3",
             "Type": "String"
@@ -458,7 +433,48 @@
 			"Type": "String",
 			"Description": "Web Traffic Generator Configuration File Path",
 			"Default": "opt/webgenconfig.py"
-		}
+		},
+
+        "SharedFile": {
+			"Type": "String",
+			"Description": "Shared Conf File Name",
+			"Default": "shared.xml"
+        },
+        "DevGroupFile": {
+			"Type": "String",
+			"Description": "DevGroup Conf File Name",
+			"Default": "devgroup.xml"
+        },
+        "TemplateFile": {
+			"Type": "String",
+			"Description": "Template Conf File Name",
+			"Default": "template.xml"
+        },
+        "TemplateStackFile": {
+			"Type": "String",
+			"Description": "Template Stack Conf File Name",
+			"Default": "template-stack.xml"
+        },
+        "DevGroupName": {
+			"Type": "String",
+			"Description": "DevGroup Name",
+			"Default": "DevGroup1"
+        },
+        "TemplateName": {
+			"Type": "String",
+			"Description": "Template Name",
+			"Default": "Template1"
+        },
+        "TemplateStackName": {
+			"Type": "String",
+			"Description": "Template Stack Name",
+			"Default": "TS1"
+        },
+        "keyPairPrefix": {
+            "Description": "EC2 Panorama/NGFW Key Pair Prefix",
+            "Type": "String",
+            "Default": "appframeworklab"
+        }
 	},
 	"Mappings": {
 		"PANFWRegionMap" : {
@@ -551,7 +567,6 @@
 		"ConfDeployKali" : {"Fn::Equals" : [{"Ref" : "DeployKali"}, "true"]},
 		"ConfRoute53" : {"Fn::Equals" : [{"Ref" : "ConfigureRoute53"}, "true"]},
 		"ConfWinDC" : {"Fn::Equals" : [{"Ref" : "DeployWindowsDC"}, "true"]},	
-		"ConfLetsEncrypt" : {"Fn::Equals" : [{"Ref" : "APIExplorerLetsEncryptCert"}, "true"]},
 		"KaliFQDNCondition": {"Fn::And": [{"Condition": "ConfDeployKali"}, {"Condition": "ConfRoute53" }]}
 	},
   "Resources": {
@@ -1179,7 +1194,7 @@
               }
             }
         ],
-        "KeyName":  { "Ref" : "PanoramaNGFWKeyName" },
+        "KeyName":   { "Fn::GetAtt": ["handleKeyPair", "keyName"]},
         "Monitoring": "false",
         "Tags": [{ "Key": "Name", "Value": "AWS NGFW" }],
         "NetworkInterfaces": [
@@ -1200,7 +1215,7 @@
             "vmseries-bootstrap-aws-s3bucket=",  { "Ref" : "BootstrapBucketName" }
         ]]}}
       },
-      "DependsOn": [ "FWPublicNetworkInterface", "FWPrivate12NetworkInterface",  "NewPublicSubnet" ]
+      "DependsOn": [ "FWPublicNetworkInterface", "FWPrivate12NetworkInterface",  "NewPublicSubnet", "handleKeyPair" ]
     },
 
     "PanoramaInstance": {
@@ -1210,7 +1225,7 @@
         "InstanceInitiatedShutdownBehavior": "stop",
         "ImageId": { "Fn::FindInMap" : [ "PanoramaRegionMap", { "Ref" : "AWS::Region" }, "AMI" ] },
         "InstanceType": "t2.xlarge",
-        "KeyName":  { "Ref" : "PanoramaNGFWKeyName" },
+        "KeyName":  { "Fn::GetAtt": ["handleKeyPair", "keyName"]},
         "Monitoring": "false",
         "Tags": [{ "Key": "Name", "Value": "Panorama" }],
         "NetworkInterfaces": [
@@ -1220,7 +1235,7 @@
           }
         ]
       },
-      "DependsOn": [ "PanoramaNetworkInterface", "NewPublicSubnet" ]
+      "DependsOn": [ "PanoramaNetworkInterface", "NewPublicSubnet", "handleKeyPair" ]
     },
 
      "KaliLinuxInstance": {
@@ -1265,67 +1280,71 @@
             "#!/bin/bash\n",
 			"exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1\n",
 			"sleep 10s\n",			
-			"yum install -y wget git\n",
-			"export PANORAMASCRIPT=\"",{"Ref" : "PanoramaScriptURL" },"\"\n",
-			"export TEMPLATEURL=\"",{"Ref" : "PanoramaTemplateFileURL" },"\"\n",
-			"export TEMPLATEFILENAME=\"/tmp/panorama_template.xml\"\n",
-			"export APPFQDN=\"",{ "Fn::Join" : [ "", [ {"Ref" : "APIExplorerHostname"}, ".", {"Ref" : "AppHostedZone"} ] ] },"\"\n",
-			"export APPEIP=\"",{"Ref" : "APIExplorerElasticIP" },"\"\n",
-			"export APIEXPREPO=\"",{"Ref" : "APIExplorerGitHubRepo" },"\"\n",
+            "yum install -y wget git\n",
+            "export DEPLOYPATH=/tmp/deploy\n",
 			"ENCPWD=\"",{ "Fn::Base64" : {"Ref" : "AdminPassword" } },"\"\n",
 			"export ADMINPWD=$(echo \"${ENCPWD}\" | /usr/bin/base64 -d -)\n",
 			"export PANORAMASERIAL=\"",{"Ref" : "PanoramaSerial" },"\"\n",
-			"export S3BUCKETNAME=\"",{"Ref" : "EnvironmentBucketName" },"\"\n",
-			"export S3KEYFILENAME=\"",{"Ref" : "EnvironmentPrivateKeyFile" },"\"\n",
-			"export CLOUDPLUGIN=\"",{"Ref" : "CloudPluginURL" },"\"\n",
+            "export AUTHCODE1=\"",{"Ref" : "AuthCode1" },"\"\n",
+            "export AUTHCODE2=\"",{"Ref" : "AuthCode2" },"\"\n",
+            "if [ ! ${AUTHCODE2} ]; then export AUTHCODE2=${AUTHCODE1}; fi;\n",
+            "export ANSIBLE_REPO=\"",{"Ref" : "AnsibleRepo" },"\"\n",
+            "export SHARED_FILE=\"",{"Ref" : "SharedFile" },"\"\n",
+            "export DEVGROUP_FILE=\"",{"Ref" : "DevGroupFile" },"\"\n",
+            "export TEMPLATE_FILE=\"",{"Ref" : "TemplateFile" },"\"\n",
+            "export TEMPLATE_STACK_FILE=\"",{"Ref" : "TemplateStackFile" },"\"\n",
+            "export DEVGROUP_NAME=\"",{"Ref" : "DevGroupName" },"\"\n",
+            "export TEMPLATE_NAME=\"",{"Ref" : "TemplateName" },"\"\n",
+            "export TEMPLATE_STACK_NAME=\"",{"Ref" : "TemplateStackName" },"\"\n",
+            "export S3BUCKETNAME=\"",{"Ref" : "EnvironmentBucketName" },"\"\n",
 			"export CLOUDPLUGINNAME=\"",{"Ref" : "CloudPluginName" },"\"\n",
 			"export FIREWALLIP=\"",{"Fn::GetAtt" : [ "FWManagementNetworkInterface", "PrimaryPrivateIpAddress" ]},"\"\n",
-			"export PANORAMAIP=\"",{"Fn::GetAtt" : [ "PanoramaNetworkInterface", "PrimaryPrivateIpAddress" ]},"\"\n",
-			"export PROVISIONINGVM=\"",{"Fn::GetAtt" : [ "APIExplorerNetworkInterface", "PrimaryPrivateIpAddress" ]},"\"\n",
+            "export PANORAMAIP=\"",{"Fn::GetAtt" : [ "PanoramaNetworkInterface", "PrimaryPrivateIpAddress" ]},"\"\n",
+            "export KEYPAIR=\"",{ "Fn::GetAtt": ["handleKeyPair", "keyPair"]},"\"\n",
 			"export AWSREGION=\"",{ "Ref" : "AWS::Region" },"\"\n",
-			"export APIEXPLORERLETSENCRYPTCERT=\"",{ "Ref" : "APIExplorerLetsEncryptCert" },"\"\n",
-			"export LETSENCRYPTEMAIL=\"",{ "Ref" : "LetsEncryptEmail" },"\"\n",
-			"export ECHOMALWARE=\"",{"Ref" : "EchoMalwareURL" },"\"\n",
-			"echo ${ADMINPWD} | passwd --stdin ec2-user\n",
-			"sed -i \"s/PasswordAuthentication no/PasswordAuthentication yes/g\" /etc/ssh/sshd_config\n",
-			"systemctl restart sshd\n",
 			"yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(rpm -E '%{rhel}').noarch.rpm\n",
 			"yum -y install https://centos7.iuscommunity.org/ius-release.rpm\n",
 			"yum -y install python36u-devel\n",
 			"sleep 2s\n",
             "yum -y install python36u-pip\n",
 			"pip3.6 install boto3 awscli\n",
-			"yum-config-manager --enable extras\n",
-			"yum install -y yum-utils device-mapper-persistent-data lvm2\n",
-			"yum -y --enablerepo=rhui-REGION-rhel-server-extras install container-selinux\n",
-			"yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo\n",
-			"yum -y install docker-ce\n",
-			"pip3.6 install docker-compose\n",
-			"systemctl start docker\n",
-			"cd /tmp && git clone --recurse-submodules ${APIEXPREPO}\n",
-			"SEDADMINPWD=$(echo ${ADMINPWD} | sed -e 's/[\\/&]/\\\\&/g' | sed -e 's/[\\x27]/\\\\\\\\\\x27/g' )\n",
-			"sed -i s/password='\\x27paloalto\\x27/password=\\x27'${SEDADMINPWD}'\\x27/' apiexplorer-docker/gunicorn/api_explorer/main.py\n",
-			"cd apiexplorer-docker && docker-compose build --build-arg APPEIP=${APPEIP} --build-arg APPFQDN=${APPFQDN}\n",
-			"docker-compose up -d\n",
-			"if [[ $APIEXPLORERLETSENCRYPTCERT == 'true' ]]; then docker run --rm -v apiexplorer-docker_certs:/etc/ssl/certs -v apiexplorer-docker_nginx-www:/usr/share/nginx certbot/certbot certonly --webroot --deploy-hook /etc/ssl/certs/copy_certs.sh -w /usr/share/nginx/html -d ${APPFQDN} -n --agree-tos --email ${LETSENCRYPTEMAIL} --renew-by-default; docker restart $(docker ps --filter name=apiexplorer-docker_nginx -q); fi\n",
 			"S3BUCKETLOCATION=$(aws s3api get-bucket-location --bucket ${S3BUCKETNAME} --output text)\n",
 			"if [[ $S3BUCKETLOCATION == 'None' ]]; then S3BUCKETLOCATION='us-east-1'; fi\n",
-			"export S3BUCKETLOCATION\n",
-			"aws --region ${S3BUCKETLOCATION} s3 cp s3://${S3BUCKETNAME}/${DOWNLOADSCRIPT} /tmp/downloadscript.sh\n",
-			"aws --region ${S3BUCKETLOCATION} s3 cp s3://${S3BUCKETNAME}/${CLOUDPLUGIN} /tmp/${CLOUDPLUGINNAME}\n",
-			"aws --region ${S3BUCKETLOCATION} s3 cp s3://${S3BUCKETNAME}/${TEMPLATEURL} ${TEMPLATEFILENAME}\n",
-			"aws --region ${S3BUCKETLOCATION} s3 cp s3://${S3BUCKETNAME}/${PANORAMASCRIPT} /tmp/panorama_setup.py\n",
-			"aws --region ${S3BUCKETLOCATION} s3 cp s3://${S3BUCKETNAME}/${ECHOMALWARE} /home/ec2-user/echomalware\n",
-			"aws --region ${S3BUCKETLOCATION} s3 cp s3://${S3BUCKETNAME}/${PACKAGE} /opt/apiexplorer.tar.gz\n",
-			"chown ec2-user:ec2-user /home/ec2-user/echomalware\n",
-			"chmod 755 /home/ec2-user/echomalware\n",
-			"pip3.6 install pandevice paramiko boto3 pan-python\n",
-			"python3.6 /tmp/panorama_setup.py\n",
-			"rm /tmp/panwkey.pem\n"
+            "export S3BUCKETLOCATION\n",
+            "mkdir -p ${DEPLOYPATH}\n",
+            "cat > ${DEPLOYPATH}/key.pem << _EOF_\n",
+            { "Fn::GetAtt": ["handleKeyPair", "keyPair"]},
+            "\n_EOF_\n",
+            "chmod 400 ${DEPLOYPATH}/key.pen\n",
+			"aws --region ${S3BUCKETLOCATION} s3 cp --recursive s3://${S3BUCKETNAME}/deploy ${DEPLOYPATH}\n",
+            "echo ngfw_ip: \"${FIREWALLIP}\" >> ${DEPLOYPATH}/vars.yml\n",
+            "echo pano_ip: \"${PANORAMAIP}\" >> ${DEPLOYPATH}/vars.yml\n",
+            "echo admin_username: \"admin\" >> ${DEPLOYPATH}/vars.yml\n",
+            "echo admin_password: \"${ADMINPWD}\" >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo pano_serial: \"${PANORAMASERIAL}\" >> ${DEPLOYPATH}/vars.yml\n",          
+            "echo key_filename: \"${DEPLOYPATH}/key.pem\" >> ${DEPLOYPATH}/vars.yml\n",
+            "echo authcode1: \"${AUTHCODE1}\" >> ${DEPLOYPATH}/vars.yml\n",  
+            "echo authcode2: \"${AUTHCODE2}\" >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo cloud_plugin: \"${CLOUDPLUGINNAME}\" >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo shared_file: \"${DEPLOYPATH}/${SHARED_FILE}\" >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo devgroup_file: \"${DEPLOYPATH}/${DEVGROUP_FILE}\" >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo template_file: \"${DEPLOYPATH}/${TEMPLATE_FILE}\" >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo template_stack_file: \"${DEPLOYPATH}/${TEMPLATE_STACK_FILE}\" >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo devgroup_name: \"${DEVGROUP_NAME}\" >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo template_name: \"${TEMPLATE_NAME}\" >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo template_stack_name: \"${TEMPLATE_STACK_NAME}\" >> ${DEPLOYPATH}/vars.yml\n",      
+            "pip3.6 install paramiko boto3 ansible\n",
+            "ln -s /bin/pip3.6 /bin/pip3\n",
+            "ansible-galaxy install ${ANSIBLE_REPO}\n",
+            "cd ${DEPLOYPATH}\n",
+            "ansible-playbook ${DEPLOYPATH}/panorama_setup.yml\n",
+            "ansible-playbook ${DEPLOYPATH}/firewall_setup.yml\n",
+            "ansible-playbook ${DEPLOYPATH}/appframework_lab.yml\n",
+			"rm ${DEPLOYPATH}/key.pem\n"
           ]]}
         }		
 	  },
-      "DependsOn": [ "NewPublicSubnet", "sgAPIExplorer", "APIExplorerElasticIP" ]
+      "DependsOn": [ "NewPublicSubnet", "sgAPIExplorer", "APIExplorerElasticIP", "handleKeyPair"]
     },
 	
     "WebVM": {
@@ -1541,7 +1560,99 @@
          ]
       },
 	  "DependsOn": [ "KaliElasticIP" ]	  
-   }
+   },
+
+   "LambdaEC2Role": {
+        "Type": "AWS::IAM::Role",
+        "Properties": {
+            "AssumeRolePolicyDocument": {
+                "Version" : "2012-10-17",
+                "Statement": [{
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Service": [ "lambda.amazonaws.com" ]
+                    },
+                    "Action": [ "sts:AssumeRole" ]
+                }]
+            },
+            "ManagedPolicyArns": [
+                { "Ref": "EC2KeyPairPolicy" },
+                { "Ref": "LambdaExecutionPolicy"}
+            ]
+        }
+    },
+
+    "EC2HandleKeysFunction": {
+        "Type": "AWS::Lambda::Function",
+        "Properties": {
+            "Code": {
+                "S3Bucket": "appframeworklab-lambdas",
+                "S3Key": "lambdas.zip"
+            },
+            "Description": "Handle EC2 KeyPair",
+            "Handler": "index.handleKeyPair",
+            "Role": {"Fn::GetAtt" : [ "LambdaEC2Role", "Arn" ] },
+            "Runtime": "nodejs8.10",
+            "Timeout": 30
+        },
+        "DependsOn": [
+            "LambdaEC2Role"
+        ]
+    },
+
+    "handleKeyPair": {
+        "Type": "Custom::handleKeyPair",
+        "Properties": {
+            "ServiceToken": { "Fn::GetAtt" : ["EC2HandleKeysFunction", "Arn"] },
+            "keyName": {"Ref": "keyPairPrefix"},
+            "stackName": { "Ref": "AWS::StackName" }
+        },
+        "DependsOn": [
+            "EC2HandleKeysFunction"
+        ]
+    },
+
+    "EC2KeyPairPolicy": {
+        "Type": "AWS::IAM::ManagedPolicy",
+        "Properties": {
+            "Description" : "EC2 KeyPair Creation Policy",
+            "PolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Action": "ec2:CreateKeyPair",
+                        "Resource": "*"
+                    },
+                    {
+                        "Effect": "Allow",
+                        "Action": "ec2:DeleteKeyPair",
+                        "Resource": "*"
+                    }
+                ]
+            }
+        }
+    },
+    "LambdaExecutionPolicy": {
+        "Type": "AWS::IAM::ManagedPolicy",
+        "Properties": {
+            "Description" : "Lambda Execution Policy",
+            "PolicyDocument" : {
+                "Version" : "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Action": [
+                            "logs:CreateLogGroup",
+                            "logs:CreateLogStream",
+                            "logs:PutLogEvents"
+                        ],
+                        "Resource": "arn:aws:logs:*:*:*"
+                    }
+                ]
+            }
+        }
+    }
   },
 
   "Outputs": {
@@ -1553,19 +1664,16 @@
       ]]}
     },
 
-    "APIExplorerAppURL": {
-      "Description": "API Explorer URL",
-      "Value": { "Fn::Join" : ["", [
-        "https://",
-        { "Fn::Join" : [ "", [ {"Ref" : "APIExplorerHostname"}, ".", {"Ref" : "AppHostedZone"} ] ] }
-      ]]}
-    },
-
 	"KaliLinuxFQDN": {
       "Description": "Kali Linux FQDN",
 	  "Condition" : "ConfDeployKali",
       "Value": { "Fn::Join" : [ "", [ {"Ref" : "KaliHostname"}, ".", {"Ref" : "AppHostedZone"} ] ] }
     },	  
+
+	"ProvisionFQDN": {
+        "Description": "Provisioning VM FQDN",
+        "Value": { "Fn::Join" : [ "", [ {"Ref" : "APIExplorerHostname"}, ".", {"Ref" : "AppHostedZone"} ] ] }
+    },
 
     "PanoramaURL": {
       "Description": "Panorama URL",
