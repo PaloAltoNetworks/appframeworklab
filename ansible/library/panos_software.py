@@ -105,23 +105,20 @@ def main():
     password = module.params['password']
     api_key = module.params['api_key']
     version = module.params['version']
-    restart = module.params['restart']
 
     changed = False
 
     try:
         device = base.PanDevice.create_from_device(ip_address, username, password, api_key=api_key)
         device.software.check()
-
+        preVersion = PanOSVersion(device.version)
         if PanOSVersion(version) != PanOSVersion(device.version):
 
-            # Method only performs install if sync is set to true.
+            # upgrade_to_version already reboots and waits
             device.software.upgrade_to_version(version)
 
-            if restart:
-                device.restart()
-
-            changed = True
+            if preVersion != PanOSVersion(device.version):
+                changed = True
 
     except PanDeviceError as e:
         module.fail_json(msg=e.message)

@@ -8,35 +8,28 @@
                 <vsys>
                   <entry name="vsys1">
                     <zone>
-                      <entry name="L3-Untrust">
-                        <network>
-                          <layer3>
-                            <member>ethernet1/1</member>
-                          </layer3>
-                        </network>
-                      </entry>
                       <entry name="L3-Trust">
                         <network>
-                          <layer3>
-                            <member>ethernet1/2</member>
-                          </layer3>
+                          <layer3/>
                         </network>
                         <enable-user-identification>yes</enable-user-identification>
+                      </entry>
+                      <entry name="L3-Untrust">
+                        <network>
+                          <layer3/>
+                        </network>
                       </entry>
                     </zone>
                     <import>
                       <network>
                         <interface>
-                          <member>ethernet1/2</member>
-                          <member>ethernet1/1</member>
                           <member>vlan</member>
                           <member>loopback</member>
                           <member>tunnel</member>
+                          <member>loopback.1</member>
                         </interface>
                         <vlan/>
-                        <virtual-router>
-                          <member>default</member>
-                        </virtual-router>
+                        <virtual-router/>
                         <virtual-wire/>
                       </network>
                     </import>
@@ -139,49 +132,16 @@
                 </deviceconfig>
                 <network>
                   <interface>
-                    <ethernet>
-                      <entry name="ethernet1/1">
-                        <layer3>
-                          <ipv6>
-                            <neighbor-discovery>
-                              <router-advertisement>
-                                <enable>no</enable>
-                              </router-advertisement>
-                            </neighbor-discovery>
-                          </ipv6>
-                          <ndp-proxy>
-                            <enabled>no</enabled>
-                          </ndp-proxy>
-                          <ip>
-                            <entry name="10.0.0.100/24"/>
-                          </ip>
-                          <lldp>
+                    <ethernet/>
+                    <loopback>
+                      <units>
+                        <entry name="loopback.1">
+                          <adjust-tcp-mss>
                             <enable>no</enable>
-                          </lldp>
-                        </layer3>
-                      </entry>
-                      <entry name="ethernet1/2">
-                        <layer3>
-                          <dhcp-client>
-                            <create-default-route>no</create-default-route>
-                          </dhcp-client>
-                          <ipv6>
-                            <neighbor-discovery>
-                              <router-advertisement>
-                                <enable>no</enable>
-                              </router-advertisement>
-                            </neighbor-discovery>
-                          </ipv6>
-                          <ndp-proxy>
-                            <enabled>no</enabled>
-                          </ndp-proxy>
-                          <interface-management-profile>Management</interface-management-profile>
-                          <lldp>
-                            <enable>no</enable>
-                          </lldp>
-                        </layer3>
-                      </entry>
-                    </ethernet>
+                          </adjust-tcp-mss>
+                        </entry>
+                      </units>
+                    </loopback>
                   </interface>
                   <profiles>
                     <monitor-profile>
@@ -191,14 +151,7 @@
                         <action>wait-recover</action>
                       </entry>
                     </monitor-profile>
-                    <interface-management-profile>
-                      <entry name="Management">
-                        <https>yes</https>
-                        <ssh>yes</ssh>
-                        <userid-service>yes</userid-service>
-                        <response-pages>yes</response-pages>
-                      </entry>
-                    </interface-management-profile>
+                    <interface-management-profile/>
                   </profiles>
                   <ike>
                     <crypto-profiles>
@@ -336,102 +289,8 @@
                       </entry>
                     </profile>
                   </qos>
-                  <virtual-router>
-                    <entry name="default">
-                      <protocol>
-                        <bgp>
-                          <enable>no</enable>
-                          <dampening-profile>
-                            <entry name="default">
-                              <cutoff>1.25</cutoff>
-                              <reuse>0.5</reuse>
-                              <max-hold-time>900</max-hold-time>
-                              <decay-half-life-reachable>300</decay-half-life-reachable>
-                              <decay-half-life-unreachable>900</decay-half-life-unreachable>
-                              <enable>yes</enable>
-                            </entry>
-                          </dampening-profile>
-                          <routing-options>
-                            <graceful-restart>
-                              <enable>yes</enable>
-                            </graceful-restart>
-                          </routing-options>
-                        </bgp>
-                        <rip>
-                          <enable>no</enable>
-                        </rip>
-                        <ospf>
-                          <enable>no</enable>
-                        </ospf>
-                        <ospfv3>
-                          <enable>no</enable>
-                        </ospfv3>
-                      </protocol>
-                      <interface>
-                        <member>ethernet1/1</member>
-                        <member>ethernet1/2</member>
-                      </interface>
-                      <ecmp>
-                        <algorithm>
-                          <ip-modulo/>
-                        </algorithm>
-                      </ecmp>
-                      <routing-table>
-                        <ip>
-                          <static-route>
-                            <entry name="default">
-                              <path-monitor>
-                                <enable>no</enable>
-                                <failure-condition>any</failure-condition>
-                                <hold-time>2</hold-time>
-                              </path-monitor>
-                              <nexthop>
-                                <ip-address>10.0.0.1</ip-address>
-                              </nexthop>
-                              <bfd>
-                                <profile>None</profile>
-                              </bfd>
-                              <interface>ethernet1/1</interface>
-                              <metric>10</metric>
-                              <destination>0.0.0.0/0</destination>
-                              <route-table>
-                                <unicast/>
-                              </route-table>
-                            </entry>
-                          </static-route>
-                        </ip>
-                      </routing-table>
-                    </entry>
-                  </virtual-router>
-                  <dns-proxy>
-                    <entry name="dnsproxy">
-                      <cache>
-                        <max-ttl>
-                          <enabled>no</enabled>
-                        </max-ttl>
-                        <enabled>yes</enabled>
-                      </cache>
-                      <default>
-                        <primary>8.8.8.8</primary>
-                        <secondary>9.9.9.9</secondary>
-                      </default>
-                      <tcp-queries>
-                        <enabled>no</enabled>
-                      </tcp-queries>
-                      <static-entries>
-                        <entry name="static">
-                          <address>
-                            <member>74.217.90.118</member>
-                          </address>
-                          <domain>lic.lc.prod.us.cs.paloaltonetworks.com</domain>
-                        </entry>
-                      </static-entries>
-                      <interface>
-                        <member>ethernet1/1</member>
-                      </interface>
-                      <enabled>no</enabled>
-                    </entry>
-                  </dns-proxy>
+                  <virtual-router/>
+                  <dns-proxy/>
                 </network>
               </entry>
             </devices>

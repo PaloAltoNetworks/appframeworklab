@@ -66,6 +66,21 @@
       debug:
         var: "{{result.serialnumber}}"
 
+    # the VM might restart
+    - pause: seconds=30
+
+    # check for 10 times, every 30 seconds, if device
+    # is ready, using credentials admin/admin
+    - name: wait for reboot
+      panos_check:
+        ip_address: "{{ngfw_ip}}"
+        username: "{{admin_username}}"
+        password: "{{admin_password}}"
+      register: result
+      until: not result is failed
+      retries: 10
+      delay: 30
+
     - name: second authcode
       panos_lic:
         ip_address: "{{ngfw_ip}}"
@@ -83,7 +98,6 @@
         username: "{{admin_username}}"
         password: "{{admin_password}}"
         version: "latest"
-        restart: true
 
     # check for 10 times, every 30 seconds, if device
     # is ready, using credentials admin/admin
@@ -101,7 +115,71 @@
     - name: update content
       panos_content:
         ip_address: "{{ngfw_ip}}"
+        username: "{{admin_username}}"
         password: "{{admin_password}}"
         wildfire_update: yes
         content_update: yes
         anti_virus_update: yes
+
+    # Create L3 Trust zone.
+    - name: create Trust zone on firewall
+      panos_zone:
+        ip_address: "{{ngfw_ip}}"
+        username: "{{admin_username}}"
+        password: "{{admin_password}}"
+        zone: 'L3-Trust'
+        mode: 'layer3'
+        enable_userid: true
+
+    # Create L3 Untrust zone.
+    - name: create Untrust zone on firewall
+      panos_zone:
+        ip_address: "{{ngfw_ip}}"
+        username: "{{admin_username}}"
+        password: "{{admin_password}}"
+        zone: 'L3-Untrust'
+        mode: 'layer3'
+
+    # Management profile
+    - name: internal mgmt profile
+      panos_management_profile:
+        ip_address: "{{ngfw_ip}}"
+        username: "{{admin_username}}"
+        password: "{{admin_password}}"
+        name: 'Management'
+        ping: true
+        ssh: true
+        userid_service: true
+        response_pages: true
+        https: true
+        
+    # Create ethernet1/2 as DHCP.
+    - name: enable DHCP client on ethernet1/1 in zone external
+      panos_interface:
+        ip_address: '{{ ngfw_ip }}'
+        username: '{{ admin_username }}'
+        password: '{{ admin_password }}'
+        if_name: "ethernet1/2"
+        zone_name: "L3-Trust"
+        management_profile: "Management"
+        create_default_route: "no"
+        operation: "update"
+        commit: False
+
+    # Create ethernet1/1 as DHCP.
+    - name: enable DHCP client on ethernet1/2 in zone external
+      panos_interface:
+        ip_address: '{{ ngfw_ip }}'
+        username: '{{ admin_username }}'
+        password: '{{ admin_password }}'
+        if_name: "ethernet1/1"
+        zone_name: "L3-Untrust"
+        create_default_route: "yes"
+        operation: "update"
+        commit: False
+
+    - name: commit
+      panos_commit:
+        ip_address: "{{ngfw_ip}}"
+        username: "{{admin_username}}"
+        password: "{{admin_password}}"

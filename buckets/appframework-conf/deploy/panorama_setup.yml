@@ -71,7 +71,6 @@
         username: "{{admin_username}}"
         password: "{{admin_password}}"
         version: "latest"
-        restart: true
 
     # check for 10 times, every 30 seconds, if Panorama
     # is ready, using credentials admin/admin

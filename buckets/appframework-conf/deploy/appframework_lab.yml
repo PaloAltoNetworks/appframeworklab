@@ -47,3 +47,12 @@
         devgroup_name: "{{devgroup_name}}"
         template_name: "{{template_name}}"
         template_stack_name: "{{template_stack_name}}"
+
+    - pause: seconds=60
+
+    - name: commit all
+      panos_commit:
+        ip_address: "{{pano_ip}}"
+        username: "{{admin_username}}"
+        password: "{{admin_password}}"
+        device_group: "{{devgroup_name}}"
