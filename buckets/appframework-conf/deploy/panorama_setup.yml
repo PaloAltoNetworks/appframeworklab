@@ -53,6 +53,8 @@
         dns_server_secondary: "8.8.4.4"
         ntp_server_primary: "169.254.169.123"
 
+    - pause: seconds=30
+
     - name: pano fetch license
       panos_lic:
         ip_address: "{{pano_ip}}"

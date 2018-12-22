@@ -53,6 +53,8 @@
         dns_server_secondary: "8.8.4.4"
         panorama_primary: "{{pano_ip}}"
         ntp_server_primary: "169.254.169.123"
+    
+    - pause: seconds=30
 
     - name: first authcode
       panos_lic:
