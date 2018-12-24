@@ -4,5 +4,5 @@ export const r53auto = {
 };
 
 export const aws = {
-    region: 'us-east-1'
+    defaultRegion: 'us-east-1'
 };

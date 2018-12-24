@@ -1,0 +1,34 @@
+- hosts: localhost
+  connection: local
+  gather_facts: False
+
+  tasks:
+  - name: Configure Panorama
+    shell: ansible-playbook panorama_setup.yml
+    async: 3400
+    poll: 0
+    register: firewall
+
+  - name: Configure Firewall
+    shell: ansible-playbook firewall_setup.yml
+    async: 3400
+    poll: 0
+    register: panorama
+
+  - name: wait_for_firewall
+    async_status:
+      jid: "{{ firewall.ansible_job_id }}"
+    register: job_result_fw
+    until: job_result_fw.finished
+    retries: 57
+    delay: 60
+    failed_when: job_result_fw.finished != 1 or job_result_fw.rc >= 2
+
+  - name: wait_for_panorama
+    async_status:
+      jid: "{{ panorama.ansible_job_id }}"
+    register: job_result_pano
+    until: job_result_pano.finished
+    retries: 57
+    delay: 60
+    failed_when: job_result_pano.finished != 1 or job_result_pano.rc >= 2

@@ -27,45 +27,50 @@
     - role: ansible-pan
 
   tasks:
-    # load variables
-    - name: include variables (free-form)
+    # Load variables
+    - name: Include variables (free-form)
       include_vars: vars.yml
       no_log: 'yes'
 
-    # wait for SSH
-    - name: wait for SSH prompt (timeout 10min)
+    # Wait for SSH
+    - name: Wait for SSH prompt (timeout 10min)
       wait_for: port=22 host="{{pano_ip}}" timeout=900
 
     # Set serial and admin password
-    - name: set admin password and serial
-      panorama_pass_serial: ip_address="{{pano_ip}}" key_filename="{{key_filename}}" newpassword="{{admin_password}}" serial="{{pano_serial}}"
+    - name: Set admin password and serial
+      panorama_pass_serial:
+        ip_address="{{pano_ip}}"
+        key_filename="{{key_filename}}"
+        newpassword="{{admin_password}}"
+        serial="{{pano_serial}}"
       register: result
       until: not result is failed
-      retries: 10
+      retries: 30
       delay: 30
 
-    # set NTP and DNS
-    - name: set ntp and dns
+    # Set Management Configuration
+    - name: Set Management Config
       panos_mgtconfig:
         ip_address: "{{pano_ip}}"
+        username: "{{admin_username}}"
         password: "{{admin_password}}"
         dns_server_primary: "8.8.8.8"
         dns_server_secondary: "8.8.4.4"
         ntp_server_primary: "169.254.169.123"
+        hostname: "{{pano_hostname}}"
+        domain: "{{domain}}"
+        timezone: "{{timezone}}"
 
-    - pause: seconds=30
-
-    - name: pano fetch license
-      panos_lic:
+    # Fetch Licenses
+    - name: Fetch licenses
+      panos_op:
         ip_address: "{{pano_ip}}"
+        username: "{{admin_username}}"
         password: "{{admin_password}}"
-      register: result
-    - name: Display serialnumber
-      debug:
-        var: "{{result.serialnumber}}"
+        cmd: 'request license fetch'
 
-    # update Panorama software
-    - name: upgrade software
+    #  Upgrade Panorama software to latest version
+    - name: Upgrade software
       panos_software:
         ip_address: "{{pano_ip}}"
         username: "{{admin_username}}"
@@ -74,7 +79,7 @@
 
     # check for 10 times, every 30 seconds, if Panorama
     # is ready, using credentials admin/admin
-    - name: wait for reboot
+    - name: Wait for reboot
       panos_check:
         ip_address: "{{pano_ip}}"
         username: "{{admin_username}}"
@@ -84,9 +89,10 @@
       retries: 10
       delay: 30
 
-    # install Cloud Services Plugin
-    - name: install plugin
+    # Install Cloud Services Plugin
+    - name: Install cloud services plugin
       panorama_plugin:
         ip_address: "{{pano_ip}}"
         password: "{{admin_password}}"
-        plugin: "{{cloud_plugin}}"
+        plugin: "{{cloud_plugin_name}}"
+        version: "{{cloud_plugin_version}}"

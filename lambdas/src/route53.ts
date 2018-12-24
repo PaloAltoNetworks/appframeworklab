@@ -7,7 +7,9 @@ import { Response } from 'node-fetch';
 import { URLSearchParams } from 'url';
 import * as config from './config'
 
-aws.config.update({region: config.aws.region? config.aws.region : 'us-east-1'});
+// Route53 is global and always uses us-east-1
+const region = 'us-east-1';
+aws.config.update({region: region});
 
 async function getRoute53(event: CreateEvent, context: Context): Promise<void> {
     //console.log('getRoute53 event:', inspect(event, false, null));

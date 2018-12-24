@@ -42,8 +42,13 @@ options:
         default: "admin"
     plugin:
         description:
-            - Plugin to be installed, including version (i.e. cloud_services-1.2.0 )
+            - Plugin to be installed, without version (i.e. cloud_services)
         required: true
+    version:
+        description:
+            - Version of the plugin to be installed (i.e. 1.2.0-h2 or latest).
+        required: false
+        default: "latest"
     job_timeout:
         description:
             - timeout for download and install jobs in seconds
@@ -57,7 +62,8 @@ EXAMPLES = '''
   panorama_plugin:
     ip_address: "192.168.1.1"
     password: "admin"
-    plugin: cloud_services-1.2.0
+    plugin: "cloud_services"
+    version: "latest"
 
 '''
 
@@ -73,6 +79,30 @@ except ImportError:
 class JobException(Exception):
     pass
 
+def find_latest_plugin(xapi, plugin):
+
+    xapi.op(cmd="<request><plugins>"
+                "<check></check>"
+                "</plugins></request>")
+
+    xapi.op(cmd="<show><plugins><packages></packages></plugins></show>")
+
+    entries = xapi.element_root.findall('.//plugins/entry')
+    plugins = []
+    for e in entries:
+        n = e.find('name').text
+        if not n or plugin not in n:
+            continue
+        print('found matching entry: {}'.format(n))
+        plugins.append(
+                e.find('version').text,
+        )
+    if len(plugins) == 0:
+        module.fail_json(msg="no valid plugins after check")
+
+    plugins = sorted(plugins, key=lambda x: x, reverse=True)
+    print('plugins is: {}'.format(plugins))
+    return plugins[0]
 
 def check_job(xapi, jobnum, timeout=240):
     now = time.time()
@@ -128,8 +158,7 @@ def download_install_plugin(xapi, module, plugin, job_timeout):
                 dict(plugin=plugin))
     job = xapi.element_root.find('.//job')
     if job is None:
-        module.fail_json(msg="no job from download latest %s request" %
-                         something)
+        module.fail_json(msg="no job from download latest request")
     job = job.text
     check_job(xapi, job, job_timeout)
 
@@ -151,6 +180,7 @@ def main():
         password=dict(default=None, no_log=True),
         username=dict(default='admin'),
         plugin=dict(default=None),
+        version=dict(default='latest'),
         job_timeout=dict(type='int', default=240)
     )
     module = AnsibleModule(argument_spec=argument_spec)
@@ -166,6 +196,7 @@ def main():
     if not plugin:
         module.fail_json(msg="plugin is required")
 
+    version = module.params["version"]
     job_timeout = module.params['job_timeout']
 
     xapi = pan.xapi.PanXapi(
@@ -174,9 +205,16 @@ def main():
         api_password=password
     )
 
+    if version == 'latest':
+        v = find_latest_plugin(xapi, plugin)
+    else:
+        v = version
+    
+    plug = plugin + '-' + v
+    
     changed = False
 
-    changed |= download_install_plugin(xapi, module, plugin, job_timeout)
+    changed |= download_install_plugin(xapi, module, plug, job_timeout)
 
     module.exit_json(changed=changed, msg="okey dokey")
 

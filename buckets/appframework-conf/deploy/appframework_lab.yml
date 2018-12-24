@@ -48,7 +48,7 @@
         template_name: "{{template_name}}"
         template_stack_name: "{{template_stack_name}}"
 
-    - pause: seconds=60
+    - pause: seconds=120
 
     - name: commit all
       panos_commit:

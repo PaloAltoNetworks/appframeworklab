@@ -4,7 +4,8 @@ import { cfnResponse, cfnResponseStatus } from './cfn';
 import { Context, CloudFormationCustomResourceEvent as Event, CloudFormationCustomResourceCreateEvent as CreateEvent, CloudFormationCustomResourceDeleteEvent as DeleteEvent } from 'aws-lambda';
 import * as config from './config'
 
-aws.config.update({region: config.aws.region? config.aws.region : 'us-east-1'});
+const region = process.env['AWS_REGION'] || config.aws.defaultRegion || 'us-east-1';
+aws.config.update({region: region});
 
 async function createKeyPair(event: CreateEvent, context: Context): Promise<void> {
     //console.log('createKeyPair event:', inspect(event, false, null));

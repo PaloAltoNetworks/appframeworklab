@@ -1,6 +1,6 @@
 {
 	"AWSTemplateFormatVersion": "2010-09-09",
-	"Description": "Palo Alto Networks AppFramework PlayGround with API Explorer",
+	"Description": "Palo Alto Networks Application Framework Developer Lab",
 	"Metadata": {
 		"AWS::CloudFormation::Interface": {
 			"ParameterGroups": [
@@ -19,30 +19,43 @@
 				},
 				{
 					"Label": {
-						"default": "Advanced Configuration - General"
+						"default": "Advanced Configuration: Options"
 					},
 					"Parameters": [
-						"ConfigureRoute53",
 						"DeployKali",
 						"DeployWindowsDC",					
-						"DomainNetBIOSName"
+                        "DevicesTimeZone",
+                        "DomainNetBIOSName"
 					]
 				},				
 				{
 					"Label": {
-						"default": "Advanced Configuration - Hostname Configuration"
+						"default": "Hostnames Configuration"
 					},
 					"Parameters": [
 						"FirewallHostname",
 						"PublicHostname",
 						"PanoramaHostname",
-						"APIExplorerHostname",
+						"BuilderHostname",
 						"KaliHostname"						
 					]
-				},					
+                },	
 				{
 					"Label": {
-						"default": "Advanced Configuration - Windows Active Directory Configuration"
+						"default": "Advanced DNS Configuration (Change only if instructed)"
+					},
+					"Parameters": [
+                        "CreateDNSRecords",
+                        "CreateHostedZone",
+                        "UseAppFrameworkDomain",
+                        "Company",
+                        "apiKey",
+                        "CreateDNSRecord"
+                    ]
+                },
+				{
+					"Label": {
+						"default": "Advanced Configuration: Windows Active Directory"
 					},
 					"Parameters": [
 						"ADTemplateFile",
@@ -65,14 +78,17 @@
 				},
 				{
 					"Label": {
-						"default": "Advanced Configuration - Files and Paths"
+						"default": "Advanced Configuration: Files, URLs, Versions and Paths"
 					},
 					"Parameters": [
 						"FirewallCertURL",
-						"EchoMalwareURL",
-						"WebGenConfURL",
+                        "WebGenConfURL",
+                        "WebServerBuilderScriptURL",
+                        "WebServerBuilderScriptName",
 						"CloudPluginName",
-						"EnvironmentBucketName",
+                        "CloudPluginVersion",
+                        "EnvironmentBucketName",
+                        "EnvironmentBucketRegion",
 						"BootstrapBucketName",
 						"BootstrapBucketRegion",
                         "AnsibleRepo",
@@ -83,11 +99,15 @@
                         "DevGroupName",
                         "TemplateName",
                         "TemplateStackName",
-                        "keyPairPrefix"
+                        "keyPairPrefix",
+                        "BuildScript"
 					]
 				}				
 			],
 			"ParameterLabels": {
+                "DevicesTimeZone": {
+                    "default": "NGFW and Panorama Timezone"
+                },
 				"ADServer1InstanceType": {
 					"default": "Domain Controller Instance Type"
 				},
@@ -123,7 +143,10 @@
 				},				
 				"EnvironmentBucketName":{
 					"default": "Environment Config S3 Bucket Name"
-				},
+                },
+				"EnvironmentBucketRegion":{
+					"default": "Environment S3 Bucket Region"
+				},	
 				"ADTemplateFile":{
 					"default": "AD Template File"
 				},	
@@ -139,7 +162,7 @@
 				"AppHostedZone": {
 					"default": "DNS Domain Name"
 				},
-				"APIExplorerHostname":{
+				"BuilderHostname":{
 					"default": "Provisioning VM Hostname"
 				},
 				"FirewallHostname":{
@@ -160,23 +183,41 @@
 				"CloudPluginName":{
 					"default": "Cloud Plugin Name"
 				},
+				"CloudPluginVersion":{
+					"default": "Cloud Plugin Version"
+				},                
 				"FirewallCertURL":{
 					"default": "Firewall Cert URL"
 				},
-				"ConfigureRoute53": {
-					"default": "Configure Route53"
-				},
+                "CreateHostedZone": {
+					"default": "Create Route53 Hosted Zone"                    
+                },
+                "UseAppFrameworkDomain": {
+                    "default": "Use Appframework provided domain"
+                },
+                "Company": {
+                    "default": "Name for AppFramework provided domain"
+                },
+                "apiKey": {
+                    "default": "AppFramework provided domain API key"
+                },
+                "CreateDNSRecords": {
+                    "default": "Map FQDNs to EIPs in Route53"
+                },                
 				"DeployWindowsDC": {
 					"default": "Deploy Windows DC"
 				},
 				"DeployKali": {
 					"default": "Deploy Kali VM"
 				},
-				"EchoMalwareURL": {
-					"default": "EchoMalware Binary File"
-				},	
 				"WebGenConfURL": {
-					"default": "Web Generator Config File"
+					"default": "Web Generator Conf File URL"
+                },
+				"WebServerBuilderScriptURL": {
+					"default": "Web Server Builder Script URL"
+                },
+				"WebServerBuilderScriptName": {
+					"default": "Web Server Builder Script Name"
 				},
                 "SharedFile": {
                     "default": "Panorama Shared Configuration File Name"
@@ -189,6 +230,9 @@
                 },
                 "TemplateStackFile": {
                     "default": "Panorama Template Stack Configuration File Name"
+                },
+                "BuildScript": {
+                    "default": "Build Script File Name"
                 },
                 "DevGroupName": {
                     "default": "Panorama Device Group Name"
@@ -211,6 +255,578 @@
 			"Type": "String",
             "Default": "applicationframework-ngfw"
 		},
+        "DevicesTimeZone":{
+            "Description": "Firewall and Panorama timezone",
+            "Type": "String",
+            "Default": "US/Pacific",
+            "AllowedValues": [
+                "Africa/Accra",
+                "Africa/Addis_Ababa",
+                "Africa/Algiers",
+                "Africa/Asmara",
+                "Africa/Asmera",
+                "Africa/Bamako",
+                "Africa/Bangui",
+                "Africa/Banjul",
+                "Africa/Bissau",
+                "Africa/Blantyre",
+                "Africa/Brazzaville",
+                "Africa/Bujumbura",
+                "Africa/Cairo",
+                "Africa/Casablanca",
+                "Africa/Ceuta",
+                "Africa/Conakry",
+                "Africa/Dakar",
+                "Africa/Dar_es_Salaam",
+                "Africa/Djibouti",
+                "Africa/Douala",
+                "Africa/El_Aaiun",
+                "Africa/Freetown",
+                "Africa/Gaborone",
+                "Africa/Harare",
+                "Africa/Johannesburg",
+                "Africa/Kampala",
+                "Africa/Khartoum",
+                "Africa/Kigali",
+                "Africa/Kinshasa",
+                "Africa/Lagos",
+                "Africa/Libreville",
+                "Africa/Lome",
+                "Africa/Luanda",
+                "Africa/Lubumbashi",
+                "Africa/Lusaka",
+                "Africa/Malabo",
+                "Africa/Maputo",
+                "Africa/Maseru",
+                "Africa/Mbabane",
+                "Africa/Mogadishu",
+                "Africa/Monrovia",
+                "Africa/Nairobi",
+                "Africa/Ndjamena",
+                "Africa/Niamey",
+                "Africa/Nouakchott",
+                "Africa/Ouagadougou",
+                "Africa/Porto-Novo",
+                "Africa/Sao_Tome",
+                "Africa/Timbuktu",
+                "Africa/Tripoli",
+                "Africa/Tunis",
+                "Africa/Windhoek",
+                "America/Adak",
+                "America/Anchorage",
+                "America/Anguilla",
+                "America/Antigua",
+                "America/Araguaina",
+                "America/Argentina/Buenos_Aires",
+                "America/Argentina/Catamarca",
+                "America/Argentina/ComodRivadavia",
+                "America/Argentina/Cordoba",
+                "America/Argentina/Jujuy",
+                "America/Argentina/La_Rioja",
+                "America/Argentina/Mendoza",
+                "America/Argentina/Rio_Gallegos",
+                "America/Argentina/Salta",
+                "America/Argentina/San_Juan",
+                "America/Argentina/San_Luis",
+                "America/Argentina/Tucuman",
+                "America/Argentina/Ushuaia",
+                "America/Aruba",
+                "America/Asuncion",
+                "America/Atikokan",
+                "America/Atka",
+                "America/Bahia",
+                "America/Barbados",
+                "America/Belem",
+                "America/Belize",
+                "America/Blanc-Sablon",
+                "America/Boa_Vista",
+                "America/Bogota",
+                "America/Boise",
+                "America/Buenos_Aires",
+                "America/Cambridge_Bay",
+                "America/Campo_Grande",
+                "America/Cancun",
+                "America/Caracas",
+                "America/Catamarca",
+                "America/Cayenne",
+                "America/Cayman",
+                "America/Chicago",
+                "America/Chihuahua",
+                "America/Coral_Harbour",
+                "America/Cordoba",
+                "America/Costa_Rica",
+                "America/Cuiaba",
+                "America/Curacao",
+                "America/Danmarkshavn",
+                "America/Dawson",
+                "America/Dawson_Creek",
+                "America/Denver",
+                "America/Detroit",
+                "America/Dominica",
+                "America/Edmonton",
+                "America/Eirunepe",
+                "America/El_Salvador",
+                "America/Ensenada",
+                "America/Fortaleza",
+                "America/Fort_Wayne",
+                "America/Glace_Bay",
+                "America/Godthab",
+                "America/Goose_Bay",
+                "America/Grand_Turk",
+                "America/Grenada",
+                "America/Guadeloupe",
+                "America/Guatemala",
+                "America/Guayaquil",
+                "America/Guyana",
+                "America/Halifax",
+                "America/Havana",
+                "America/Hermosillo",
+                "America/Indiana/Indianapolis",
+                "America/Indiana/Knox",
+                "America/Indiana/Marengo",
+                "America/Indiana/Petersburg",
+                "America/Indianapolis",
+                "America/Indiana/Tell_City",
+                "America/Indiana/Vevay",
+                "America/Indiana/Vincennes",
+                "America/Indiana/Winamac",
+                "America/Inuvik",
+                "America/Iqaluit",
+                "America/Jamaica",
+                "America/Jujuy",
+                "America/Juneau",
+                "America/Kentucky/Louisville",
+                "America/Kentucky/Monticello",
+                "America/Knox_IN",
+                "America/La_Paz",
+                "America/Lima",
+                "America/Los_Angeles",
+                "America/Louisville",
+                "America/Maceio",
+                "America/Managua",
+                "America/Manaus",
+                "America/Marigot",
+                "America/Martinique",
+                "America/Mazatlan",
+                "America/Mendoza",
+                "America/Menominee",
+                "America/Merida",
+                "America/Mexico_City",
+                "America/Miquelon",
+                "America/Moncton",
+                "America/Monterrey",
+                "America/Montevideo",
+                "America/Montreal",
+                "America/Montserrat",
+                "America/Nassau",
+                "America/New_York",
+                "America/Nipigon",
+                "America/Nome",
+                "America/Noronha",
+                "America/North_Dakota/Center",
+                "America/North_Dakota/New_Salem",
+                "America/Panama",
+                "America/Pangnirtung",
+                "America/Paramaribo",
+                "America/Phoenix",
+                "America/Port-au-Prince",
+                "America/Porto_Acre",
+                "America/Port_of_Spain",
+                "America/Porto_Velho",
+                "America/Puerto_Rico",
+                "America/Rainy_River",
+                "America/Rankin_Inlet",
+                "America/Recife",
+                "America/Regina",
+                "America/Resolute",
+                "America/Rio_Branco",
+                "America/Rosario",
+                "America/Santarem",
+                "America/Santiago",
+                "America/Santo_Domingo",
+                "America/Sao_Paulo",
+                "America/Scoresbysund",
+                "America/Shiprock",
+                "America/St_Barthelemy",
+                "America/St_Johns",
+                "America/St_Kitts",
+                "America/St_Lucia",
+                "America/St_Thomas",
+                "America/St_Vincent",
+                "America/Swift_Current",
+                "America/Tegucigalpa",
+                "America/Thule",
+                "America/Thunder_Bay",
+                "America/Tijuana",
+                "America/Toronto",
+                "America/Tortola",
+                "America/Vancouver",
+                "America/Virgin",
+                "America/Whitehorse",
+                "America/Winnipeg",
+                "America/Yakutat",
+                "America/Yellowknife",
+                "Antarctica/Casey",
+                "Antarctica/Davis",
+                "Antarctica/DumontDUrville",
+                "Antarctica/Mawson",
+                "Antarctica/McMurdo",
+                "Antarctica/Palmer",
+                "Antarctica/Rothera",
+                "Antarctica/South_Pole",
+                "Antarctica/Syowa",
+                "Antarctica/Vostok",
+                "Arctic/Longyearbyen",
+                "Asia/Aden",
+                "Asia/Almaty",
+                "Asia/Amman",
+                "Asia/Anadyr",
+                "Asia/Aqtau",
+                "Asia/Aqtobe",
+                "Asia/Ashgabat",
+                "Asia/Ashkhabad",
+                "Asia/Baghdad",
+                "Asia/Bahrain",
+                "Asia/Baku",
+                "Asia/Bangkok",
+                "Asia/Beirut",
+                "Asia/Bishkek",
+                "Asia/Brunei",
+                "Asia/Calcutta",
+                "Asia/Choibalsan",
+                "Asia/Chongqing",
+                "Asia/Chungking",
+                "Asia/Colombo",
+                "Asia/Dacca",
+                "Asia/Damascus",
+                "Asia/Dhaka",
+                "Asia/Dili",
+                "Asia/Dubai",
+                "Asia/Dushanbe",
+                "Asia/Gaza",
+                "Asia/Harbin",
+                "Asia/Ho_Chi_Minh",
+                "Asia/Hong_Kong",
+                "Asia/Hovd",
+                "Asia/Irkutsk",
+                "Asia/Istanbul",
+                "Asia/Jakarta",
+                "Asia/Jayapura",
+                "Asia/Jerusalem",
+                "Asia/Kabul",
+                "Asia/Kamchatka",
+                "Asia/Karachi",
+                "Asia/Kashgar",
+                "Asia/Kathmandu",
+                "Asia/Katmandu",
+                "Asia/Kolkata",
+                "Asia/Krasnoyarsk",
+                "Asia/Kuala_Lumpur",
+                "Asia/Kuching",
+                "Asia/Kuwait",
+                "Asia/Macao",
+                "Asia/Macau",
+                "Asia/Magadan",
+                "Asia/Makassar",
+                "Asia/Manila",
+                "Asia/Muscat",
+                "Asia/Nicosia",
+                "Asia/Novokuznetsk",
+                "Asia/Novosibirsk",
+                "Asia/Omsk",
+                "Asia/Oral",
+                "Asia/Phnom_Penh",
+                "Asia/Pontianak",
+                "Asia/Pyongyang",
+                "Asia/Qatar",
+                "Asia/Qyzylorda",
+                "Asia/Rangoon",
+                "Asia/Riyadh",
+                "Asia/Riyadh87",
+                "Asia/Riyadh88",
+                "Asia/Riyadh89",
+                "Asia/Saigon",
+                "Asia/Sakhalin",
+                "Asia/Samarkand",
+                "Asia/Seoul",
+                "Asia/Shanghai",
+                "Asia/Singapore",
+                "Asia/Taipei",
+                "Asia/Tashkent",
+                "Asia/Tbilisi",
+                "Asia/Tehran",
+                "Asia/Tel_Aviv",
+                "Asia/Thimbu",
+                "Asia/Thimphu",
+                "Asia/Tokyo",
+                "Asia/Ujung_Pandang",
+                "Asia/Ulaanbaatar",
+                "Asia/Ulan_Bator",
+                "Asia/Urumqi",
+                "Asia/Vientiane",
+                "Asia/Vladivostok",
+                "Asia/Yakutsk",
+                "Asia/Yekaterinburg",
+                "Asia/Yerevan",
+                "Atlantic/Azores",
+                "Atlantic/Bermuda",
+                "Atlantic/Canary",
+                "Atlantic/Cape_Verde",
+                "Atlantic/Faeroe",
+                "Atlantic/Faroe",
+                "Atlantic/Jan_Mayen",
+                "Atlantic/Madeira",
+                "Atlantic/Reykjavik",
+                "Atlantic/South_Georgia",
+                "Atlantic/Stanley",
+                "Atlantic/St_Helena",
+                "Australia/ACT",
+                "Australia/Adelaide",
+                "Australia/Brisbane",
+                "Australia/Broken_Hill",
+                "Australia/Canberra",
+                "Australia/Currie",
+                "Australia/Darwin",
+                "Australia/Eucla",
+                "Australia/Hobart",
+                "Australia/LHI",
+                "Australia/Lindeman",
+                "Australia/Lord_Howe",
+                "Australia/Melbourne",
+                "Australia/North",
+                "Australia/NSW",
+                "Australia/Perth",
+                "Australia/Queensland",
+                "Australia/South",
+                "Australia/Sydney",
+                "Australia/Tasmania",
+                "Australia/Victoria",
+                "Australia/West",
+                "Australia/Yancowinna",
+                "Brazil/Acre",
+                "Brazil/DeNoronha",
+                "Brazil/East",
+                "Brazil/West",
+                "Canada/Atlantic",
+                "Canada/Central",
+                "Canada/Eastern",
+                "Canada/East-Saskatchewan",
+                "Canada/Mountain",
+                "Canada/Newfoundland",
+                "Canada/Pacific",
+                "Canada/Saskatchewan",
+                "Canada/Yukon",
+                "CET",
+                "Chile/Continental",
+                "Chile/EasterIsland",
+                "CST6CDT",
+                "Cuba",
+                "EET",
+                "Egypt",
+                "Eire",
+                "EST",
+                "EST5EDT",
+                "Etc/GMT",
+                "Etc/GMT0",
+                "Etc/GMT-0",
+                "Etc/GMT+0",
+                "Etc/GMT-1",
+                "Etc/GMT+1",
+                "Etc/GMT-10",
+                "Etc/GMT+10",
+                "Etc/GMT-11",
+                "Etc/GMT+11",
+                "Etc/GMT-12",
+                "Etc/GMT+12",
+                "Etc/GMT-13",
+                "Etc/GMT-14",
+                "Etc/GMT-2",
+                "Etc/GMT+2",
+                "Etc/GMT-3",
+                "Etc/GMT+3",
+                "Etc/GMT-4",
+                "Etc/GMT+4",
+                "Etc/GMT-5",
+                "Etc/GMT+5",
+                "Etc/GMT-6",
+                "Etc/GMT+6",
+                "Etc/GMT-7",
+                "Etc/GMT+7",
+                "Etc/GMT-8",
+                "Etc/GMT+8",
+                "Etc/GMT-9",
+                "Etc/GMT+9",
+                "Etc/Greenwich",
+                "Etc/UCT",
+                "Etc/Universal",
+                "Etc/UTC",
+                "Etc/Zulu",
+                "Europe/Amsterdam",
+                "Europe/Andorra",
+                "Europe/Athens",
+                "Europe/Belfast",
+                "Europe/Belgrade",
+                "Europe/Berlin",
+                "Europe/Bratislava",
+                "Europe/Brussels",
+                "Europe/Bucharest",
+                "Europe/Budapest",
+                "Europe/Chisinau",
+                "Europe/Copenhagen",
+                "Europe/Dublin",
+                "Europe/Gibraltar",
+                "Europe/Guernsey",
+                "Europe/Helsinki",
+                "Europe/Isle_of_Man",
+                "Europe/Istanbul",
+                "Europe/Jersey",
+                "Europe/Kaliningrad",
+                "Europe/Kiev",
+                "Europe/Lisbon",
+                "Europe/Ljubljana",
+                "Europe/London",
+                "Europe/Luxembourg",
+                "Europe/Madrid",
+                "Europe/Malta",
+                "Europe/Mariehamn",
+                "Europe/Minsk",
+                "Europe/Monaco",
+                "Europe/Moscow",
+                "Europe/Nicosia",
+                "Europe/Oslo",
+                "Europe/Paris",
+                "Europe/Podgorica",
+                "Europe/Prague",
+                "Europe/Riga",
+                "Europe/Rome",
+                "Europe/Samara",
+                "Europe/San_Marino",
+                "Europe/Sarajevo",
+                "Europe/Simferopol",
+                "Europe/Skopje",
+                "Europe/Sofia",
+                "Europe/Stockholm",
+                "Europe/Tallinn",
+                "Europe/Tirane",
+                "Europe/Tiraspol",
+                "Europe/Uzhgorod",
+                "Europe/Vaduz",
+                "Europe/Vatican",
+                "Europe/Vienna",
+                "Europe/Vilnius",
+                "Europe/Volgograd",
+                "Europe/Warsaw",
+                "Europe/Zagreb",
+                "Europe/Zaporozhye",
+                "Europe/Zurich",
+                "Factory",
+                "GB",
+                "GB-Eire",
+                "GMT",
+                "GMT0",
+                "GMT-0",
+                "GMT+0",
+                "Greenwich",
+                "Hongkong",
+                "HST",
+                "Iceland",
+                "Indian/Antananarivo",
+                "Indian/Chagos",
+                "Indian/Christmas",
+                "Indian/Cocos",
+                "Indian/Comoro",
+                "Indian/Kerguelen",
+                "Indian/Mahe",
+                "Indian/Maldives",
+                "Indian/Mauritius",
+                "Indian/Mayotte",
+                "Indian/Reunion",
+                "Iran",
+                "Israel",
+                "Jamaica",
+                "Japan",
+                "Kwajalein",
+                "Libya",
+                "MET",
+                "Mexico/BajaNorte",
+                "Mexico/BajaSur",
+                "Mexico/General",
+                "Mideast/Riyadh87",
+                "Mideast/Riyadh88",
+                "Mideast/Riyadh89",
+                "MST",
+                "MST7MDT",
+                "Navajo",
+                "NZ",
+                "NZ-CHAT",
+                "Pacific/Apia",
+                "Pacific/Auckland",
+                "Pacific/Chatham",
+                "Pacific/Easter",
+                "Pacific/Efate",
+                "Pacific/Enderbury",
+                "Pacific/Fakaofo",
+                "Pacific/Fiji",
+                "Pacific/Funafuti",
+                "Pacific/Galapagos",
+                "Pacific/Gambier",
+                "Pacific/Guadalcanal",
+                "Pacific/Guam",
+                "Pacific/Honolulu",
+                "Pacific/Johnston",
+                "Pacific/Kiritimati",
+                "Pacific/Kosrae",
+                "Pacific/Kwajalein",
+                "Pacific/Majuro",
+                "Pacific/Marquesas",
+                "Pacific/Midway",
+                "Pacific/Nauru",
+                "Pacific/Niue",
+                "Pacific/Norfolk",
+                "Pacific/Noumea",
+                "Pacific/Pago_Pago",
+                "Pacific/Palau",
+                "Pacific/Pitcairn",
+                "Pacific/Ponape",
+                "Pacific/Port_Moresby",
+                "Pacific/Rarotonga",
+                "Pacific/Saipan",
+                "Pacific/Samoa",
+                "Pacific/Tahiti",
+                "Pacific/Tarawa",
+                "Pacific/Tongatapu",
+                "Pacific/Truk",
+                "Pacific/Wake",
+                "Pacific/Wallis",
+                "Pacific/Yap",
+                "Poland",
+                "Portugal",
+                "PRC",
+                "PST8PDT",
+                "ROC",
+                "ROK",
+                "Singapore",
+                "Turkey",
+                "UCT",
+                "Universal",
+                "US/Alaska",
+                "US/Aleutian",
+                "US/Arizona",
+                "US/Central",
+                "US/Eastern",
+                "US/East-Indiana",
+                "US/Hawaii",
+                "US/Indiana-Starke",
+                "US/Michigan",
+                "US/Mountain",
+                "US/Pacific",
+                "US/Samoa",
+                "UTC",
+                "WET",
+                "W-SU",
+                "Zulu"                
+            ]
+        },
 		"BootstrapBucketRegion":{
 			"Description": "S3 Region where the FW bootstrap bucket is located",
 			"Type": "String",
@@ -238,6 +854,28 @@
             "Default": "applicationframework-conf"
 		},
 
+		"EnvironmentBucketRegion":{
+			"Description": "S3 Region where the Environment bucket is located",
+			"Type": "String",
+            "AllowedValues": [
+				"ap-south-1",
+				"eu-west-2",
+				"eu-west-1",
+				"ap-northeast-2",
+				"ap-northeast-1",
+				"sa-east-1",
+				"ca-central-1",
+				"ap-southeast-1",
+				"ap-southeast-2",
+				"eu-central-1",
+				"us-east-1",
+				"us-east-2",
+				"us-west-1",
+				"us-west-2"
+            ],
+			"Default" : "us-east-1"
+        },
+    
 		"ADTemplateFile":{
 			"Description": "CloudFormation Template Path for Windows Domain Controller deployment",
 			"Type": "String",
@@ -251,7 +889,7 @@
 
 		"AdminPassword": {
 			"AllowedPattern": "(?=^.{6,255}$)((?=.*\\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*",
-			"Description": "Password for API Explorer, NGFW/Panorama admin, VMs ec2-user/ubuntu users (SSH password auth enabled), Windows DC admin and users. Must be at least 8 characters containing letters, numbers and symbols",
+			"Description": "Password for NGFW/Panorama admin user, Windows DC admin and users. Must be at least 8 characters containing letters, numbers and symbols",
 			"MaxLength": "31",
 			"MinLength": "8",
 			"NoEcho": "true",
@@ -278,7 +916,7 @@
 			"Type": "String"
 		},
 
-		"APIExplorerHostname":{
+		"BuilderHostname":{
 			"Description": "Provisioning VM Hostname",
 			"Type": "String",
 			"Default": "builder"		
@@ -309,15 +947,21 @@
 		},
 
 		"FirewallCertURL":{
-			"Description": "Firewall SSL Certificate URL for Decryption",
+			"Description": "Firewall CA Certificate for SSL Decryption (download URL)",
 			"Type": "String",
-			"Default": "https://paloaltonetworks.box.com/shared/static/rkuuqhaxrmce2pl6kajsea95czpndrvm"
+			"Default": "https://s3.amazonaws.com/applicationframework-conf/opt/appframeworklabca.pem"
 		},
 
 		"CloudPluginName":{
-			"Description": "Panorama Cloud Services Plugin Name and Version",
+			"Description": "Panorama Cloud Services Plugin Name",
 			"Type": "String",
-			"Default": "cloud_services-1.2.0-h2"
+			"Default": "cloud_services"
+		},
+
+		"CloudPluginVersion":{
+			"Description": "Panorama Cloud Services Plugin Version",
+			"Type": "String",
+			"Default": "latest"
 		},
 
 		"AnsibleRepo":{
@@ -335,15 +979,47 @@
 			"Type": "String"
 		},
 
-		"ConfigureRoute53": {
+		"CreateHostedZone": {
+			"AllowedValues": [
+				"true",
+				"false"
+			],
+			"Default": "false",
+			"Description": "Create Hosted Zone in Route53",
+			"Type": "String"
+        },
+
+		"UseAppFrameworkDomain": {
+			"AllowedValues": [
+				"true",
+				"false"
+			],
+			"Default": "false",
+			"Description": "Use AppFramework provided domain? (if you don't have your own domain)",
+			"Type": "String"
+        },
+		"Company": {
+            "Description": "Your company name for AppFramework provided domain (yourcompany.dev.appframework.rocks) [alphanum, no spaces, lowercase, min 3 max 16 chars]",
+			"AllowedPattern": "[a-z0-9_\\-]*",
+			"MaxLength": "16",
+            "Type": "String"
+        },
+        "apiKey": {
+            "Description": "API Key (provided by Palo Alto Networks) for AppFramework provided domains",
+            "Type": "String",
+			"NoEcho": "true"
+        },
+
+		"CreateDNSRecords": {
 			"AllowedValues": [
 				"true",
 				"false"
 			],
 			"Default": "true",
-			"Description": "Dynamically map hostnames to EIPs using Route53?",
+			"Description": "Dynamically map FQDNs to EIPs using Route53?",
 			"Type": "String"
-		},
+        },
+        
 		"DeployWindowsDC": {
 			"AllowedValues": [
 				"true",
@@ -424,15 +1100,23 @@
 			"Default": "PaL04Lt0!",
             "Type": "String"
         },
-		"EchoMalwareURL": {
-			"Type": "String",
-			"Description": "EchoMalware Binary File Path",
-			"Default": "opt/echomalware"
-		},	
+
 		"WebGenConfURL": {
 			"Type": "String",
-			"Description": "Web Traffic Generator Configuration File Path",
-			"Default": "opt/webgenconfig.py"
+			"Description": "Web Traffic Generator Configuration File URL",
+			"Default": "https://s3.amazonaws.com/applicationframework-conf/opt/webgenconfig.py"
+		},
+
+		"WebServerBuilderScriptURL": {
+			"Type": "String",
+			"Description": "Web Server Builder Script URL",
+			"Default": "https://s3.amazonaws.com/applicationframework-conf/opt/webbuild.sh"
+		},
+
+        "WebServerBuilderScriptName": {
+			"Type": "String",
+			"Description": "Web Server Builder Script Name",
+			"Default": "webbuild.sh"
 		},
 
         "SharedFile": {
@@ -454,6 +1138,11 @@
 			"Type": "String",
 			"Description": "Template Stack Conf File Name",
 			"Default": "template-stack.xml"
+        },
+        "BuildScript": {
+			"Type": "String",
+			"Description": "Build Script File Name",
+			"Default": "build.sh"
         },
         "DevGroupName": {
 			"Type": "String",
@@ -477,6 +1166,22 @@
         }
 	},
 	"Mappings": {
+		"LambdaBucketsRegionMap" : {
+			"ap-south-1" :  {"Bucket": "appframeworklab-lambdas-ap-south-1" },
+			"eu-west-2" :  {"Bucket": "appframeworklab-lambdas-eu-west-2" },
+			"eu-west-1" :  {"Bucket": "appframeworklab-lambdas-eu-west-1" },
+			"ap-northeast-2" :  {"Bucket": "appframeworklab-lambdas-ap-northeast-2" },
+			"ap-northeast-1" :  {"Bucket": "appframeworklab-lambdas-ap-northeast-1" },
+			"sa-east-1" :  {"Bucket": "appframeworklab-lambdas-sa-east-1" },
+			"ca-central-1" :  {"Bucket": "appframeworklab-lambdas-ca-central-1" },
+			"ap-southeast-1" :  {"Bucket": "appframeworklab-lambdas-ap-southeast-1" },
+			"ap-southeast-2" :  {"Bucket": "appframeworklab-lambdas-ap-southeast-2" },
+			"eu-central-1" :  {"Bucket": "appframeworklab-lambdas-eu-central-1" },
+			"us-east-1" :  {"Bucket": "appframeworklab-lambdas-us-east-1" },
+			"us-east-2" :  {"Bucket": "appframeworklab-lambdas-us-east-2" },
+			"us-west-1" :  {"Bucket": "appframeworklab-lambdas-us-west-1" },
+			"us-west-2" :  {"Bucket": "appframeworklab-lambdas-us-west-2" }
+		},
 		"PANFWRegionMap" : {
 			"ap-south-1" :  {"AMI": "ami-e780d988" },
 			"eu-west-2" :  {"AMI": "ami-876a8de0" },
@@ -493,7 +1198,7 @@
 			"us-west-1" :  {"AMI": "ami-a95b4fc9" },
 			"us-west-2" :  {"AMI": "ami-d424b5ac" }
 		},
-
+        
 		 "KaliRegionMap" : {
 			"ap-south-1" :  {"AMI": "ami-0830bbf8438910e39" },
 			"eu-west-3" :  {"AMI": "ami-0546c2296e5c1f10a" },
@@ -565,10 +1270,12 @@
 	},
 	"Conditions" : {
 		"ConfDeployKali" : {"Fn::Equals" : [{"Ref" : "DeployKali"}, "true"]},
-		"ConfRoute53" : {"Fn::Equals" : [{"Ref" : "ConfigureRoute53"}, "true"]},
+		"CreateDNSHostedZone" : {"Fn::Equals" : [{"Ref" : "CreateHostedZone"}, "true"]},
+        "CreateR53Records" : {"Fn::Equals" : [{"Ref" : "CreateDNSRecords"}, "true"]},
 		"ConfWinDC" : {"Fn::Equals" : [{"Ref" : "DeployWindowsDC"}, "true"]},	
-		"KaliFQDNCondition": {"Fn::And": [{"Condition": "ConfDeployKali"}, {"Condition": "ConfRoute53" }]}
-	},
+        "KaliFQDNCondition": {"Fn::And": [{"Condition": "ConfDeployKali"}, {"Condition": "CreateR53Records" }]},
+        "CreateVendorDomain": {"Fn::And": [{"Fn::Equals" : [{"Ref" : "UseAppFrameworkDomain"}, "true"]}, {"Fn::Not": [{"Fn::Equals": ["", {"Ref": "Company"}]}]}, {"Condition": "CreateDNSHostedZone"},  {"Condition": "CreateR53Records"}, {"Fn::Not": [{"Fn::Equals": ["", {"Ref": "Company"}]}]}]}
+  },
   "Resources": {
 	"DomainControllerTemplate": {
 		"Type" : "AWS::CloudFormation::Stack",
@@ -599,8 +1306,108 @@
 				"https://s3.amazonaws.com/",   { "Fn::Join" : [ "", [ {"Ref" : "EnvironmentBucketName"}, "/", {"Ref" : "ADTemplateFile"} ] ] }
 			]]},
 			"TimeoutInMinutes" : 60
-		}
-	},
+		},
+        "DependsOn": [ "BuilderLinuxInstance"]
+    },
+    "LambdaR53Role": {
+        "Type": "AWS::IAM::Role",
+        "Condition" : "CreateVendorDomain",
+        "Properties": {
+            "AssumeRolePolicyDocument": {
+                "Version" : "2012-10-17",
+                "Statement": [{
+                    "Effect": "Allow",
+                    "Principal": {
+                        "Service": [ "lambda.amazonaws.com" ]
+                    },
+                    "Action": [ "sts:AssumeRole" ]
+                }]
+            },
+            "ManagedPolicyArns": [
+                { "Ref": "R53GetHostedZonePolicy" },
+                { "Ref": "LambdaExecutionPolicy"}
+            ]
+        }
+    },
+    "RegisterDNSFunction": {
+        "Type": "AWS::Lambda::Function",
+        "Condition" : "CreateVendorDomain",
+        "Properties": {
+            "Code": {
+                "S3Bucket": { "Fn::FindInMap" : [ "LambdaBucketsRegionMap", { "Ref" : "AWS::Region" }, "Bucket" ] },
+                "S3Key": "lambdas.zip"
+            },
+            "Description": "Register DNS subdomain in appframework.rocks",
+            "Handler": "index.getRoute53",
+            "Role": {"Fn::GetAtt" : [ "LambdaR53Role", "Arn" ] },
+            "Runtime": "nodejs8.10",
+            "Timeout": 30
+        },
+        "DependsOn": [
+            "LambdaR53Role"
+        ]
+    },
+    "registerDNS": {
+        "Type": "Custom::RunRegisterDNS",
+        "Condition" : "CreateVendorDomain",
+        "Properties": {
+            "ServiceToken": { "Fn::GetAtt" : ["RegisterDNSFunction", "Arn"] },
+            "company": {"Ref": "Company"},
+            "apiKey": { "Ref": "apiKey"},
+            "DNSZone": {"Ref": "DNSZone" }
+        },
+        "DependsOn": [
+            "DNSZone",
+            "RegisterDNSFunction"
+        ]
+    },
+    "R53GetHostedZonePolicy": {
+        "Type": "AWS::IAM::ManagedPolicy",
+        "Condition" : "CreateVendorDomain",
+        "Properties": {
+            "Description" : "Lambda Execution Policy",
+            "PolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Action": "route53:GetHostedZone",
+                        "Resource": { 
+                            "Fn::Sub" : [
+                                "arn:aws:route53:::hostedzone/${zoneid}",
+                                { "zoneid" : { "Ref": "DNSZone" }}
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "DependsOn": [
+            "DNSZone"
+        ]
+    },
+    "DNSZone" : {
+        "Type" : "AWS::Route53::HostedZone",
+        "Condition" : "CreateDNSHostedZone",
+        "Properties": {
+            "HostedZoneConfig": {
+              "Comment": "Application Framework Lab Hosted Zone"
+            },
+            "Name":  {
+                "Fn::If": 
+                    [ 
+                        "CreateVendorDomain",
+                        {
+                            "Fn::Sub" : [
+                                "${company}.dev.appframework.rocks",
+                                { "company": {"Ref": "Company"}}
+                            ]
+                        },
+                        { "Ref" : "AppHostedZone"}
+                    ]
+            }
+        }
+    },    
     "BootstrapRole": {
         "Type": "AWS::IAM::Role",
         "Properties": {
@@ -757,7 +1564,7 @@
        "DependsOn": [ "NewVPC" ]
     },
 
-	"APIExplorerElasticIP": {
+	"BuilderElasticIP": {
        "Type" : "AWS::EC2::EIP",
        "Properties" : {
           "Domain" : "vpc"
@@ -862,10 +1669,10 @@
       "DependsOn": [ "sgPanorama" ]
     },
 	
-    "APIExplorerNetworkInterface": {
+    "BuilderNetworkInterface": {
       "Type": "AWS::EC2::NetworkInterface",
       "Properties": {
-        "Description": "API Explorer Network Interface",
+        "Description": "Provisioning VM Network Interface",
         "SubnetId": {"Ref": "NewPublicSubnet"},
         "SourceDestCheck": "false",
         "PrivateIpAddresses": [
@@ -874,10 +1681,10 @@
             "Primary": "true"
           }
         ],
-        "GroupSet": [{"Ref": "sgAPIExplorer"}],
-        "Tags": [{"Key": "Name","Value": "APIExplorer Intf"}]
+        "GroupSet": [{"Ref": "sgBuilder"}],
+        "Tags": [{"Key": "Name","Value": "Builder Intf"}]
       },
-      "DependsOn": [ "sgAPIExplorer" ]
+      "DependsOn": [ "sgBuilder" ]
     },
 
     "FWManagementNetworkInterface": {
@@ -940,7 +1747,7 @@
           "AllocationId": { "Fn::GetAtt": [ "ManagementElasticIP", "AllocationId" ] },
           "NetworkInterfaceId": { "Ref": "FWManagementNetworkInterface" }
        },
-       "DependsOn": [ "FWManagementNetworkInterface", "ManagementElasticIP", "gw1" ]
+       "DependsOn": [ "FWManagementNetworkInterface", "ManagementElasticIP", "gw1", "FWInstance" ]
     },
 
     "FWEIPPublicAssociation": {
@@ -949,7 +1756,7 @@
           "AllocationId": { "Fn::GetAtt": [ "PublicElasticIP", "AllocationId" ] },
           "NetworkInterfaceId": { "Ref": "FWPublicNetworkInterface" }
        },
-       "DependsOn": [ "FWPublicNetworkInterface", "PublicElasticIP", "gw1" ]
+       "DependsOn": [ "FWPublicNetworkInterface", "PublicElasticIP", "gw1", "FWInstance" ]
     },
 
     "KaliEIPAssociation": {
@@ -959,7 +1766,7 @@
           "AllocationId": { "Fn::GetAtt": [ "KaliElasticIP", "AllocationId" ] },
           "NetworkInterfaceId": { "Ref": "KaliNetworkInterface" }
        },
-       "DependsOn": [ "KaliNetworkInterface", "KaliElasticIP", "gw1" ]
+       "DependsOn": [ "KaliNetworkInterface", "KaliElasticIP", "gw1", "KaliLinuxInstance" ]
     },
 
     "PanoramaAssociation": {
@@ -968,16 +1775,16 @@
           "AllocationId": { "Fn::GetAtt": [ "PanoramaElasticIP", "AllocationId" ] },
           "NetworkInterfaceId": { "Ref": "PanoramaNetworkInterface" }
        },
-       "DependsOn": [ "PanoramaNetworkInterface", "PanoramaElasticIP", "gw1" ]
+       "DependsOn": [ "PanoramaNetworkInterface", "PanoramaElasticIP", "gw1", "PanoramaInstance" ]
     },	
 	
-    "APIExplorerEIPAssociation": {
+    "BuilderEIPAssociation": {
        "Type": "AWS::EC2::EIPAssociation",
        "Properties": {
-          "AllocationId": { "Fn::GetAtt": [ "APIExplorerElasticIP", "AllocationId" ] },
-          "NetworkInterfaceId": { "Ref": "APIExplorerNetworkInterface" }
+          "AllocationId": { "Fn::GetAtt": [ "BuilderElasticIP", "AllocationId" ] },
+          "NetworkInterfaceId": { "Ref": "BuilderNetworkInterface" }
        },
-       "DependsOn": [ "APIExplorerNetworkInterface", "APIExplorerElasticIP", "gw1" ]
+       "DependsOn": [ "BuilderNetworkInterface", "BuilderElasticIP", "gw1"]
     },
 
     "sgWideOpen": {
@@ -1001,28 +1808,16 @@
       }
     },
 
-	"sgAPIExplorer": {
+	"sgBuilder": {
 		"Type": "AWS::EC2::SecurityGroup",
 		"Properties": {
-			"GroupDescription": "API Explorer",
+			"GroupDescription": "Provisioning VM",
 			"VpcId": {"Ref": "NewVPC"},
 			"SecurityGroupIngress": [
 				{
 					"IpProtocol": "tcp",
 					"FromPort": "22",
 					"ToPort": "22",
-					"CidrIp": "0.0.0.0/0"
-				},
-				{
-					"IpProtocol": "tcp",
-					"FromPort": "443",
-					"ToPort": "443",
-					"CidrIp": "0.0.0.0/0"
-				},
-				{
-					"IpProtocol": "tcp",
-					"FromPort": "80",
-					"ToPort": "80",
 					"CidrIp": "0.0.0.0/0"
 				},
 				{
@@ -1259,7 +2054,7 @@
      "DependsOn": [ "NewPublicSubnet", "sgWideOpen" ]
  	},
 
-     "APIExplorerLinuxInstance": {
+     "BuilderLinuxInstance": {
       "Type": "AWS::EC2::Instance",
       "Properties": {
         "DisableApiTermination": "false",
@@ -1269,26 +2064,37 @@
         "InstanceType": "t2.medium",
         "KeyName": { "Ref": "ServerKeyName" },
         "Monitoring": "false",
-        "Tags": [{ "Key": "Name", "Value": "API Explorer VM" }],
+        "Tags": [{ "Key": "Name", "Value": "Builder VM" }],
         "NetworkInterfaces": [
           {
-            "NetworkInterfaceId": { "Ref": "APIExplorerNetworkInterface"},
+            "NetworkInterfaceId": { "Ref": "BuilderNetworkInterface"},
             "DeviceIndex": 0
           }
         ],
         "UserData" : { "Fn::Base64" : { "Fn::Join" : ["", [
             "#!/bin/bash\n",
 			"exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1\n",
-			"sleep 10s\n",			
+            "sleep 10s\n",
+            "\n# Install all required software\n",			
             "yum install -y wget git\n",
+			"yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(rpm -E '%{rhel}').noarch.rpm\n",
+			"yum -y install https://centos7.iuscommunity.org/ius-release.rpm\n",
+			"yum -y install python36u-devel\n",
+			"sleep 2s\n",
+            "yum -y install python36u-pip\n",
+            "pip3.6 install boto3 awscli paramiko ansible\n",
+            "ln -s /bin/pip3.6 /bin/pip3\n",
+            "/usr/bin/easy_install --script-dir /opt/aws/bin https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz",
+            "\n# Install Ansible Galaxy component\n",
+            "ansible-galaxy install \"",{"Ref" : "AnsibleRepo" },"\"\n",
+            "\n# Populate environment vars\n",
             "export DEPLOYPATH=/tmp/deploy\n",
-			"ENCPWD=\"",{ "Fn::Base64" : {"Ref" : "AdminPassword" } },"\"\n",
+            "ENCPWD=\"",{ "Fn::Base64" : {"Ref" : "AdminPassword" } },"\"\n",
 			"export ADMINPWD=$(echo \"${ENCPWD}\" | /usr/bin/base64 -d -)\n",
 			"export PANORAMASERIAL=\"",{"Ref" : "PanoramaSerial" },"\"\n",
             "export AUTHCODE1=\"",{"Ref" : "AuthCode1" },"\"\n",
             "export AUTHCODE2=\"",{"Ref" : "AuthCode2" },"\"\n",
             "if [ ! ${AUTHCODE2} ]; then export AUTHCODE2=${AUTHCODE1}; fi;\n",
-            "export ANSIBLE_REPO=\"",{"Ref" : "AnsibleRepo" },"\"\n",
             "export SHARED_FILE=\"",{"Ref" : "SharedFile" },"\"\n",
             "export DEVGROUP_FILE=\"",{"Ref" : "DevGroupFile" },"\"\n",
             "export TEMPLATE_FILE=\"",{"Ref" : "TemplateFile" },"\"\n",
@@ -1297,26 +2103,28 @@
             "export TEMPLATE_NAME=\"",{"Ref" : "TemplateName" },"\"\n",
             "export TEMPLATE_STACK_NAME=\"",{"Ref" : "TemplateStackName" },"\"\n",
             "export S3BUCKETNAME=\"",{"Ref" : "EnvironmentBucketName" },"\"\n",
+            "export S3BUCKETREGION=\"",{"Ref" : "EnvironmentBucketRegion" },"\"\n",
 			"export CLOUDPLUGINNAME=\"",{"Ref" : "CloudPluginName" },"\"\n",
+			"export CLOUDPLUGINVERSION=\"",{"Ref" : "CloudPluginVersion" },"\"\n",
+            "export PANORAMAHOSTNAME=\"",{"Ref" : "PanoramaHostname" },"\"\n",
+            "export FIREWALLHOSTNAME=\"",{"Ref" : "FirewallHostname" },"\"\n",
+            "export DOMAINNAME=\"",{ "Fn::If": ["CreateVendorDomain",{"Fn::Sub" : ["${company}.dev.appframework.rocks",{ "company": {"Ref": "Company"}}]},{ "Ref" : "AppHostedZone"}]},"\"\n",
+            "export DEVICESTIMEZONE=\"",{"Ref" : "DevicesTimeZone" },"\"\n",
 			"export FIREWALLIP=\"",{"Fn::GetAtt" : [ "FWManagementNetworkInterface", "PrimaryPrivateIpAddress" ]},"\"\n",
             "export PANORAMAIP=\"",{"Fn::GetAtt" : [ "PanoramaNetworkInterface", "PrimaryPrivateIpAddress" ]},"\"\n",
-            "export KEYPAIR=\"",{ "Fn::GetAtt": ["handleKeyPair", "keyPair"]},"\"\n",
-			"export AWSREGION=\"",{ "Ref" : "AWS::Region" },"\"\n",
-			"yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(rpm -E '%{rhel}').noarch.rpm\n",
-			"yum -y install https://centos7.iuscommunity.org/ius-release.rpm\n",
-			"yum -y install python36u-devel\n",
-			"sleep 2s\n",
-            "yum -y install python36u-pip\n",
-			"pip3.6 install boto3 awscli\n",
-			"S3BUCKETLOCATION=$(aws s3api get-bucket-location --bucket ${S3BUCKETNAME} --output text)\n",
-			"if [[ $S3BUCKETLOCATION == 'None' ]]; then S3BUCKETLOCATION='us-east-1'; fi\n",
-            "export S3BUCKETLOCATION\n",
+            "export BUILDSCRIPT=\"",{"Ref" : "BuildScript" },"\"\n",
+            "export SELF=\"BuilderLinuxInstance\"\n",
+            "export AWSSTACKNAME=\"",{"Ref" : "AWS::StackName" },"\"\n",
+            "export AWSREGION=\"",{"Ref" : "AWS::Region" },"\"\n",
+            "\n# Create deploy path\n",
             "mkdir -p ${DEPLOYPATH}\n",
+            "\n# Prepare EC2 key file\n",
             "cat > ${DEPLOYPATH}/key.pem << _EOF_\n",
             { "Fn::GetAtt": ["handleKeyPair", "keyPair"]},
             "\n_EOF_\n",
-            "chmod 400 ${DEPLOYPATH}/key.pen\n",
-			"aws --region ${S3BUCKETLOCATION} s3 cp --recursive s3://${S3BUCKETNAME}/deploy ${DEPLOYPATH}\n",
+            "chmod 400 ${DEPLOYPATH}/key.pem\n",
+            "\n# Prepare ansible vars file\n",
+            "rm -f ${DEPLOYPATH}/vars.yml\n",
             "echo ngfw_ip: \"${FIREWALLIP}\" >> ${DEPLOYPATH}/vars.yml\n",
             "echo pano_ip: \"${PANORAMAIP}\" >> ${DEPLOYPATH}/vars.yml\n",
             "echo admin_username: \"admin\" >> ${DEPLOYPATH}/vars.yml\n",
@@ -1325,26 +2133,45 @@
             "echo key_filename: \"${DEPLOYPATH}/key.pem\" >> ${DEPLOYPATH}/vars.yml\n",
             "echo authcode1: \"${AUTHCODE1}\" >> ${DEPLOYPATH}/vars.yml\n",  
             "echo authcode2: \"${AUTHCODE2}\" >> ${DEPLOYPATH}/vars.yml\n",      
-            "echo cloud_plugin: \"${CLOUDPLUGINNAME}\" >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo cloud_plugin_name: \"${CLOUDPLUGINNAME}\" >> ${DEPLOYPATH}/vars.yml\n",
+            "echo cloud_plugin_version: \"${CLOUDPLUGINVERSION}\" >> ${DEPLOYPATH}/vars.yml\n",            
             "echo shared_file: \"${DEPLOYPATH}/${SHARED_FILE}\" >> ${DEPLOYPATH}/vars.yml\n",      
             "echo devgroup_file: \"${DEPLOYPATH}/${DEVGROUP_FILE}\" >> ${DEPLOYPATH}/vars.yml\n",      
             "echo template_file: \"${DEPLOYPATH}/${TEMPLATE_FILE}\" >> ${DEPLOYPATH}/vars.yml\n",      
             "echo template_stack_file: \"${DEPLOYPATH}/${TEMPLATE_STACK_FILE}\" >> ${DEPLOYPATH}/vars.yml\n",      
             "echo devgroup_name: \"${DEVGROUP_NAME}\" >> ${DEPLOYPATH}/vars.yml\n",      
             "echo template_name: \"${TEMPLATE_NAME}\" >> ${DEPLOYPATH}/vars.yml\n",      
-            "echo template_stack_name: \"${TEMPLATE_STACK_NAME}\" >> ${DEPLOYPATH}/vars.yml\n",      
-            "pip3.6 install paramiko boto3 ansible\n",
-            "ln -s /bin/pip3.6 /bin/pip3\n",
-            "ansible-galaxy install ${ANSIBLE_REPO}\n",
+            "echo template_stack_name: \"${TEMPLATE_STACK_NAME}\" >> ${DEPLOYPATH}/vars.yml\n",
+            "echo ngfw_hostname: \"${FIREWALLHOSTNAME}\" >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo pano_hostname: \"${PANORAMAHOSTNAME}\" >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo domain: \"${DOMAINNAME}\" >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo timezone: \"${DEVICESTIMEZONE}\" >> ${DEPLOYPATH}/vars.yml\n",
+            "chmod 400 ${DEPLOYPATH}/vars.yml\n",
+            "\n# Prepare source file\n",
+            "rm -f ${DEPLOYPATH}/vars.sh\n",
+            "echo \"#!/bin/bash\" >> ${DEPLOYPATH}/vars.sh\n",
+            "echo DEPLOYPATH=\"${DEPLOYPATH}\" >> ${DEPLOYPATH}/vars.sh\n",
+            "chmod +x ./${DEPLOYPATH}/vars.sh\n",
+            "\n# Download Deployment scripts from S3\n",
+            "aws --region ${S3BUCKETREGION} s3 cp --recursive s3://${S3BUCKETNAME}/deploy ${DEPLOYPATH}\n",
+            "\n# Start build script\n",
             "cd ${DEPLOYPATH}\n",
-            "ansible-playbook ${DEPLOYPATH}/panorama_setup.yml\n",
-            "ansible-playbook ${DEPLOYPATH}/firewall_setup.yml\n",
-            "ansible-playbook ${DEPLOYPATH}/appframework_lab.yml\n",
-			"rm ${DEPLOYPATH}/key.pem\n"
+            "if [ ! -f ./${BUILDSCRIPT} ] ; then /opt/aws/bin/cfn-signal -s false --stack ",{"Ref": "AWS::StackName"}," --region ", {"Ref": "AWS::Region"}, " --resource ${SELF} -r 'No deployment script found'; fi\n",
+            "chmod +x ${DEPLOYPATH}/${BUILDSCRIPT}\n",
+            "#/opt/aws/bin/cfn-signal -s true --stack ",{"Ref": "AWS::StackName"}," --region ", {"Ref": "AWS::Region"}, " --resource ${SELF}\n",
+            "./${BUILDSCRIPT}\n",
+            "\n# Cleanup (done in the script, redundant here)\n",
+			"#rm -f ${DEPLOYPATH}/vars.yml\n",
+			"#rm -f ${DEPLOYPATH}/key.pem\n"
           ]]}
         }		
-	  },
-      "DependsOn": [ "NewPublicSubnet", "sgAPIExplorer", "APIExplorerElasticIP", "handleKeyPair"]
+      },
+      "CreationPolicy": {
+        "ResourceSignal": {
+            "Timeout": "PT1H"
+        }
+      },
+      "DependsOn": [ "NewPublicSubnet", "sgBuilder", "BuilderElasticIP", "handleKeyPair"]
     },
 	
     "WebVM": {
@@ -1381,17 +2208,23 @@
         ],
         "UserData" : { "Fn::Base64" : { "Fn::Join" : ["", [
             "#!/bin/bash\n",
-			"sleep 10s\n",
+			"exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1\n",
+            "sleep 10s\n",
+            "\n# Populate Environment variables\n",
+            "export DEPLOYPATH=\"/tmp/deploy\"\n",
+			"export FIREWALLIP=\"",{"Fn::GetAtt" : [ "FWManagementNetworkInterface", "PrimaryPrivateIpAddress" ]},"\"\n",
 			"ENCPWD=\"",{ "Fn::Base64" : {"Ref" : "AdminPassword" } },"\"\n",
 			"export ADMINPWD=$(echo \"${ENCPWD}\" | /usr/bin/base64 -d -)\n",
 			"export URLENCODEDPWD=$(/usr/bin/python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.argv[1]))' \"${ADMINPWD}\")\n",
-			"export FIREWALLIP=\"",{"Fn::GetAtt" : [ "FWManagementNetworkInterface", "PrimaryPrivateIpAddress" ]},"\"\n",
-			"export FIREWALLCERTURL=\"",{"Ref" : "FirewallCertURL" },"\"\n",
+            "export FIREWALLCERTURL=\"",{"Ref" : "FirewallCertURL" },"\"\n",
 			"export NETBIOSDOMAIN=\"",{"Ref" : "DomainNetBIOSName" },"\"\n",
-			"export S3BUCKETNAME=\"",{"Ref" : "EnvironmentBucketName" },"\"\n",
-			"export ECHOMALWARE=\"",{"Ref" : "EchoMalwareURL" },"\"\n",
-			"export WEBGENCONF=\"",{"Ref" : "WebGenConfURL" },"\"\n",
-			"exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1\n",
+            "export WEBGENCONF=\"",{"Ref" : "WebGenConfURL" },"\"\n",
+            "export BUILDERSCRIPTNAME=\"",{"Ref" : "WebServerBuilderScriptName" },"\"\n",
+            "export BUILDERSCRIPTURL=\"",{"Ref" : "WebServerBuilderScriptURL" },"\"\n",
+            "export SELF=\"WebVM\"\n",
+            "export AWSSTACKNAME=\"",{"Ref" : "AWS::StackName" },"\"\n",
+            "export AWSREGION=\"",{"Ref" : "AWS::Region" },"\"\n",
+             "\n# Configure network and wait until Firewall is up\n",
             "echo \"export new_routers='",{"Fn::GetAtt" : [ "FWPrivate12NetworkInterface", "PrimaryPrivateIpAddress" ]},"'\" >> /etc/dhcp/dhclient-enter-hooks.d/aws-default-route\n",
             "ifdown eth0\n",
             "ifup eth0\n",
@@ -1413,81 +2246,81 @@
             "  sleep 10s\n",
             "done\n",
 			"sleep 120s\n",
-			"wget --no-check-certificate -O /tmp/panca.pem ${FIREWALLCERTURL}\n",
-			"openssl x509 -in /tmp/panca.pem -inform PEM -out /usr/local/share/ca-certificates/panca.crt\n",
+            "\n# Download Firewall CA SSL Certificate\n",
+			"wget --no-check-certificate -O /tmp/appframeworklabca.pem \"${FIREWALLCERTURL}\"\n",
+			"openssl x509 -in /tmp/appframeworklabca.pem -inform PEM -out /usr/local/share/ca-certificates/appframeworklabca.crt\n",
 			"/usr/sbin/update-ca-certificates\n",
+            "\n# Install all required software\n",			
 			"apt-get update\n",
-			"apt install -y wget python python-pip\n",
-			"pip install --cert=/usr/local/share/ca-certificates/panca.crt --upgrade pip==9.0.3\n",
-			"pip install --cert=/usr/local/share/ca-certificates/panca.crt pan-python\n",
-			"pip install --cert=/usr/local/share/ca-certificates/panca.crt boto3 requests awscli\n",
-			"S3BUCKETLOCATION=$(aws --ca-bundle /usr/local/share/ca-certificates/panca.crt s3api get-bucket-location --bucket ${S3BUCKETNAME} --output text)\n",
-			"if [[ $S3BUCKETLOCATION == 'None' ]]; then S3BUCKETLOCATION='us-east-1'; fi\n",
-			"export S3BUCKETLOCATION\n",
-			"aws --region ${S3BUCKETLOCATION} --ca-bundle /usr/local/share/ca-certificates/panca.crt s3 cp s3://${S3BUCKETNAME}/${ECHOMALWARE} /home/ubuntu/echomalware\n",
-			"chmod 755 /home/ubuntu/echomalware\n",
-			"chown ubuntu:ubuntu /home/ubuntu/echomalware\n",
-			"cat <<_EOF_ > /tmp/uid.xml\n",
-			"<uid-message>\n",
-			"  <type>update</type>\n",
-			"  <payload>\n",
-            "    <login>\n",
-            "      <entry name=\"${NETBIOSDOMAIN}\\user1\" ip=\"10.0.1.101\"/>\n",
-            "    </login>\n",
-            "  </payload>\n",
-            "</uid-message>\n",
-			"_EOF_\n",
-            "panxapi.py -h ${FIREWALLIP} -l \"admin:${ADMINPWD}\" -k -t '' > /tmp/.panrc\n",
-			"cd /tmp && panxapi.py -U /tmp/uid.xml\n",
-			"echo ubuntu:${ADMINPWD} | /usr/sbin/chpasswd\n",
-			"sed -i \"s/PasswordAuthentication no/PasswordAuthentication yes/g\" /etc/ssh/sshd_config\n",
-			"systemctl restart sshd\n",
-            "apt-get install -y apache2\n",
-			"systemctl restart apache2\n",
-			"echo '*/15 * * * * cd /tmp && /usr/local/bin/panxapi.py -U uid.xml' > /tmp/crontab_uid.txt\n",
-            "sudo -u ubuntu bash -c 'crontab /tmp/crontab_uid.txt'\n",
-			"sudo -u ubuntu bash -c 'cd /home/ubuntu; git clone https://github.com/ecapuano/web-traffic-generator.git'\n",
-			"aws --region ${S3BUCKETLOCATION} --ca-bundle /usr/local/share/ca-certificates/panca.crt s3 cp s3://${S3BUCKETNAME}/${WEBGENCONF} /home/ubuntu/web-traffic-generator/config.py\n",
-			"chmod 644 /home/ubuntu/web-traffic-generator/config.py\n",
-			"chown ubuntu:ubuntu /home/ubuntu/web-traffic-generator/config.py\n",
-			"sudo -u ubuntu bash -c 'REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt nohup python /home/ubuntu/web-traffic-generator/gen.py 1>>/tmp/webgen.stdout 2>>/tmp/webgen.stderr' &\n"
-          ]]}
+			"apt-get install -y wget python python-pip git apache2 python-setuptools\n",
+			"pip install --cert=/usr/local/share/ca-certificates/appframeworklabca.crt --upgrade pip==9.0.3\n",
+			"pip install --cert=/usr/local/share/ca-certificates/appframeworklabca.crt pan-python boto3 requests awscli\n",
+            "/usr/bin/easy_install --script-dir /opt/aws/bin https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz\n",
+            "sudo -u ubuntu bash -c 'cd /home/ubuntu; git clone https://github.com/ecapuano/web-traffic-generator.git'\n",
+            "wget --no-check-certificate -O \"/home/ubuntu/web-traffic-generator/config.py\" \"${WEBGENCONF}\"\n",
+            "chmod 644 /home/ubuntu/web-traffic-generator/config.py\n",
+            "chown ubuntu:ubuntu /home/ubuntu/web-traffic-generator/config.py\n",
+            "\n# Create deploy path\n",
+            "mkdir -p ${DEPLOYPATH}\n",
+            "\n# Prepare source file\n",
+            "rm -f ${DEPLOYPATH}/vars.sh\n",
+            "echo \"#!/bin/bash\" >> ${DEPLOYPATH}/vars.sh\n",
+            "echo DEPLOYPATH=\"${DEPLOYPATH}\" >> ${DEPLOYPATH}/vars.sh\n",
+            "echo FIREWALLIP=\"${FIREWALLIP}\" >> ${DEPLOYPATH}/vars.sh\n",
+            "echo ADMINPWD=\"${ADMINPWD}\" >> ${DEPLOYPATH}/vars.sh\n",
+            "echo NETBIOSDOMAIN=\"${NETBIOSDOMAIN}\" >> ${DEPLOYPATH}/vars.sh\n",
+            "chmod +x ./${DEPLOYPATH}/vars.sh\n",
+            "\n# Download builder script\n",
+            "wget --no-check-certificate -O \"${DEPLOYPATH}/${BUILDERSCRIPTNAME}\" \"${BUILDERSCRIPTURL}\"\n",
+            "\n# Start build script\n",
+            "if [ ! -f ./${BUILDERSCRIPTNAME} ] ; then /opt/aws/bin/cfn-signal -s false --stack ",{"Ref": "AWS::StackName"}," --region ", {"Ref": "AWS::Region"}, " --resource ${SELF} -r 'No deployment script found'; fi\n",
+            "#REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt /opt/aws/bin/cfn-signal -s true --stack ",{"Ref": "AWS::StackName"}," --region ", {"Ref": "AWS::Region"}, " --resource ${SELF}\n",
+            "chmod +x ${DEPLOYPATH}/${BUILDERSCRIPTNAME}\n",
+            "cd ${DEPLOYPATH}\n",
+            "./${BUILDERSCRIPTNAME}\n",
+            "\n# Cleanup (done in the script, redundant here)\n"
+            ]]}
+        }		
+      },
+      "CreationPolicy": {
+        "ResourceSignal": {
+            "Timeout": "PT1H"
         }
       },
-      "DependsOn": [ "NewWebSubnet", "sgWideOpen", "PublicElasticIP" ]
+      "DependsOn": [ "NewWebSubnet", "sgWideOpen", "PublicElasticIP", "BuilderLinuxInstance"]
     },
 
-   "APIExplorerFQDN" : {
+   "BuilderFQDN" : {
       "Type" : "AWS::Route53::RecordSet",
-	  "Condition" : "ConfRoute53",
+	  "Condition" : "CreateR53Records",
       "Properties" : {
-         "HostedZoneName" : {"Fn::Join" : [ "", [ { "Ref" : "AppHostedZone" }, "." ] ] },
-         "Comment" : "DNS name for API Explorer",  
+         "HostedZoneName" : {"Fn::Join" : [ "", [ { "Fn::If": ["CreateVendorDomain",{"Fn::Sub" : ["${company}.dev.appframework.rocks",{ "company": {"Ref": "Company"}}]},{ "Ref" : "AppHostedZone"}]}, "." ] ] },
+         "Comment" : {"Fn::Join" : [ "", ["DNS name for Provisioning VM on zone ",  { "Fn::If": ["CreateVendorDomain",{"Ref": "DNSZone" },{ "Ref" : "AppHostedZone"}]}]]},
          "Name" : {
             "Fn::Join" : [ "", [
-               {"Ref" : "APIExplorerHostname"}, ".",
-               {"Ref" : "AppHostedZone"}, "."
+               {"Ref" : "BuilderHostname"}, ".",
+               { "Fn::If": ["CreateVendorDomain",{"Fn::Sub" : ["${company}.dev.appframework.rocks",{ "company": {"Ref": "Company"}}]},{ "Ref" : "AppHostedZone"}]}, "."
             ] ]
          },
          "Type" : "A",
          "TTL" : "300",
          "ResourceRecords" : [
-             { "Ref" : "APIExplorerElasticIP" }
+             { "Ref" : "BuilderElasticIP" }
          ]
       },
-	  "DependsOn": [ "APIExplorerElasticIP" ]
+	  "DependsOn": [ "BuilderElasticIP" ]
    },	
 
    "PublicFQDN" : {
       "Type" : "AWS::Route53::RecordSet",
-	  "Condition" : "ConfRoute53",
+	  "Condition" : "CreateR53Records",
       "Properties" : {
-         "HostedZoneName" : {"Fn::Join" : [ "", [ { "Ref" : "AppHostedZone" }, "." ] ] },
-         "Comment" : "DNS name for FW Public IP",  
+         "HostedZoneName" : {"Fn::Join" : [ "", [ { "Fn::If": ["CreateVendorDomain",{"Fn::Sub" : ["${company}.dev.appframework.rocks",{ "company": {"Ref": "Company"}}]},{ "Ref" : "AppHostedZone"}]}, "." ] ] },
+         "Comment" : {"Fn::Join" : [ "", ["DNS name for NGFW Public IP on zone ",  { "Fn::If": ["CreateVendorDomain",{"Ref": "DNSZone" },{ "Ref" : "AppHostedZone"}]}]]},
          "Name" : {
             "Fn::Join" : [ "", [
                {"Ref" : "PublicHostname"}, ".",
-               {"Ref" : "AppHostedZone"}, "."
+               { "Fn::If": ["CreateVendorDomain",{"Fn::Sub" : ["${company}.dev.appframework.rocks",{ "company": {"Ref": "Company"}}]},{ "Ref" : "AppHostedZone"}]}, "."
             ] ]
          },
          "Type" : "A",
@@ -1501,14 +2334,14 @@
    
    "FirewallFQDN" : {
       "Type" : "AWS::Route53::RecordSet",
-	  "Condition" : "ConfRoute53",	  
+	  "Condition" : "CreateR53Records",	  
       "Properties" : {
-         "HostedZoneName" : {"Fn::Join" : [ "", [ { "Ref" : "AppHostedZone" }, "." ] ] },
-         "Comment" : "DNS name for Firewall",  
+         "HostedZoneName" : {"Fn::Join" : [ "", [ { "Fn::If": ["CreateVendorDomain",{"Fn::Sub" : ["${company}.dev.appframework.rocks",{ "company": {"Ref": "Company"}}]},{ "Ref" : "AppHostedZone"}]}, "." ] ] },
+         "Comment" : {"Fn::Join" : [ "", ["DNS name for NGFW Management on zone ",  { "Fn::If": ["CreateVendorDomain",{"Ref": "DNSZone" },{ "Ref" : "AppHostedZone"}]}]]},
          "Name" : {
             "Fn::Join" : [ "", [
                {"Ref" : "FirewallHostname"}, ".",
-               {"Ref" : "AppHostedZone"}, "."
+               { "Fn::If": ["CreateVendorDomain",{"Fn::Sub" : ["${company}.dev.appframework.rocks",{ "company": {"Ref": "Company"}}]},{ "Ref" : "AppHostedZone"}]}, "."
             ] ]
          },
          "Type" : "A",
@@ -1522,14 +2355,14 @@
 
      "PanoramaFQDN" : {
       "Type" : "AWS::Route53::RecordSet",
-	  "Condition" : "ConfRoute53",	  
+	  "Condition" : "CreateR53Records",	  
       "Properties" : {
-         "HostedZoneName" : {"Fn::Join" : [ "", [ { "Ref" : "AppHostedZone" }, "." ] ] },
-         "Comment" : "DNS name for Panorama",  
+         "HostedZoneName" : {"Fn::Join" : [ "", [ { "Fn::If": ["CreateVendorDomain",{"Fn::Sub" : ["${company}.dev.appframework.rocks",{ "company": {"Ref": "Company"}}]},{ "Ref" : "AppHostedZone"}]}, "." ] ] },
+         "Comment" : {"Fn::Join" : [ "", ["DNS name for Panorama Management on zone ",  { "Fn::If": ["CreateVendorDomain",{"Ref": "DNSZone" },{ "Ref" : "AppHostedZone"}]}]]},
          "Name" : {
             "Fn::Join" : [ "", [
                {"Ref" : "PanoramaHostname"}, ".",
-               {"Ref" : "AppHostedZone"}, "."
+               { "Fn::If": ["CreateVendorDomain",{"Fn::Sub" : ["${company}.dev.appframework.rocks",{ "company": {"Ref": "Company"}}]},{ "Ref" : "AppHostedZone"}]}, "."
             ] ]
          },
          "Type" : "A",
@@ -1545,12 +2378,12 @@
       "Type" : "AWS::Route53::RecordSet",
 	  "Condition" : "KaliFQDNCondition",	  
       "Properties" : {
-         "HostedZoneName" : {"Fn::Join" : [ "", [ { "Ref" : "AppHostedZone" }, "." ] ] },
-         "Comment" : "DNS name for Kali Linux",  
+         "HostedZoneName" : {"Fn::Join" : [ "", [ { "Fn::If": ["CreateVendorDomain",{"Fn::Sub" : ["${company}.dev.appframework.rocks",{ "company": {"Ref": "Company"}}]},{ "Ref" : "AppHostedZone"}]}, "." ] ] },
+         "Comment" : {"Fn::Join" : [ "", ["DNS name for Kali Linux on zone ",  { "Fn::If": ["CreateVendorDomain",{"Ref": "DNSZone" },{ "Ref" : "AppHostedZone"}]}]]},
          "Name" : {
             "Fn::Join" : [ "", [
                {"Ref" : "KaliHostname"}, ".",
-               {"Ref" : "AppHostedZone"}, "."
+               { "Fn::If": ["CreateVendorDomain",{"Fn::Sub" : ["${company}.dev.appframework.rocks",{ "company": {"Ref": "Company"}}]},{ "Ref" : "AppHostedZone"}]}, "."
             ] ]
          },
          "Type" : "A",
@@ -1586,7 +2419,7 @@
         "Type": "AWS::Lambda::Function",
         "Properties": {
             "Code": {
-                "S3Bucket": "appframeworklab-lambdas",
+                "S3Bucket": { "Fn::FindInMap" : [ "LambdaBucketsRegionMap", { "Ref" : "AWS::Region" }, "Bucket" ] },
                 "S3Key": "lambdas.zip"
             },
             "Description": "Handle EC2 KeyPair",
@@ -1660,32 +2493,43 @@
       "Description": "VM-Series management interface URL",
       "Value": { "Fn::Join" : ["", [
         "https://",
-        { "Fn::Join" : [ "", [ {"Ref" : "FirewallHostname"}, ".", {"Ref" : "AppHostedZone"} ] ] }
+        { "Fn::Join" : [ "", [ {"Ref" : "FirewallHostname"}, ".", { "Fn::If": ["CreateVendorDomain",{"Fn::Sub" : ["${company}.dev.appframework.rocks",{ "company": {"Ref": "Company"}}]},{ "Ref" : "AppHostedZone"}]} ] ] }
       ]]}
     },
 
 	"KaliLinuxFQDN": {
       "Description": "Kali Linux FQDN",
 	  "Condition" : "ConfDeployKali",
-      "Value": { "Fn::Join" : [ "", [ {"Ref" : "KaliHostname"}, ".", {"Ref" : "AppHostedZone"} ] ] }
+      "Value": { "Fn::Join" : [ "", [ {"Ref" : "KaliHostname"}, ".", { "Fn::If": ["CreateVendorDomain",{"Fn::Sub" : ["${company}.dev.appframework.rocks",{ "company": {"Ref": "Company"}}]},{ "Ref" : "AppHostedZone"}]} ] ] }
     },	  
 
 	"ProvisionFQDN": {
         "Description": "Provisioning VM FQDN",
-        "Value": { "Fn::Join" : [ "", [ {"Ref" : "APIExplorerHostname"}, ".", {"Ref" : "AppHostedZone"} ] ] }
+        "Value": { "Fn::Join" : [ "", [ {"Ref" : "BuilderHostname"}, ".", { "Fn::If": ["CreateVendorDomain",{"Fn::Sub" : ["${company}.dev.appframework.rocks",{ "company": {"Ref": "Company"}}]},{ "Ref" : "AppHostedZone"}]} ] ] }
     },
 
     "PanoramaURL": {
-      "Description": "Panorama URL",
+      "Description": "Panorama management interface URL",
       "Value": { "Fn::Join" : ["", [
         "https://",
-        { "Fn::Join" : [ "", [ {"Ref" : "PanoramaHostname"}, ".", {"Ref" : "AppHostedZone"} ] ] }
+        { "Fn::Join" : [ "", [ {"Ref" : "PanoramaHostname"}, ".", { "Fn::If": ["CreateVendorDomain",{"Fn::Sub" : ["${company}.dev.appframework.rocks",{ "company": {"Ref": "Company"}}]},{ "Ref" : "AppHostedZone"}]} ] ] }
       ]]}
     },
 	
     "PublicIPAddressFQDN": {
       "Description": "Public IP FQDN",
-      "Value": { "Fn::Join" : [ "", [ {"Ref" : "PublicHostname"}, ".", {"Ref" : "AppHostedZone"} ] ] }
-    }
+      "Value": { "Fn::Join" : [ "", [ {"Ref" : "PublicHostname"}, ".", { "Fn::If": ["CreateVendorDomain",{"Fn::Sub" : ["${company}.dev.appframework.rocks",{ "company": {"Ref": "Company"}}]},{ "Ref" : "AppHostedZone"}]} ] ] }
+    },
+
+    "CreatedKeyName": {
+        "Description": "Created EC2 KeyPair Name",
+        "Value": { "Fn::GetAtt": ["handleKeyPair", "keyName"]}
+    },
+
+    "DNSZoneId": {
+        "Condition" : "CreateDNSHostedZone",
+        "Description": "Created DNS Hosted Zone ID",
+        "Value": {"Ref": "DNSZone" }
+    }      
   }
 }

@@ -197,7 +197,7 @@ def main():
     login_banner = module.params['login_banner']
     update_server = module.params['update_server']
     hostname = module.params['hostname']
-    domain = module.params['hostname']
+    domain = module.params['domain']
     devicegroup = module.params['devicegroup']
 
     # Create the device with the appropriate pandevice type
@@ -248,7 +248,7 @@ def main():
         if update_server and ss.update_server != update_server:
             ss.update_server = update_server
             changed = True
-        if hostname and ss.hostame != hostname:
+        if hostname and ss.hostname != hostname:
             ss.hostname = hostname
             changed = True
         if domain and ss.domain != domain:
