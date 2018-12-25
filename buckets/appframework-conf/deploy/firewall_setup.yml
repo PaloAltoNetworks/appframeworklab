@@ -28,16 +28,16 @@
 
   tasks:
     # load variables
-    - name: Include variables (free-form)
+    - name: NGFW Include variables (free-form)
       include_vars: vars.yml
       no_log: 'yes'
 
     # wait for SSH
-    - name: wait for SSH prompt (timeout 10min)
+    - name: NGFW Wait for SSH prompt
       wait_for: port=22 host="{{ngfw_ip}}" timeout=900
 
     # Set admin password
-    - name: Set admin password
+    - name: NGFW Set admin password
       panos_admpwd: ip_address="{{ngfw_ip}}" key_filename="{{key_filename}}" newpassword="{{admin_password}}"
       register: result
       until: not result is failed
@@ -45,7 +45,7 @@
       delay: 30
 
     # set Managment configuration and Panorama
-    - name: Set Management and Panorama
+    - name: NGFW Set Management and Panorama
       panos_mgtconfig:
         ip_address: "{{ngfw_ip}}"
         password: "{{admin_password}}"
@@ -56,20 +56,28 @@
         hostname: "{{ngfw_hostname}}"
         domain: "{{domain}}"
         timezone: "{{timezone}}"
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60
 
-    - name: Add first authcode
+    - name: NGFW Add first authcode
       panos_lic:
         ip_address: "{{ngfw_ip}}"
         password: "{{admin_password}}"
         auth_code: "{{authcode1}}"
         force: true
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60
 
-    # the VM might restart
-    - pause: seconds=30
+    # Wait 60 seconds for restart to begin
+    - pause: seconds=60
 
     # check for 10 times, every 30 seconds, if device
     # is ready, using credentials admin/admin
-    - name: Wait for reboot
+    - name: NGFW Wait for reboot
       panos_check:
         ip_address: "{{ngfw_ip}}"
         username: "{{admin_username}}"
@@ -79,24 +87,32 @@
       retries: 10
       delay: 30
 
-    - name: Add second authcode
+    - name: NGFW Add second authcode
       panos_lic:
         ip_address: "{{ngfw_ip}}"
         password: "{{admin_password}}"
         auth_code: "{{authcode2}}"
         force: true
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60        
 
     # update NGFW software to latest release
-    - name: Upgrade software to latest version
+    - name: NGFW Upgrade Software
       panos_software:
         ip_address: "{{ngfw_ip}}"
         username: "{{admin_username}}"
         password: "{{admin_password}}"
         version: "latest"
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60        
 
     # check for 10 times, every 30 seconds, if device
     # is ready, using credentials admin/admin
-    - name: Wait for reboot
+    - name: NGFW Wait for reboot
       panos_check:
         ip_address: "{{ngfw_ip}}"
         username: "{{admin_username}}"
@@ -107,7 +123,7 @@
       delay: 30
       
     # update content to latest release
-    - name: Update content to latest version
+    - name: NGFW Update Content
       panos_content:
         ip_address: "{{ngfw_ip}}"
         username: "{{admin_username}}"
@@ -115,9 +131,13 @@
         wildfire_update: yes
         content_update: yes
         anti_virus_update: yes
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60        
 
     # Create L3 Trust zone.
-    - name: create L3-Trust zone
+    - name: NGFW Create L3-Trust zone
       panos_zone:
         ip_address: "{{ngfw_ip}}"
         username: "{{admin_username}}"
@@ -125,18 +145,26 @@
         zone: 'L3-Trust'
         mode: 'layer3'
         enable_userid: true
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60        
 
     # Create L3 Untrust zone.
-    - name: create L3-Untrust zone
+    - name: NGFW Create L3-Untrust zone
       panos_zone:
         ip_address: "{{ngfw_ip}}"
         username: "{{admin_username}}"
         password: "{{admin_password}}"
         zone: 'L3-Untrust'
         mode: 'layer3'
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60        
 
     # Management profile
-    - name: Create Management profile for internal interfaces
+    - name: NGFW Create Management profile
       panos_management_profile:
         ip_address: "{{ngfw_ip}}"
         username: "{{admin_username}}"
@@ -147,9 +175,13 @@
         userid_service: true
         response_pages: true
         https: true
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60        
         
     # Create ethernet1/2 in L3-Trust (DHCP with no default route)
-    - name: configure ethernet1/2 in zone L3-Trust with DHCP
+    - name: NGFW Configure ethernet1/2 in zone L3-Trust with DHCP
       panos_interface:
         ip_address: '{{ ngfw_ip }}'
         username: '{{ admin_username }}'
@@ -161,9 +193,13 @@
         create_default_route: false
         state: "present"
         commit: false
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60        
 
     # Create ethernet1/1 in L3-Untrust (DHCP with default route)
-    - name: configure ethernet1/1 in zone L3-Untrust with DHCP
+    - name: NGFW Configure ethernet1/1 in zone L3-Untrust with DHCP
       panos_interface:
         ip_address: '{{ ngfw_ip }}'
         username: '{{ admin_username }}'
@@ -174,3 +210,7 @@
         create_default_route: true
         state: "present"
         commit: true
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60        

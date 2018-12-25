@@ -28,16 +28,16 @@
 
   tasks:
     # Load variables
-    - name: Include variables (free-form)
+    - name: Panorama Include variables (free-form)
       include_vars: vars.yml
       no_log: 'yes'
 
     # Wait for SSH
-    - name: Wait for SSH prompt (timeout 10min)
+    - name: Panorama Wait for SSH prompt
       wait_for: port=22 host="{{pano_ip}}" timeout=900
 
     # Set serial and admin password
-    - name: Set admin password and serial
+    - name: Panorama Set admin password and serial
       panorama_pass_serial:
         ip_address="{{pano_ip}}"
         key_filename="{{key_filename}}"
@@ -49,7 +49,7 @@
       delay: 30
 
     # Set Management Configuration
-    - name: Set Management Config
+    - name: Panorama Set Management Config
       panos_mgtconfig:
         ip_address: "{{pano_ip}}"
         username: "{{admin_username}}"
@@ -60,26 +60,38 @@
         hostname: "{{pano_hostname}}"
         domain: "{{domain}}"
         timezone: "{{timezone}}"
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60        
 
     # Fetch Licenses
-    - name: Fetch licenses
+    - name: Panorama Fetch licenses
       panos_op:
         ip_address: "{{pano_ip}}"
         username: "{{admin_username}}"
         password: "{{admin_password}}"
         cmd: 'request license fetch'
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60        
 
     #  Upgrade Panorama software to latest version
-    - name: Upgrade software
+    - name: Panorama Upgrade software
       panos_software:
         ip_address: "{{pano_ip}}"
         username: "{{admin_username}}"
         password: "{{admin_password}}"
         version: "latest"
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60        
 
     # check for 10 times, every 30 seconds, if Panorama
     # is ready, using credentials admin/admin
-    - name: Wait for reboot
+    - name: Panorama Wait for reboot
       panos_check:
         ip_address: "{{pano_ip}}"
         username: "{{admin_username}}"
@@ -90,9 +102,13 @@
       delay: 30
 
     # Install Cloud Services Plugin
-    - name: Install cloud services plugin
+    - name: Panorama Install cloud services plugin
       panorama_plugin:
         ip_address: "{{pano_ip}}"
         password: "{{admin_password}}"
         plugin: "{{cloud_plugin_name}}"
         version: "{{cloud_plugin_version}}"
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60        

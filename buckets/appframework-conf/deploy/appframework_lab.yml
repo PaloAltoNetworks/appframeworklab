@@ -28,7 +28,7 @@
 
   tasks:
     # load variables
-    - name: include variables (free-form)
+    - name: Lab Include variables (free-form)
       include_vars: vars.yml
       no_log: 'yes'
     # setup appframework lab
@@ -47,12 +47,18 @@
         devgroup_name: "{{devgroup_name}}"
         template_name: "{{template_name}}"
         template_stack_name: "{{template_stack_name}}"
-
-    - pause: seconds=120
-
-    - name: commit all
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60
+    
+    - name: Lab Commit All
       panos_commit:
         ip_address: "{{pano_ip}}"
         username: "{{admin_username}}"
         password: "{{admin_password}}"
         device_group: "{{devgroup_name}}"
+      register: result
+      until: not result is failed
+      retries: 5
+      delay: 60        

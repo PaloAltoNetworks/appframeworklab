@@ -1063,7 +1063,7 @@
         },
         "DomainAdminUser": {
             "AllowedPattern": "[a-zA-Z0-9]*",
-            "Default": "paloalto",
+            "Default": "developer",
             "Description": "User name for the account that will be added as Domain Administrator. This is separate from the default \"Administrator\" account",
             "MaxLength": "25",
             "MinLength": "5",
@@ -1527,7 +1527,7 @@
         "InstanceTenancy": "default",
         "EnableDnsSupport": "true",
         "EnableDnsHostnames": "true",
-        "Tags": [{ "Key": "Name", "Value": "PAN Sample CFT" }]
+        "Tags": [{ "Key": "Name", "Value": "AppFrameworkLab VPC" }]
       }
     },
 
@@ -1578,7 +1578,7 @@
         "CidrBlock": "10.0.0.0/24",
         "VpcId": {"Ref": "NewVPC"},
         "AvailabilityZone": "",
-        "Tags": [{ "Key": "Name", "Value": "PAN Sample CFT" }]
+        "Tags": [{ "Key": "Name", "Value": "AppFrameworkLab Ext Subnet" }]
       },
       "DependsOn": [ "NewVPC" ]
     },
@@ -1589,7 +1589,7 @@
         "CidrBlock": "10.0.1.0/24",
         "AvailabilityZone": { "Fn::GetAtt" : [ "NewPublicSubnet", "AvailabilityZone" ] },
         "VpcId": {"Ref": "NewVPC"},
-        "Tags": [{ "Key": "Name", "Value": "PAN Sample CFT" }]
+        "Tags": [{ "Key": "Name", "Value": "PAppFrameworkLab Int Subnet" }]
       },
       "DependsOn":[ "NewVPC", "NewPublicSubnet" ]
     },
@@ -1597,7 +1597,7 @@
     "igweb": {
       "Type": "AWS::EC2::InternetGateway",
       "Properties": {
-        "Tags": [{ "Key": "Name", "Value": "PAN Sample CFT" }]
+        "Tags": [{ "Key": "Name", "Value": "AppFrameworkLab Internet GW" }]
       }
     },
 
@@ -1646,7 +1646,7 @@
           }
         ],
         "GroupSet": [{"Ref": "sgWideOpen"}],
-        "Tags": [{"Key": "Name","Value": "Kali Intf"}]
+        "Tags": [{"Key": "Name","Value":"AppFrameworkLab Kali Linux Intf"}]
       },
       "DependsOn": [ "sgWideOpen" ]
     },
@@ -1664,7 +1664,7 @@
           }
         ],
         "GroupSet": [{"Ref": "sgPanorama"}],
-        "Tags": [{"Key": "Name","Value": "Panorama Intf"}]
+        "Tags": [{"Key": "Name","Value": "AppFrameworkLab Panorama Security Group"}]
       },
       "DependsOn": [ "sgPanorama" ]
     },
@@ -1682,7 +1682,7 @@
           }
         ],
         "GroupSet": [{"Ref": "sgBuilder"}],
-        "Tags": [{"Key": "Name","Value": "Builder Intf"}]
+        "Tags": [{"Key": "Name","Value": "AppFrameworkLab Provisioning VM Intf"}]
       },
       "DependsOn": [ "sgBuilder" ]
     },
@@ -1700,7 +1700,7 @@
           }
         ],
         "GroupSet": [{"Ref": "sgWideOpen"}],
-        "Tags": [{"Key": "Name","Value": "AWS Firewall MGMT"}]
+        "Tags": [{"Key": "Name","Value": "AppFrameworkLab NGFW Mgmt Intf"}]
       },
       "DependsOn": [ "sgWideOpen" ]
     },
@@ -1718,7 +1718,7 @@
           }
         ],
         "GroupSet": [{"Ref": "sgWideOpen"}],
-        "Tags": [{"Key": "Name","Value": "AWS Firewall E1/1"}]
+        "Tags": [{"Key": "Name","Value": "AppFrameworkLab NGFW Ext Intf E1/1"}]
       },
       "DependsOn": [ "sgWideOpen" ]
     },
@@ -1736,7 +1736,7 @@
           }
         ],
         "GroupSet": [{"Ref": "sgWideOpen"}],
-        "Tags": [{"Key": "Name","Value": "AWS Firewall E1/2"}]
+        "Tags": [{"Key": "Name","Value": "AppFrameworkLab NGFW Int Intf E1/2"}]
       },
       "DependsOn": [ "sgWideOpen" ]
     },
@@ -1790,9 +1790,9 @@
     "sgWideOpen": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "Wide open security group",
+        "GroupDescription": "AppFrameworkLab NGFW Security Group",
         "VpcId": {"Ref": "NewVPC"},
-         "Tags": [{"Key": "Name","Value": "Lab External SG"}],
+         "Tags": [{"Key": "Name","Value": "AppFrameworkLab NGFW SG"}],
         "SecurityGroupIngress" : [
           {
             "IpProtocol": "-1",
@@ -1991,7 +1991,7 @@
         ],
         "KeyName":   { "Fn::GetAtt": ["handleKeyPair", "keyName"]},
         "Monitoring": "false",
-        "Tags": [{ "Key": "Name", "Value": "AWS NGFW" }],
+        "Tags": [{ "Key": "Name", "Value": "AppFrameworkLab Firewall" }],
         "NetworkInterfaces": [
           {
             "NetworkInterfaceId": { "Ref": "FWManagementNetworkInterface"},
@@ -2022,7 +2022,7 @@
         "InstanceType": "t2.xlarge",
         "KeyName":  { "Fn::GetAtt": ["handleKeyPair", "keyName"]},
         "Monitoring": "false",
-        "Tags": [{ "Key": "Name", "Value": "Panorama" }],
+        "Tags": [{ "Key": "Name", "Value": "AppFrameworkLab Panorama" }],
         "NetworkInterfaces": [
           {
             "NetworkInterfaceId": { "Ref": "PanoramaNetworkInterface"},
@@ -2043,7 +2043,7 @@
         "InstanceType": "t2.micro",
         "KeyName": { "Ref": "ServerKeyName" },
         "Monitoring": "false",
-        "Tags": [{ "Key": "Name", "Value": "Kali Linux" }],
+        "Tags": [{ "Key": "Name", "Value": "AppFrameworkLab Kali Linux" }],
         "NetworkInterfaces": [
           {
             "NetworkInterfaceId": { "Ref": "KaliNetworkInterface"},
@@ -2064,7 +2064,7 @@
         "InstanceType": "t2.medium",
         "KeyName": { "Ref": "ServerKeyName" },
         "Monitoring": "false",
-        "Tags": [{ "Key": "Name", "Value": "Builder VM" }],
+        "Tags": [{ "Key": "Name", "Value": "AppFrameworkLab Provisioning VM" }],
         "NetworkInterfaces": [
           {
             "NetworkInterfaceId": { "Ref": "BuilderNetworkInterface"},
@@ -2156,7 +2156,7 @@
             "aws --region ${S3BUCKETREGION} s3 cp --recursive s3://${S3BUCKETNAME}/deploy ${DEPLOYPATH}\n",
             "\n# Start build script\n",
             "cd ${DEPLOYPATH}\n",
-            "if [ ! -f ./${BUILDSCRIPT} ] ; then /opt/aws/bin/cfn-signal -s false --stack ",{"Ref": "AWS::StackName"}," --region ", {"Ref": "AWS::Region"}, " --resource ${SELF} -r 'No deployment script found'; fi\n",
+            "if [ ! -f ${DEPLOYPATH}/${BUILDSCRIPT} ] ; then /opt/aws/bin/cfn-signal -s false --stack ",{"Ref": "AWS::StackName"}," --region ", {"Ref": "AWS::Region"}, " --resource ${SELF} -r 'No deployment script found'; fi\n",
             "chmod +x ${DEPLOYPATH}/${BUILDSCRIPT}\n",
             "#/opt/aws/bin/cfn-signal -s true --stack ",{"Ref": "AWS::StackName"}," --region ", {"Ref": "AWS::Region"}, " --resource ${SELF}\n",
             "./${BUILDSCRIPT}\n",
@@ -2184,7 +2184,7 @@
         "InstanceType": "t2.micro",
         "KeyName": { "Ref": "ServerKeyName" },
         "Monitoring": "false",
-        "Tags": [{"Key": "Name","Value": "Linux Web Server"}],
+        "Tags": [{"Key": "Name","Value": "AppFrameworkLab Linux Web Server"}],
         "NetworkInterfaces": [
           {
             "DeleteOnTermination": "true",
@@ -2221,9 +2221,10 @@
             "export WEBGENCONF=\"",{"Ref" : "WebGenConfURL" },"\"\n",
             "export BUILDERSCRIPTNAME=\"",{"Ref" : "WebServerBuilderScriptName" },"\"\n",
             "export BUILDERSCRIPTURL=\"",{"Ref" : "WebServerBuilderScriptURL" },"\"\n",
-            "export SELF=\"WebVM\"\n",
-            "export AWSSTACKNAME=\"",{"Ref" : "AWS::StackName" },"\"\n",
-            "export AWSREGION=\"",{"Ref" : "AWS::Region" },"\"\n",
+            "#export SELF=\"WebVM\"\n",
+            "#export AWSSTACKNAME=\"",{"Ref" : "AWS::StackName" },"\"\n",
+            "#export AWSREGION=\"",{"Ref" : "AWS::Region" },"\"\n",
+            "export WAITHANDLEURL=\"",{"Ref" : "WebVMWaitHandle" },"\"\n",
              "\n# Configure network and wait until Firewall is up\n",
             "echo \"export new_routers='",{"Fn::GetAtt" : [ "FWPrivate12NetworkInterface", "PrimaryPrivateIpAddress" ]},"'\" >> /etc/dhcp/dhclient-enter-hooks.d/aws-default-route\n",
             "ifdown eth0\n",
@@ -2273,21 +2274,29 @@
             "\n# Download builder script\n",
             "wget --no-check-certificate -O \"${DEPLOYPATH}/${BUILDERSCRIPTNAME}\" \"${BUILDERSCRIPTURL}\"\n",
             "\n# Start build script\n",
-            "if [ ! -f ./${BUILDERSCRIPTNAME} ] ; then /opt/aws/bin/cfn-signal -s false --stack ",{"Ref": "AWS::StackName"}," --region ", {"Ref": "AWS::Region"}, " --resource ${SELF} -r 'No deployment script found'; fi\n",
-            "#REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt /opt/aws/bin/cfn-signal -s true --stack ",{"Ref": "AWS::StackName"}," --region ", {"Ref": "AWS::Region"}, " --resource ${SELF}\n",
-            "chmod +x ${DEPLOYPATH}/${BUILDERSCRIPTNAME}\n",
             "cd ${DEPLOYPATH}\n",
+            "if [ ! -f ${DEPLOYPATH}/${BUILDERSCRIPTNAME} ] ; then REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt /opt/aws/bin/cfn-signal -s false -r 'No deployment script found' ${WAITHANDLEURL}; fi\n",
+            "#REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt /opt/aws/bin/cfn-signal -s true ${WAITHANDLEURL}\n",
+            "chmod +x ${DEPLOYPATH}/${BUILDERSCRIPTNAME}\n",
             "./${BUILDERSCRIPTNAME}\n",
             "\n# Cleanup (done in the script, redundant here)\n"
             ]]}
         }		
       },
-      "CreationPolicy": {
-        "ResourceSignal": {
-            "Timeout": "PT1H"
-        }
-      },
       "DependsOn": [ "NewWebSubnet", "sgWideOpen", "PublicElasticIP", "BuilderLinuxInstance"]
+    },
+    "WebVMWaitCondition": {
+        "Type": "AWS::CloudFormation::WaitCondition",
+        "DependsOn": "WebVM",
+        "Properties": {
+            "Handle": {
+                "Ref": "WebVMWaitHandle"
+            },
+            "Timeout": "3600"
+        }
+    },
+    "WebVMWaitHandle": {
+        "Type": "AWS::CloudFormation::WaitConditionHandle"
     },
 
    "BuilderFQDN" : {

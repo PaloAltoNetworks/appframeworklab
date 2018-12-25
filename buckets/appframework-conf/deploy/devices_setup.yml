@@ -3,13 +3,13 @@
   gather_facts: False
 
   tasks:
-  - name: Configure Panorama
+  - name: Start Configure Panorama
     shell: ansible-playbook panorama_setup.yml
     async: 3400
     poll: 0
     register: firewall
 
-  - name: Configure Firewall
+  - name: Panorama Configure Firewall
     shell: ansible-playbook firewall_setup.yml
     async: 3400
     poll: 0

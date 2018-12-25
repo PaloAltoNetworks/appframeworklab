@@ -1,14 +1,17 @@
 #!/bin/bash
 CFNSIGNAL="/opt/aws/bin/cfn-signal"
+
 # True if this is the first run
 FIRSTRUN=true
+
 if [ ! -x "$CFNSIGNAL" ]; then
     echo "cfn-signal not found in: ${CFNSIGNAL}"
     FIRSTRUN=false
 fi
-if [ -z "$SELF" ]; then FIRSTRUN=false; fi
-if [ -z "$AWSSTACKNAME" ]; then FIRSTRUN=false; fi
-if [ -z "$AWSREGION" ]; then FIRSTRUN=false; fi
+#if [ -z "$SELF" ]; then FIRSTRUN=false; fi
+#if [ -z "$AWSSTACKNAME" ]; then FIRSTRUN=false; fi
+#if [ -z "$AWSREGION" ]; then FIRSTRUN=false; fi
+if [ -z "$WAITHANDLEURL" ]; then FIRSTRUN=false; fi
 echo "Build script started, FIRSTRUN is ${FIRSTRUN}"
 
 # Source script file
@@ -16,19 +19,32 @@ if [ ! -x ./vars.sh ]; then
     msg="Cannot find vars.sh file, aborting..."
     echo $msg
     if [ "${FIRSTRUN}" = true ]; then
-        REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt ${CFNSIGNAL} -s false --stack ${AWSSTACKNAME} --region ${AWSREGION} --resource ${SELF} -r ${msg}
+        echo "FIRSTRUN: Sending CFN fail signal!"
+        REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt ${CFNSIGNAL} -s false -r ${msg} ${WAITHANDLEURL}
     fi
     exit 1
 fi
 
 source ./vars.sh
+
+if [  -z "$DEPLOYPATH"  ]; then
+    msg="DEPLOYPATH variable not set, aborting..."
+    echo $msg
+    if [ "${FIRSTRUN}" = true ]; then
+        echo "FIRSTRUN: Sending CFN fail signal!"    
+        REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt ${CFNSIGNAL} -s false -r ${msg} ${WAITHANDLEURL}
+    fi
+    exit 1
+fi
+
 cd ${DEPLOYPATH}
 
 if [ ! -r "/home/ubuntu/web-traffic-generator/config.py" ]; then
     msg="Cannot find /home/ubuntu/web-traffic-generator/config.py, aborting..."
     echo $msg
     if [ "${FIRSTRUN}" = true]; then
-        REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt ${CFNSIGNAL} -s false --stack ${AWSSTACKNAME} --region ${AWSREGION} --resource ${SELF} -r ${msg}
+        echo "FIRSTRUN: Sending CFN fail signal!"    
+        REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt ${CFNSIGNAL} -s false -r ${msg} ${WAITHANDLEURL}
     fi
     exit 1
 fi
@@ -37,7 +53,8 @@ if [  -z "$FIREWALLIP"  ]; then
     msg="FIREWALLIP variable not set, aborting..."
     echo $msg
     if [ "${FIRSTRUN}" = true ]; then
-        REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt ${CFNSIGNAL} -s false --stack ${AWSSTACKNAME} --region ${AWSREGION} --resource ${SELF} -r ${msg}
+        echo "FIRSTRUN: Sending CFN fail signal!"    
+        REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt ${CFNSIGNAL} -s false -r ${msg} ${WAITHANDLEURL}
     fi
     exit 1
 fi
@@ -46,7 +63,8 @@ if [  -z "$ADMINPWD"  ]; then
     msg="ADMINPWD variable not set, aborting..."
     echo $msg
     if [ "${FIRSTRUN}" = true ]; then
-        REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt ${CFNSIGNAL} -s false --stack ${AWSSTACKNAME} --region ${AWSREGION} --resource ${SELF} -r ${msg}
+        echo "FIRSTRUN: Sending CFN fail signal!"    
+        REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt ${CFNSIGNAL} -s false -r ${msg} ${WAITHANDLEURL}
     fi
     exit 1
 fi
@@ -55,7 +73,8 @@ if [  -z "$NETBIOSDOMAIN"  ]; then
     msg="NETBIOSDOMAIN variable not set, aborting..."
     echo $msg
     if [ "${FIRSTRUN}" = true ]; then
-        REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt ${CFNSIGNAL} -s false --stack ${AWSSTACKNAME} --region ${AWSREGION} --resource ${SELF} -r ${msg}
+        echo "FIRSTRUN: Sending CFN fail signal!"    
+        REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt ${CFNSIGNAL} -s false -r ${msg} ${WAITHANDLEURL}
     fi
     exit 1
 fi
@@ -113,8 +132,8 @@ fi
 echo "Starting web generator in background"
 sudo -u ubuntu /home/ubuntu/webgen.sh &
 
-# Send cfn-success p rovisioning is complete
-echo "Sending CFN success signal!"
+# Send cfn-success provisioning is complete
 if [ "${FIRSTRUN}" = true ]; then
-    REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt ${CFNSIGNAL} -s true --stack ${AWSSTACKNAME} --region ${AWSREGION} --resource ${SELF}
+    echo "FIRSTRUN: Sending CFN success signal!"
+    REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt ${CFNSIGNAL} -s true ${WAITHANDLEURL}
 fi
