@@ -1,0 +1,272 @@
+{
+	"AWSTemplateFormatVersion": "2010-09-09",
+	"Description": "Palo Alto Networks AppFramework Lab Setup",
+	"Metadata": {
+		"AWS::CloudFormation::Interface": {
+			"ParameterGroups": [
+				{
+					"Label": {
+						"default": "Basic Configuration - REQUIRED"
+					},
+					"Parameters": [
+                        "company",
+                        "apiKey",
+                        "ConfigureRoute53"
+					]
+				},
+				{
+					"Label": {
+						"default": "Advanced Configuration - General"
+					},
+					"Parameters": [
+                        "keyPairPrefix"
+                    ]
+                }	
+            ],	
+			"ParameterLabels": {
+                "company": {
+                    "default": "Company"
+                },
+                "apiKey": {
+                    "default": "DNS AutoConfig API Key"
+                },
+                "keyPairPrefix": {
+                    "default": "EC2 KeyPair Prefix"
+                },
+				"ConfigureRoute53": {
+					"default": "Configure Route53"
+				}
+			}
+		}
+	},
+	"Parameters": {
+		"company": {
+			"Description": "DNS Subdomain name (alphanum, no spaces)",
+			"Type": "String"
+        },
+        "apiKey": {
+            "Description": "DNS Automatic Configuration API Key",
+            "Type": "String",
+			"NoEcho": "true"
+        },
+        "keyPairPrefix": {
+            "Description": "EC2 Panorama/NGFW Key Pair Prefix",
+            "Type": "String",
+            "Default": "panw-appframework"
+        },
+		"ConfigureRoute53": {
+			"AllowedValues": [
+				"true",
+				"false"
+			],
+			"Default": "true",
+			"Description": "Dynamically Configure Route53 Hosted Zone",
+			"Type": "String"
+		}
+    },
+	"Conditions" : {
+		"ConfRoute53" : {"Fn::Equals" : [{"Ref" : "ConfigureRoute53"}, "true"]}
+	},
+    "Resources": {
+        "LambdaEC2Role": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version" : "2012-10-17",
+                    "Statement": [{
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": [ "lambda.amazonaws.com" ]
+                        },
+                        "Action": [ "sts:AssumeRole" ]
+                    }]
+                },
+                "ManagedPolicyArns": [
+                    { "Ref": "EC2KeyPairPolicy" },
+                    { "Ref": "LambdaExecutionPolicy"}
+                ]
+            }
+        },
+        "LambdaR53Role": {
+            "Type": "AWS::IAM::Role",
+            "Condition" : "ConfRoute53",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version" : "2012-10-17",
+                    "Statement": [{
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": [ "lambda.amazonaws.com" ]
+                        },
+                        "Action": [ "sts:AssumeRole" ]
+                    }]
+                },
+                "ManagedPolicyArns": [
+                    { "Ref": "R53GetHostedZonePolicy" },
+                    { "Ref": "LambdaExecutionPolicy"}
+                ]
+            }
+        },
+
+        "RegisterDNSFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Condition" : "ConfRoute53",
+            "Properties": {
+                "Code": {
+                    "S3Bucket": "appframeworklab-lambdas",
+                    "S3Key": "lambdas.zip"
+                },
+                "Description": "Register DNS subdomain in appframework.rocks",
+                "Handler": "index.getRoute53",
+                "Role": {"Fn::GetAtt" : [ "LambdaR53Role", "Arn" ] },
+                "Runtime": "nodejs8.10",
+                "Timeout": 30
+            },
+            "DependsOn": [
+                "LambdaR53Role"
+            ]
+        },
+
+        "EC2HandleKeysFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Code": {
+                    "S3Bucket": "appframeworklab-lambdas",
+                    "S3Key": "lambdas.zip"
+                },
+                "Description": "Handle EC2 KeyPair",
+                "Handler": "index.handleKeyPair",
+                "Role": {"Fn::GetAtt" : [ "LambdaEC2Role", "Arn" ] },
+                "Runtime": "nodejs8.10",
+                "Timeout": 30
+            },
+            "DependsOn": [
+                "LambdaEC2Role"
+            ]
+        },
+
+        "registerDNS": {
+            "Type": "Custom::RunRegisterDNS",
+            "Condition" : "ConfRoute53",
+            "Properties": {
+                "ServiceToken": { "Fn::GetAtt" : ["RegisterDNSFunction", "Arn"] },
+                "company": {"Ref": "company"},
+                "apiKey": { "Ref": "apiKey"},
+                "DNSZone": {"Ref": "DNSZone" }
+            },
+            "DependsOn": [
+                "DNSZone",
+                "RegisterDNSFunction"
+            ]
+        },
+
+        "handleKeyPair": {
+            "Type": "Custom::handleKeyPair",
+            "Properties": {
+                "ServiceToken": { "Fn::GetAtt" : ["EC2HandleKeysFunction", "Arn"] },
+                "keyName": {"Ref": "keyPairPrefix"},
+                "stackName": { "Ref": "AWS::StackName" },
+                "targetBucket": { "Ref": "ConfigBucket"},
+                "keyPath": {"Ref": "configBucketKeyPath" }
+            },
+            "DependsOn": [
+                "ConfigBucket",
+                "EC2HandleKeysFunction",
+                "cloneConfigBucket"
+            ]
+        },
+
+        "EC2KeyPairPolicy": {
+            "Type": "AWS::IAM::ManagedPolicy",
+            "Properties": {
+                "Description" : "EC2 KeyPair Creation Policy",
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": "ec2:CreateKeyPair",
+                            "Resource": "*"
+                        },
+                        {
+                            "Effect": "Allow",
+                            "Action": "ec2:DeleteKeyPair",
+                            "Resource": "*"
+                        }
+                    ]
+                }
+            }
+        },
+        "LambdaExecutionPolicy": {
+            "Type": "AWS::IAM::ManagedPolicy",
+            "Properties": {
+                "Description" : "Lambda Execution Policy",
+                "PolicyDocument" : {
+                    "Version" : "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "logs:CreateLogGroup",
+                                "logs:CreateLogStream",
+                                "logs:PutLogEvents"
+                            ],
+                            "Resource": "arn:aws:logs:*:*:*"
+                        }
+                    ]
+                }
+            }
+        },
+        "R53GetHostedZonePolicy": {
+            "Type": "AWS::IAM::ManagedPolicy",
+            "Condition" : "ConfRoute53",
+            "Properties": {
+                "Description" : "Lambda Execution Policy",
+                "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": "route53:GetHostedZone",
+                            "Resource": { 
+                                "Fn::Sub" : [
+                                    "arn:aws:route53:::hostedzone/${zoneid}",
+                                    { "zoneid" : { "Ref": "DNSZone" }}
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "DependsOn": [
+                "DNSZone"
+            ]
+        },
+        "DNSZone" : {
+            "Type" : "AWS::Route53::HostedZone",
+            "Condition" : "ConfRoute53",
+            "Properties": {
+                "HostedZoneConfig": {
+                  "Comment": "Application Framework Hosted Zone"
+                },
+                "Name": {
+                    "Fn::Sub" : [
+                        "${company}.dev.appframework.rocks",
+                        { "company": {"Ref": "company"}}
+                    ]
+                }
+            }
+        }    
+    },
+    "Outputs": {
+        "DNSZoneId": {
+            "Condition" : "ConfRoute53",
+            "Description": "DNS Hosted Zone ID",
+            "Value": {"Ref": "DNSZone" }
+        },
+        "CreatedKeyPair": {
+            "Description": "Created EC2 Key Pair",
+            "Value": { "Fn::GetAtt": ["handleKeyPair", "keyPair"]}
+        }
+    }
+}

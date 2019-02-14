@@ -85,7 +85,8 @@
                         "WebGenConfURL",
                         "WebServerBuilderScriptURL",
                         "WebServerBuilderScriptName",
-						"CloudPluginName",
+                        "PanOSVersion",
+                        "CloudPluginName",
                         "CloudPluginVersion",
                         "EnvironmentBucketName",
                         "EnvironmentBucketRegion",
@@ -185,6 +186,9 @@
 				},
 				"CloudPluginVersion":{
 					"default": "Cloud Plugin Version"
+                },                
+				"PanOSVersion":{
+					"default": "PanOS Version"
 				},                
 				"FirewallCertURL":{
 					"default": "Firewall Cert URL"
@@ -913,7 +917,9 @@
 
 		"AppHostedZone": {
 			"Description": "DNS Domain Name or Route53 Hosted Zone Name (i.e. appframework.mycompany.com)",
-			"Type": "String"
+            "Type": "String",
+			"MaxLength": "32",
+			"MinLength": "3"
 		},
 
 		"BuilderHostname":{
@@ -963,6 +969,12 @@
 			"Type": "String",
 			"Default": "latest"
 		},
+
+		"PanOSVersion":{
+			"Description": "NGFW and Panorama Version",
+			"Type": "String",
+			"Default": "8.1.6"
+        },
 
 		"AnsibleRepo":{
 			"Description": "Ansible Pan Repository URL",
@@ -1607,61 +1619,6 @@
       }
     },
 
-    "KaliNetworkInterface": {
-      "Type": "AWS::EC2::NetworkInterface",
-	   "Condition" : "ConfDeployKali",	  
-      "Properties": {
-        "Description": "Kali Network Interface",
-        "SubnetId": {"Ref": "NewPublicSubnet"},
-        "SourceDestCheck": "false",
-        "PrivateIpAddresses": [
-          {
-            "PrivateIpAddress": "10.0.0.88",
-            "Primary": "true"
-          }
-        ],
-        "GroupSet": [{"Ref": "sgWideOpen"}],
-        "Tags": [{"Key": "Name","Value":"AppFrameworkLab Kali Linux Intf"}]
-      },
-      "DependsOn": [ "sgWideOpen" ]
-    },
-
-    "PanoramaNetworkInterface": {
-      "Type": "AWS::EC2::NetworkInterface",
-      "Properties": {
-        "Description": "Panorama Network Interface",
-        "SubnetId": {"Ref": "NewPublicSubnet"},
-        "SourceDestCheck": "false",
-        "PrivateIpAddresses": [
-          {
-            "PrivateIpAddress": "10.0.0.20",
-            "Primary": "true"
-          }
-        ],
-        "GroupSet": [{"Ref": "sgPanorama"}],
-        "Tags": [{"Key": "Name","Value": "AppFrameworkLab Panorama Security Group"}]
-      },
-      "DependsOn": [ "sgPanorama" ]
-    },
-	
-    "BuilderNetworkInterface": {
-      "Type": "AWS::EC2::NetworkInterface",
-      "Properties": {
-        "Description": "Provisioning VM Network Interface",
-        "SubnetId": {"Ref": "NewPublicSubnet"},
-        "SourceDestCheck": "false",
-        "PrivateIpAddresses": [
-          {
-            "PrivateIpAddress": "10.0.0.55",
-            "Primary": "true"
-          }
-        ],
-        "GroupSet": [{"Ref": "sgBuilder"}],
-        "Tags": [{"Key": "Name","Value": "AppFrameworkLab Provisioning VM Intf"}]
-      },
-      "DependsOn": [ "sgBuilder" ]
-    },
-
     "FWManagementNetworkInterface": {
       "Type": "AWS::EC2::NetworkInterface",
       "Properties": {
@@ -1971,14 +1928,22 @@
         "Monitoring": "false",
         "Tags": [{ "Key": "Name", "Value": "AppFrameworkLab Panorama" }],
         "NetworkInterfaces": [
-          {
-            "AssociatePublicIpAddress": "true",
-            "NetworkInterfaceId": { "Ref": "PanoramaNetworkInterface"},
-            "DeviceIndex": 0
-          }
+            {
+                "AssociatePublicIpAddress": "true",
+                "DeviceIndex": 0,
+                "Description": "Panorama Network Interface",
+                "SubnetId": {"Ref": "NewPublicSubnet"},
+                "PrivateIpAddresses": [
+                    {
+                    "PrivateIpAddress": "10.0.0.20",
+                    "Primary": "true"
+                    }
+                ],
+                "GroupSet": [{"Ref": "sgPanorama"}]
+            }
         ]
       },
-      "DependsOn": [ "PanoramaNetworkInterface", "NewPublicSubnet", "handleKeyPair" ]
+      "DependsOn": [ "sgPanorama", "NewPublicSubnet", "handleKeyPair" ]
     },
 
      "KaliLinuxInstance": {
@@ -1995,7 +1960,15 @@
         "NetworkInterfaces": [
           {
             "AssociatePublicIpAddress": "true",
-            "NetworkInterfaceId": { "Ref": "KaliNetworkInterface"},
+            "Description": "Kali Network Interface",
+            "SubnetId": {"Ref": "NewPublicSubnet"},
+            "PrivateIpAddresses": [
+                {
+                  "PrivateIpAddress": "10.0.0.88",
+                  "Primary": "true"
+                }
+            ],
+            "GroupSet": [{"Ref": "sgWideOpen"}],
             "DeviceIndex": 0
           }
         ]
@@ -2017,8 +1990,16 @@
         "NetworkInterfaces": [
           {
             "AssociatePublicIpAddress": "true",
-            "NetworkInterfaceId": { "Ref": "BuilderNetworkInterface"},
-            "DeviceIndex": 0
+            "DeviceIndex": 0,
+            "Description": "Provisioning VM Network Interface",
+            "SubnetId": {"Ref": "NewPublicSubnet"},
+            "PrivateIpAddresses": [
+                {
+                  "PrivateIpAddress": "10.0.0.55",
+                  "Primary": "true"
+                }
+            ],
+            "GroupSet": [{"Ref": "sgBuilder"}]
           }
         ],
         "UserData" : { "Fn::Base64" : { "Fn::Join" : ["", [
@@ -2055,13 +2036,14 @@
             "export S3BUCKETNAME=\"",{"Ref" : "EnvironmentBucketName" },"\"\n",
             "export S3BUCKETREGION=\"",{"Ref" : "EnvironmentBucketRegion" },"\"\n",
 			"export CLOUDPLUGINNAME=\"",{"Ref" : "CloudPluginName" },"\"\n",
-			"export CLOUDPLUGINVERSION=\"",{"Ref" : "CloudPluginVersion" },"\"\n",
+            "export CLOUDPLUGINVERSION=\"",{"Ref" : "CloudPluginVersion" },"\"\n",
+			"export PANOSVERSION=\"",{"Ref" : "PanOSVersion" },"\"\n",            
             "export PANORAMAHOSTNAME=\"",{"Ref" : "PanoramaHostname" },"\"\n",
             "export FIREWALLHOSTNAME=\"",{"Ref" : "FirewallHostname" },"\"\n",
             "export DOMAINNAME=\"",{ "Fn::If": ["CreateVendorDomain",{"Fn::Sub" : ["${company}.dev.appframework.rocks",{ "company": {"Ref": "Company"}}]},{ "Ref" : "AppHostedZone"}]},"\"\n",
             "export DEVICESTIMEZONE=\"",{"Ref" : "DevicesTimeZone" },"\"\n",
 			"export FIREWALLIP=\"",{"Fn::GetAtt" : [ "FWManagementNetworkInterface", "PrimaryPrivateIpAddress" ]},"\"\n",
-            "export PANORAMAIP=\"",{"Fn::GetAtt" : [ "PanoramaNetworkInterface", "PrimaryPrivateIpAddress" ]},"\"\n",
+            "export PANORAMAIP=\"",{"Fn::GetAtt" : [ "PanoramaInstance", "PrivateIp" ]},"\"\n",
             "export BUILDSCRIPT=\"",{"Ref" : "BuildScript" },"\"\n",
             "export SELF=\"BuilderLinuxInstance\"\n",
             "export AWSSTACKNAME=\"",{"Ref" : "AWS::StackName" },"\"\n",
@@ -2075,32 +2057,33 @@
             "chmod 400 ${DEPLOYPATH}/key.pem\n",
             "\n# Prepare ansible vars file\n",
             "rm -f ${DEPLOYPATH}/vars.yml\n",
-            "echo ngfw_ip: \"${FIREWALLIP}\" >> ${DEPLOYPATH}/vars.yml\n",
-            "echo pano_ip: \"${PANORAMAIP}\" >> ${DEPLOYPATH}/vars.yml\n",
-            "echo admin_username: \"admin\" >> ${DEPLOYPATH}/vars.yml\n",
-            "echo admin_password: \"${ADMINPWD}\" >> ${DEPLOYPATH}/vars.yml\n",      
-            "echo pano_serial: \"${PANORAMASERIAL}\" >> ${DEPLOYPATH}/vars.yml\n",          
-            "echo key_filename: \"${DEPLOYPATH}/key.pem\" >> ${DEPLOYPATH}/vars.yml\n",
-            "echo authcode1: \"${AUTHCODE1}\" >> ${DEPLOYPATH}/vars.yml\n",  
-            "echo authcode2: \"${AUTHCODE2}\" >> ${DEPLOYPATH}/vars.yml\n",      
-            "echo cloud_plugin_name: \"${CLOUDPLUGINNAME}\" >> ${DEPLOYPATH}/vars.yml\n",
-            "echo cloud_plugin_version: \"${CLOUDPLUGINVERSION}\" >> ${DEPLOYPATH}/vars.yml\n",            
-            "echo shared_file: \"${DEPLOYPATH}/${SHARED_FILE}\" >> ${DEPLOYPATH}/vars.yml\n",      
-            "echo devgroup_file: \"${DEPLOYPATH}/${DEVGROUP_FILE}\" >> ${DEPLOYPATH}/vars.yml\n",      
-            "echo template_file: \"${DEPLOYPATH}/${TEMPLATE_FILE}\" >> ${DEPLOYPATH}/vars.yml\n",      
-            "echo template_stack_file: \"${DEPLOYPATH}/${TEMPLATE_STACK_FILE}\" >> ${DEPLOYPATH}/vars.yml\n",      
-            "echo devgroup_name: \"${DEVGROUP_NAME}\" >> ${DEPLOYPATH}/vars.yml\n",      
-            "echo template_name: \"${TEMPLATE_NAME}\" >> ${DEPLOYPATH}/vars.yml\n",      
-            "echo template_stack_name: \"${TEMPLATE_STACK_NAME}\" >> ${DEPLOYPATH}/vars.yml\n",
-            "echo ngfw_hostname: \"${FIREWALLHOSTNAME}\" >> ${DEPLOYPATH}/vars.yml\n",      
-            "echo pano_hostname: \"${PANORAMAHOSTNAME}\" >> ${DEPLOYPATH}/vars.yml\n",      
-            "echo domain: \"${DOMAINNAME}\" >> ${DEPLOYPATH}/vars.yml\n",      
-            "echo timezone: \"${DEVICESTIMEZONE}\" >> ${DEPLOYPATH}/vars.yml\n",
+            "echo ngfw_ip: \\'${FIREWALLIP}\\' >> ${DEPLOYPATH}/vars.yml\n",
+            "echo pano_ip: \\'${PANORAMAIP}\\' >> ${DEPLOYPATH}/vars.yml\n",
+            "echo admin_username: \\'admin\\' >> ${DEPLOYPATH}/vars.yml\n",
+            "echo admin_password: \\'${ADMINPWD}\\' >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo pano_serial: \\'${PANORAMASERIAL}\\' >> ${DEPLOYPATH}/vars.yml\n",          
+            "echo key_filename: \\'${DEPLOYPATH}/key.pem\\' >> ${DEPLOYPATH}/vars.yml\n",
+            "echo authcode1: \\'${AUTHCODE1}\\' >> ${DEPLOYPATH}/vars.yml\n",  
+            "echo authcode2: \\'${AUTHCODE2}\\' >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo cloud_plugin_name: \\'${CLOUDPLUGINNAME}\\' >> ${DEPLOYPATH}/vars.yml\n",
+            "echo cloud_plugin_version: \\'${CLOUDPLUGINVERSION}\\' >> ${DEPLOYPATH}/vars.yml\n",            
+            "echo panos_version: \\'${PANOSVERSION}\\' >> ${DEPLOYPATH}/vars.yml\n",                        
+            "echo shared_file: \\'${DEPLOYPATH}/${SHARED_FILE}\\' >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo devgroup_file: \\'${DEPLOYPATH}/${DEVGROUP_FILE}\\' >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo template_file: \\'${DEPLOYPATH}/${TEMPLATE_FILE}\\' >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo template_stack_file: \\'${DEPLOYPATH}/${TEMPLATE_STACK_FILE}\\' >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo devgroup_name: \\'${DEVGROUP_NAME}\\' >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo template_name: \\'${TEMPLATE_NAME}\\' >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo template_stack_name: \\'${TEMPLATE_STACK_NAME}\\' >> ${DEPLOYPATH}/vars.yml\n",
+            "echo ngfw_hostname: \\'${FIREWALLHOSTNAME}\\' >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo pano_hostname: \\'${PANORAMAHOSTNAME}\\' >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo domain: \\'${DOMAINNAME}\\' >> ${DEPLOYPATH}/vars.yml\n",      
+            "echo timezone: \\'${DEVICESTIMEZONE}\\' >> ${DEPLOYPATH}/vars.yml\n",
             "chmod 400 ${DEPLOYPATH}/vars.yml\n",
             "\n# Prepare source file\n",
             "rm -f ${DEPLOYPATH}/vars.sh\n",
             "echo \"#!/bin/bash\" >> ${DEPLOYPATH}/vars.sh\n",
-            "echo DEPLOYPATH=\"${DEPLOYPATH}\" >> ${DEPLOYPATH}/vars.sh\n",
+            "echo DEPLOYPATH=\\\"${DEPLOYPATH}\\\" >> ${DEPLOYPATH}/vars.sh\n",
             "chmod +x ./${DEPLOYPATH}/vars.sh\n",
             "\n# Download Deployment scripts from S3\n",
             "aws --region ${S3BUCKETREGION} s3 cp --recursive s3://${S3BUCKETNAME}/deploy ${DEPLOYPATH}\n",
@@ -2330,7 +2313,7 @@
             { "Fn::GetAtt" : [ "PanoramaInstance", "PublicIp" ] }
          ]
       },
-      "DependsOn": [ "KaliLinuxInstance" ]
+      "DependsOn": [ "PanoramaInstance" ]
    },
  
    "KaliFQDN" : {

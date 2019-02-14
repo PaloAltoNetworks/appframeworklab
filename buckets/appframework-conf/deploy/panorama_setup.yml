@@ -83,10 +83,10 @@
         ip_address: "{{pano_ip}}"
         username: "{{admin_username}}"
         password: "{{admin_password}}"
-        version: "latest"
+        version: "{{panos_version}}"
       register: result
       until: not result is failed
-      retries: 2
+      retries: 15
       delay: 60        
 
     # check for 10 times, every 30 seconds, if Panorama

@@ -104,7 +104,7 @@
         ip_address: "{{ngfw_ip}}"
         username: "{{admin_username}}"
         password: "{{admin_password}}"
-        version: "latest"
+        version: "{{panos_version}}"
       register: result
       until: not result is failed
       retries: 2

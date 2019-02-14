@@ -1,0 +1,3419 @@
+  <shared>
+    <application/>
+    <application-group/>
+    <service>
+      <entry name="service-tcp-22">
+        <protocol>
+          <tcp>
+            <port>22</port>
+          </tcp>
+        </protocol>
+      </entry>
+      <entry name="service-tcp-221">
+        <protocol>
+          <tcp>
+            <port>221</port>
+          </tcp>
+        </protocol>
+      </entry>
+      <entry name="service-tcp-222">
+        <protocol>
+          <tcp>
+            <port>222</port>
+          </tcp>
+        </protocol>
+      </entry>
+      <entry name="service-rdp">
+        <protocol>
+          <tcp>
+            <port>3389</port>
+            <override>
+              <no/>
+            </override>
+          </tcp>
+        </protocol>
+        <description>rdp</description>
+      </entry>
+    </service>
+    <service-group/>
+    <log-settings>
+      <profiles/>
+    </log-settings>
+    <threats>
+      <spyware>
+        <entry name="15100">
+          <signature>
+            <standard>
+              <entry name="HTTP 100 Continue">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>100</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 100 Continue</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15101">
+          <signature>
+            <standard>
+              <entry name="HTTP 101 Switching Protocols">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>101</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 101 Switching Protocols</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15102">
+          <signature>
+            <standard>
+              <entry name="HTTP 102 Processing">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>102</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 102 Processing</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15200">
+          <signature>
+            <standard>
+              <entry name="HTTP 200 OK">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>200</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 200 OK</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15201">
+          <signature>
+            <standard>
+              <entry name="HTTP 201 Created">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>201</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 201 Created</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15202">
+          <signature>
+            <standard>
+              <entry name="HTTP 202 Accepted">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>202</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 202 Accepted</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15203">
+          <signature>
+            <standard>
+              <entry name="HTTP 203">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>203</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 203 Non-Author Info</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15204">
+          <signature>
+            <standard>
+              <entry name="HTTP 204 No Content">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>204</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 204 No Content</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15205">
+          <signature>
+            <standard>
+              <entry name="HTTP 205 Reset Content">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>205</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 205 Reset Content</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15206">
+          <signature>
+            <standard>
+              <entry name="HTTP 206 Partial Content">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>206</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 206 Partial Content</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15207">
+          <signature>
+            <standard>
+              <entry name="HTTP 207 Multi Status">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>207</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 207 Multi Status</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15300">
+          <signature>
+            <standard>
+              <entry name="HTTP 300 Multiple Choices">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>300</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 300 Multiple Choices</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15301">
+          <signature>
+            <standard>
+              <entry name="HTTP 301 Moved Permanently">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>301</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 301 Moved Permanently</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15302">
+          <signature>
+            <standard>
+              <entry name="HTTP 302 Moved Temporarily">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>302</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 302 Moved Temporarily</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15303">
+          <signature>
+            <standard>
+              <entry name="HTTP 303 See Other">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>303</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 303 See Other</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15304">
+          <signature>
+            <standard>
+              <entry name="HTTP 304 Not Modified">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>304</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 304 Not Modified</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15305">
+          <signature>
+            <standard>
+              <entry name="HTTP 305 Use Proxy">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>305</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 305 Use Proxy</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15307">
+          <signature>
+            <standard>
+              <entry name="HTTP 307 Temporary Redirect">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>307</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 307 Temporary Redirect</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15400">
+          <signature>
+            <standard>
+              <entry name="HTTP 400 Bad Request">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>400</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 400 Bad Request</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15401">
+          <signature>
+            <standard>
+              <entry name="HTTP 401 Unauthorized">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>401</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 401 Unauthorized</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15402">
+          <signature>
+            <standard>
+              <entry name="HTTP 402 Payment Required">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>402</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 402 Payment Required</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15403">
+          <signature>
+            <standard>
+              <entry name="HTTP 403 Forbidden">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>403</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 403 Forbidden</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15404">
+          <signature>
+            <standard>
+              <entry name="HTTP 404 Not Found">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>404</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 404 Not Found</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15405">
+          <signature>
+            <standard>
+              <entry name="HTTP 405 Method Not Allowed">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>405</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 405 Method Not Allowed</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15406">
+          <signature>
+            <standard>
+              <entry name="HTTP 406 Not Acceptable">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>406</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 406 Not Acceptable</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15407">
+          <signature>
+            <standard>
+              <entry name="HTTP 407">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>407</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 407 Proxy Auth Req</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15408">
+          <signature>
+            <standard>
+              <entry name="HTTP 408 Request Timeout">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>408</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 408 Request Timeout</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15409">
+          <signature>
+            <standard>
+              <entry name="HTTP 409 Conflict">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>409</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 409 Conflict</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15410">
+          <signature>
+            <standard>
+              <entry name="HTTP 410 Gone">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>410</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 410 Gone</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15411">
+          <signature>
+            <standard>
+              <entry name="HTTP 411 Length Required">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>411</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 411 Length Required</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15412">
+          <signature>
+            <standard>
+              <entry name="HTTP 412 Precondition Failed">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>412</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 412 Precondition Failed</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15413">
+          <signature>
+            <standard>
+              <entry name="HTTP 413">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>413</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 413 Req Entity 2Large</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15414">
+          <signature>
+            <standard>
+              <entry name="HTTP 414 Request URI Too Large">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>414</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 414 Request URI Too Large</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15415">
+          <signature>
+            <standard>
+              <entry name="HTTP 415 Unsupported Media Type">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>415</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 415 Unsupported Media Type</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15416">
+          <signature>
+            <standard>
+              <entry name="HTTP 416">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>416</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 416 Req Range Not Satis</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15417">
+          <signature>
+            <standard>
+              <entry name="HTTP 417 Expectation Failed">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>417</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 417 Expectation Failed</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15422">
+          <signature>
+            <standard>
+              <entry name="HTTP 422 Unprocessable Entity">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>422</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 422 Unprocessable Entity</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15424">
+          <signature>
+            <standard>
+              <entry name="HTTP 424 Locked">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>424</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 424 Locked</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15424">
+          <signature>
+            <standard>
+              <entry name="HTTP 424 Failed Dependency">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>424</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 424 Failed Dependency</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15433">
+          <signature>
+            <standard>
+              <entry name="HTTP 433 Unprocessable Entity">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>433</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 433 Unprocessable Entity</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15500">
+          <signature>
+            <standard>
+              <entry name="HTTP 500 Internal Server Error">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>500</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 500 Internal Server Error</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15501">
+          <signature>
+            <standard>
+              <entry name="HTTP 501 Not Implemented">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>501</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 501 Not Implemented</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15502">
+          <signature>
+            <standard>
+              <entry name="HTTP 502 Bad Gateway">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>502</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 502 Bad Gateway</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15503">
+          <signature>
+            <standard>
+              <entry name="HTTP 503 Service Unavailable">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>503</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 503 Service Unavailable</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15504">
+          <signature>
+            <standard>
+              <entry name="HTTP 504 Gateway Timeout">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>504</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 504 Gateway Timeout</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15505">
+          <signature>
+            <standard>
+              <entry name="HTTP 505">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>505</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 505 HTTP Ver Not Suppor</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15507">
+          <signature>
+            <standard>
+              <entry name="HTTP 507 Insufficient Storage">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>507</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 507 Insufficient Storage</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15600">
+          <signature>
+            <standard>
+              <entry name="HTTP 600">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>600</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 600 Squid header parsing error</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+        <entry name="15603">
+          <signature>
+            <standard>
+              <entry name="HTTP 603">
+                <and-condition>
+                  <entry name="And Condition 1">
+                    <or-condition>
+                      <entry name="Or Condition 1">
+                        <operator>
+                          <equal-to>
+                            <value>603</value>
+                            <context>http-rsp-code</context>
+                          </equal-to>
+                        </operator>
+                      </entry>
+                    </or-condition>
+                  </entry>
+                </and-condition>
+                <order-free>no</order-free>
+                <scope>protocol-data-unit</scope>
+              </entry>
+            </standard>
+          </signature>
+          <default-action>
+            <alert/>
+          </default-action>
+          <threatname>HTTP 603 roundcube invalid authorization</threatname>
+          <severity>informational</severity>
+          <direction>server2client</direction>
+        </entry>
+      </spyware>
+    </threats>
+    <schedule/>
+    <profiles>
+      <vulnerability>
+        <entry name="custom">
+          <rules>
+            <entry name="simple-policy">
+              <action>
+                <reset-both/>
+              </action>
+              <vendor-id>
+                <member>any</member>
+              </vendor-id>
+              <severity>
+                <member>any</member>
+              </severity>
+              <cve>
+                <member>any</member>
+              </cve>
+              <threat-name>any</threat-name>
+              <host>any</host>
+              <category>any</category>
+              <packet-capture>extended-capture</packet-capture>
+            </entry>
+          </rules>
+          <description>custom</description>
+        </entry>
+      </vulnerability>
+      <decryption>
+        <entry name="DecryptProfile1"/>
+      </decryption>
+      <url-filtering>
+        <entry name="BlockSportsAlertFinance">
+          <credential-enforcement>
+            <mode>
+              <disabled/>
+            </mode>
+            <log-severity>medium</log-severity>
+            <block>
+              <member>sports</member>
+            </block>
+          </credential-enforcement>
+          <log-http-hdr-xff>yes</log-http-hdr-xff>
+          <log-http-hdr-user-agent>yes</log-http-hdr-user-agent>
+          <log-http-hdr-referer>yes</log-http-hdr-referer>
+          <alert>
+            <member>financial-services</member>
+          </alert>
+          <block>
+            <member>sports</member>
+          </block>
+        </entry>
+      </url-filtering>
+    </profiles>
+    <address/>
+    <authentication-object>
+      <entry name="local-auth">
+        <authentication-method>web-form</authentication-method>
+        <authentication-profile>LocalAuth</authentication-profile>
+      </entry>
+    </authentication-object>
+    <content-preview>
+      <application>
+        <entry id="2954" minver="5.0.0" name="cisco-sxp" ori_country="USA" ori_language="English">
+          <category>networking</category>
+          <subcategory>infrastructure</subcategory>
+          <technology>network-protocol</technology>
+          <description>The Security Group Tag (SGT) Exchange Protocol (SXP) is one of several protocols that supports Cisco TrustSec. SXP is a control protocol for propagating IP-to-SGT binding information across network devices that do not have the capability to tag packets.</description>
+          <appident>yes</appident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>no</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="Cisco-SXP">
+              <link>https://www.cisco.com/c/en/us/td/docs/switches/lan/trustsec/configuration/guide/trustsec/sxp_config.html</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/dynamic</member>
+            </port>
+          </default>
+          <risk>1</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2965" minver="5.0.0" name="coinimp" ori_country="USA" ori_language="English">
+          <category>general-internet</category>
+          <subcategory>internet-utility</subcategory>
+          <technology>browser-based</technology>
+          <description>Coinimp is a javascript miner that is embedded in websites and uses CPU resources while you visit such sites to mine the monero cryptocurrency. This App-ID identifies such mining activity giving you the ability to get visibility into such traffic and block it in an enterprise environment.</description>
+          <appident>yes</appident>
+          <spyware-ident>yes</spyware-ident>
+          <vulnerability-ident>yes</vulnerability-ident>
+          <evasive-behavior>yes</evasive-behavior>
+          <consume-big-bandwidth>yes</consume-big-bandwidth>
+          <used-by-malware>yes</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>yes</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>yes</prone-to-misuse>
+          <pervasive-use>yes</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <data-ident>yes</data-ident>
+          <cachable>no</cachable>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="coinimp">
+              <link>https://www.coinimp.com/</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/443</member>
+            </port>
+          </default>
+          <risk>5</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2961" minver="5.0.0" name="ed137-ptt-off-squ-off" ori_country="USA" ori_language="English">
+          <category>networking</category>
+          <subcategory>infrastructure</subcategory>
+          <technology>peer-to-peer</technology>
+          <description>Indicates if ED-137 PTT is OFF and SQU is OFF.</description>
+          <alg>yes</alg>
+          <appident>yes</appident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>no</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <decode>ed137</decode>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="Eurocontrol">
+              <link>https://global.ihs.com/doc_detail.cfm?&amp;amp;csf=TIA&amp;amp;document_name=EUROCAE%20ED%20137&amp;amp;item_s_key=00536715</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>udp/dynamic</member>
+            </port>
+          </default>
+          <use-applications minver="5.0.0">
+            <member minver="5.0.0">ed137-base</member>
+          </use-applications>
+          <risk>1</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2958" minver="5.0.0" name="ed137-base" ori_country="USA" ori_language="English">
+          <ottawa-name>ed137</ottawa-name>
+          <category>networking</category>
+          <subcategory>infrastructure</subcategory>
+          <technology>peer-to-peer</technology>
+          <description>ED-137 is an interoperability standard for VoIP Air Traffic Management (ATM) radio components developed by The European Organisation for Civil Aviation Equipment (EUROCAE).</description>
+          <alg>yes</alg>
+          <appident>yes</appident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>no</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <decode>ed137</decode>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="Eurocontrol">
+              <link>https://global.ihs.com/doc_detail.cfm?&amp;amp;csf=TIA&amp;amp;document_name=EUROCAE%20ED%20137&amp;amp;item_s_key=00536715</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>udp/dynamic</member>
+            </port>
+          </default>
+          <tunnel-applications minver="5.0.0">
+            <member minver="5.0.0">ed137-ptt-off-squ-off</member>
+            <member minver="5.0.0">ed137-ptt-off-squ-on</member>
+            <member minver="5.0.0">ed137-ptt-on-squ-off</member>
+            <member minver="5.0.0">ed137-ptt-on-squ-on</member>
+          </tunnel-applications>
+          <risk>1</risk>
+          <application-container>ed137</application-container>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2958" minver="5.0.0" ori_country="USA" ori_language="English" name="ed137">
+          <ottawa-name>ed137</ottawa-name>
+          <category>networking</category>
+          <subcategory>infrastructure</subcategory>
+          <technology>peer-to-peer</technology>
+          <description>ED-137 is an interoperability standard for VoIP Air Traffic Management (ATM) radio components developed by The European Organisation for Civil Aviation Equipment (EUROCAE).</description>
+          <alg>yes</alg>
+          <appident>yes</appident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>no</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <decode>ed137</decode>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="Eurocontrol">
+              <link>https://global.ihs.com/doc_detail.cfm?&amp;amp;csf=TIA&amp;amp;document_name=EUROCAE%20ED%20137&amp;amp;item_s_key=00536715</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>udp/dynamic</member>
+            </port>
+          </default>
+          <tunnel-applications minver="5.0.0">
+            <member minver="5.0.0">ed137-ptt-off-squ-off</member>
+            <member minver="5.0.0">ed137-ptt-off-squ-on</member>
+            <member minver="5.0.0">ed137-ptt-on-squ-off</member>
+            <member minver="5.0.0">ed137-ptt-on-squ-on</member>
+          </tunnel-applications>
+          <risk>1</risk>
+          <application-container>ed137</application-container>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2957" minver="5.0.0" name="ed137-ptt-off-squ-on" ori_country="USA" ori_language="English">
+          <category>networking</category>
+          <subcategory>infrastructure</subcategory>
+          <technology>peer-to-peer</technology>
+          <description>Indicates if ED-137 PTT is OFF and SQU is ON.</description>
+          <alg>yes</alg>
+          <appident>yes</appident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>no</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <decode>ed137</decode>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="Eurocontrol">
+              <link>https://global.ihs.com/doc_detail.cfm?&amp;amp;csf=TIA&amp;amp;document_name=EUROCAE%20ED%20137&amp;amp;item_s_key=00536715</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>udp/dynamic</member>
+            </port>
+          </default>
+          <use-applications minver="5.0.0">
+            <member minver="5.0.0">ed137-base</member>
+          </use-applications>
+          <risk>1</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2956" minver="5.0.0" name="ed137-ptt-on-squ-off" ori_country="USA" ori_language="English">
+          <category>networking</category>
+          <subcategory>infrastructure</subcategory>
+          <technology>peer-to-peer</technology>
+          <description>Indicates if ED-137 PTT is ON and SQU is OFF.</description>
+          <alg>yes</alg>
+          <appident>yes</appident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>no</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <decode>ed137</decode>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="Eurocontrol">
+              <link>https://global.ihs.com/doc_detail.cfm?&amp;amp;csf=TIA&amp;amp;document_name=EUROCAE%20ED%20137&amp;amp;item_s_key=00536715</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>udp/dynamic</member>
+            </port>
+          </default>
+          <use-applications minver="5.0.0">
+            <member minver="5.0.0">ed137-base</member>
+          </use-applications>
+          <risk>1</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2960" minver="5.0.0" name="ed137-ptt-on-squ-on" ori_country="USA" ori_language="English">
+          <category>networking</category>
+          <subcategory>infrastructure</subcategory>
+          <technology>peer-to-peer</technology>
+          <description>Indicates if ED-137 PTT is ON and SQU is ON.</description>
+          <alg>yes</alg>
+          <appident>yes</appident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>no</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <decode>ed137</decode>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="Eurocontrol">
+              <link>https://global.ihs.com/doc_detail.cfm?&amp;amp;csf=TIA&amp;amp;document_name=EUROCAE%20ED%20137&amp;amp;item_s_key=00536715</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>udp/dynamic</member>
+            </port>
+          </default>
+          <use-applications minver="5.0.0">
+            <member minver="5.0.0">ed137-base</member>
+          </use-applications>
+          <risk>1</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2967" minver="5.0.0" name="gb2pp-ptt-off" ori_country="USA" ori_language="English">
+          <category>networking</category>
+          <subcategory>infrastructure</subcategory>
+          <technology>peer-to-peer</technology>
+          <description>Indicates GB2PP PTT OFF signal.</description>
+          <alg>yes</alg>
+          <appident>yes</appident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>no</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <decode>ed137</decode>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <new-appid>yes</new-appid>
+          <default>
+            <port>
+              <member>tcp/8002</member>
+            </port>
+          </default>
+          <use-applications minver="5.0.0">
+            <member minver="5.0.0">gb2pp-base</member>
+          </use-applications>
+          <risk>1</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2962" minver="5.0.0" name="gb2pp-base" ori_country="USA" ori_language="English">
+          <ottawa-name>gb2pp</ottawa-name>
+          <category>networking</category>
+          <subcategory>infrastructure</subcategory>
+          <technology>peer-to-peer</technology>
+          <description>GB2PP is a signaling protocol for Rohde&amp;amp;Schwarz radio stations. It is used to set and retrieve parameters and states to/from radio stations.</description>
+          <alg>yes</alg>
+          <appident>yes</appident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>no</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <decode>ed137</decode>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="GB2PP">
+              <link>http://89.38.174.194/index.php/GB2PP</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/8002</member>
+            </port>
+          </default>
+          <tunnel-applications minver="5.0.0">
+            <member minver="5.0.0">gb2pp-ptt-off</member>
+            <member minver="5.0.0">gb2pp-ptt-on</member>
+            <member minver="5.0.0">gb2pp-tone-off</member>
+            <member minver="5.0.0">gb2pp-tone-on</member>
+          </tunnel-applications>
+          <risk>1</risk>
+          <application-container>gb2pp</application-container>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2962" minver="5.0.0" ori_country="USA" ori_language="English" name="gb2pp">
+          <ottawa-name>gb2pp</ottawa-name>
+          <category>networking</category>
+          <subcategory>infrastructure</subcategory>
+          <technology>peer-to-peer</technology>
+          <description>GB2PP is a signaling protocol for Rohde&amp;amp;Schwarz radio stations. It is used to set and retrieve parameters and states to/from radio stations.</description>
+          <alg>yes</alg>
+          <appident>yes</appident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>no</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <decode>ed137</decode>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="GB2PP">
+              <link>http://89.38.174.194/index.php/GB2PP</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/8002</member>
+            </port>
+          </default>
+          <tunnel-applications minver="5.0.0">
+            <member minver="5.0.0">gb2pp-ptt-off</member>
+            <member minver="5.0.0">gb2pp-ptt-on</member>
+            <member minver="5.0.0">gb2pp-tone-off</member>
+            <member minver="5.0.0">gb2pp-tone-on</member>
+          </tunnel-applications>
+          <risk>1</risk>
+          <application-container>gb2pp</application-container>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2966" minver="5.0.0" name="gb2pp-ptt-on" ori_country="USA" ori_language="English">
+          <category>networking</category>
+          <subcategory>infrastructure</subcategory>
+          <technology>peer-to-peer</technology>
+          <description>Indicates GB2PP PTT ON signal.</description>
+          <alg>yes</alg>
+          <appident>yes</appident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>no</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <decode>ed137</decode>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <new-appid>yes</new-appid>
+          <default>
+            <port>
+              <member>tcp/8002</member>
+            </port>
+          </default>
+          <use-applications minver="5.0.0">
+            <member minver="5.0.0">gb2pp-base</member>
+          </use-applications>
+          <risk>1</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2964" minver="5.0.0" name="gb2pp-tone-off" ori_country="USA" ori_language="English">
+          <category>networking</category>
+          <subcategory>infrastructure</subcategory>
+          <technology>peer-to-peer</technology>
+          <description>Indicates GB2PP Tone OFF signal.</description>
+          <alg>yes</alg>
+          <appident>yes</appident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>no</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <decode>ed137</decode>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <new-appid>yes</new-appid>
+          <default>
+            <port>
+              <member>tcp/8002</member>
+            </port>
+          </default>
+          <use-applications minver="5.0.0">
+            <member minver="5.0.0">gb2pp-base</member>
+          </use-applications>
+          <risk>1</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2963" minver="5.0.0" name="gb2pp-tone-on" ori_country="USA" ori_language="English">
+          <category>networking</category>
+          <subcategory>infrastructure</subcategory>
+          <technology>peer-to-peer</technology>
+          <description>Indicates GB2PP Tone ON signal.</description>
+          <alg>yes</alg>
+          <appident>yes</appident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>no</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <decode>ed137</decode>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <new-appid>yes</new-appid>
+          <default>
+            <port>
+              <member>tcp/8002</member>
+            </port>
+          </default>
+          <use-applications minver="5.0.0">
+            <member minver="5.0.0">gb2pp-base</member>
+          </use-applications>
+          <risk>1</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2971" minver="5.0.0" name="globus" ori_country="USA" ori_language="English">
+          <category>general-internet</category>
+          <subcategory>file-sharing</subcategory>
+          <technology>peer-to-peer</technology>
+          <description>Globus Connect enables your system to use the Globus file transfer and sharing service. It makes your machine into a Globus endpoint on practically any system. This App-ID covers Globus Connect Personal, which is designed for use by a single user on a personal machine, and Globus Web Console.</description>
+          <appident>yes</appident>
+          <spyware-ident>yes</spyware-ident>
+          <vulnerability-ident>yes</vulnerability-ident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>yes</able-to-transfer-file>
+          <has-known-vulnerability>yes</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <is-saas>yes</is-saas>
+          <saas minver="8.1.0">
+            <is-data-breaches>no</is-data-breaches>
+            <is-ip-based-restrictions>no</is-ip-based-restrictions>
+            <is-poor-financial-viability>no</is-poor-financial-viability>
+            <is-poor-terms-of-service>no</is-poor-terms-of-service>
+          </saas>
+          <references>
+            <entry name="Globus">
+              <link>https://www.globus.org/globus-connect-personal</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/443,80,2223</member>
+            </port>
+          </default>
+          <use-applications>
+            <member>ssh</member>
+            <member>ssl</member>
+            <member>web-browsing</member>
+          </use-applications>
+          <implicit-use-applications>
+            <member>ssl</member>
+            <member>web-browsing</member>
+          </implicit-use-applications>
+          <risk>2</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2950" minver="5.0.0" name="helprace" ori_country="USA" ori_language="English">
+          <category>business-systems</category>
+          <subcategory>management</subcategory>
+          <technology>browser-based</technology>
+          <description>Helprace is a tool for customer service support. This app-id covers traffic between the helprace browser client and the helprace servers.</description>
+          <appident>yes</appident>
+          <virus-ident>yes</virus-ident>
+          <spyware-ident>yes</spyware-ident>
+          <file-type-ident>yes</file-type-ident>
+          <vulnerability-ident>yes</vulnerability-ident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>yes</able-to-transfer-file>
+          <has-known-vulnerability>yes</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <data-ident>yes</data-ident>
+          <cachable>no</cachable>
+          <file-forward>yes</file-forward>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <is-saas>yes</is-saas>
+          <saas minver="8.1.0">
+            <is-data-breaches>no</is-data-breaches>
+            <is-ip-based-restrictions>no</is-ip-based-restrictions>
+            <is-poor-financial-viability>no</is-poor-financial-viability>
+            <is-poor-terms-of-service>no</is-poor-terms-of-service>
+          </saas>
+          <references>
+            <entry name="Helprace">
+              <link>https://helprace.com/</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/80,443</member>
+            </port>
+          </default>
+          <use-applications>
+            <member>ssl</member>
+            <member>web-browsing</member>
+          </use-applications>
+          <implicit-use-applications>
+            <member>ssl</member>
+            <member>web-browsing</member>
+          </implicit-use-applications>
+          <applicable-decoders>
+            <member>http</member>
+            <member>ssl</member>
+          </applicable-decoders>
+          <risk>2</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2948" minver="5.0.0" name="helpscout" ori_country="USA" ori_language="English">
+          <category>business-systems</category>
+          <subcategory>management</subcategory>
+          <technology>browser-based</technology>
+          <description>Help Scout is a help desk software providing an email-based customer support platform, knowledge base tool, and an embeddable search/contact widget for customer service professionals. This app-id controls traffic from the helpscout web-client or mobile phone app to the helpscout servers.</description>
+          <appident>yes</appident>
+          <virus-ident>yes</virus-ident>
+          <spyware-ident>yes</spyware-ident>
+          <file-type-ident>yes</file-type-ident>
+          <vulnerability-ident>yes</vulnerability-ident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>yes</able-to-transfer-file>
+          <has-known-vulnerability>yes</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <data-ident>yes</data-ident>
+          <cachable>no</cachable>
+          <file-forward>yes</file-forward>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <is-saas>yes</is-saas>
+          <saas minver="8.1.0">
+            <is-data-breaches>no</is-data-breaches>
+            <is-ip-based-restrictions>no</is-ip-based-restrictions>
+            <is-poor-financial-viability>no</is-poor-financial-viability>
+            <is-poor-terms-of-service>no</is-poor-terms-of-service>
+          </saas>
+          <references>
+            <entry name="Helpscout">
+              <link>https://www.helpscout.net/</link>
+            </entry>
+            <entry name="Wikipedia">
+              <link>https://en.wikipedia.org/wiki/Help_Scout</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/80,443</member>
+            </port>
+          </default>
+          <use-applications>
+            <member>ssl</member>
+            <member>web-browsing</member>
+            <member minver="3.1.0">websocket</member>
+          </use-applications>
+          <applicable-decoders>
+            <member>http</member>
+            <member>ssl</member>
+          </applicable-decoders>
+          <risk>2</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2955" minver="5.0.0" name="hpe-bsa" ori_country="USA" ori_language="English">
+          <category>business-systems</category>
+          <subcategory>management</subcategory>
+          <technology>client-server</technology>
+          <description>BSA(Business Server Automation)
+HPE Server Automation (HPE SA) automates tasks like provisioning, patching, configuring, and release management of servers and application servers. Server Automation (SA) is a data center automation software that centralizes and streamlines many data center functions and automates critical areas of data center\'s server management.</description>
+          <appident>yes</appident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>yes</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="HPE">
+              <link>https://docs.microfocus.com/SA/10.51/Content/Home.htm</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/1002,3001</member>
+            </port>
+          </default>
+          <use-applications>
+            <member>http-proxy</member>
+            <member>ssl</member>
+            <member>web-browsing</member>
+          </use-applications>
+          <implicit-use-applications>
+            <member>ssl</member>
+          </implicit-use-applications>
+          <risk>1</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2974" minver="5.0.0" name="ipfs" ori_country="USA" ori_language="English">
+          <category>general-internet</category>
+          <subcategory>internet-utility</subcategory>
+          <technology>peer-to-peer</technology>
+          <description>InterPlanetary File System (IPFS) is a protocol and network designed to create a content-addressable, peer-to-peer method of storing and sharing hypermedia in a distributed file system. IPFS aims to replace HTTP and provide web service without centralization.</description>
+          <appident>yes</appident>
+          <virus-ident>yes</virus-ident>
+          <spyware-ident>yes</spyware-ident>
+          <file-type-ident>yes</file-type-ident>
+          <vulnerability-ident>yes</vulnerability-ident>
+          <evasive-behavior>yes</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>yes</able-to-transfer-file>
+          <has-known-vulnerability>yes</has-known-vulnerability>
+          <tunnel-other-application>yes</tunnel-other-application>
+          <prone-to-misuse>yes</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <data-ident>yes</data-ident>
+          <cachable>no</cachable>
+          <file-forward>yes</file-forward>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="IPFS">
+              <link>https://ipfs.io/</link>
+            </entry>
+            <entry name="Wikipedia">
+              <link>https://en.wikipedia.org/wiki/InterPlanetary_File_System</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/dynamic</member>
+            </port>
+          </default>
+          <use-applications>
+            <member>ssl</member>
+            <member>web-browsing</member>
+          </use-applications>
+          <implicit-use-applications>
+            <member>ssl</member>
+            <member>web-browsing</member>
+          </implicit-use-applications>
+          <risk>4</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2953" minver="5.0.0" name="kafka" ori_country="USA" ori_language="English">
+          <category>general-internet</category>
+          <subcategory>internet-utility</subcategory>
+          <technology>client-server</technology>
+          <description>Apache Kafka is an open-source stream-processing software platform developed by the Apache Software Foundation, written in Scala and Java. The project aims to provide a unified, high-throughput, low-latency platform for handling real-time data feeds.
+Apache Kafka is based on the commit log, and it allows users to subscribe to it and publish data to any number of systems or real-time applications.</description>
+          <appident>yes</appident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>no</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="Wikipedia">
+              <link>https://en.wikipedia.org/wiki/Apache_Kafka</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/9092</member>
+            </port>
+          </default>
+          <risk>1</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2969" minver="5.0.0" name="linkedin-editing" ori_country="USA" ori_language="English">
+          <category>collaboration</category>
+          <subcategory>social-networking</subcategory>
+          <technology>browser-based</technology>
+          <description>The Linkedin-editing identifies the editing activity on the LinkedIn website and mobile apps which includes editing the profile info, changing the profile picture, editing or deleting the existing posts.</description>
+          <appident>yes</appident>
+          <virus-ident>yes</virus-ident>
+          <spyware-ident>yes</spyware-ident>
+          <file-type-ident>yes</file-type-ident>
+          <vulnerability-ident>yes</vulnerability-ident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>yes</able-to-transfer-file>
+          <has-known-vulnerability>yes</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>yes</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <data-ident>yes</data-ident>
+          <cachable>no</cachable>
+          <file-forward>yes</file-forward>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="LinkedIn">
+              <link>http://www.linkedin.com</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/80,443</member>
+            </port>
+          </default>
+          <use-applications>
+            <member>linkedin-base</member>
+          </use-applications>
+          <applicable-decoders>
+            <member>http</member>
+          </applicable-decoders>
+          <risk>3</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2972" minver="5.0.0" name="panorama-interconnect" ori_country="USA" ori_language="English">
+          <category>business-systems</category>
+          <subcategory>management</subcategory>
+          <technology>client-server</technology>
+          <description>The Panorama&amp;#x2122; Interconnect plugin enables you to establish a Panorama Controller that manages Panorama Nodes and centralizes configuration management for consistent firewall configurations and policies across large-scale firewall deployments.</description>
+          <appident>yes</appident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>no</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="Palo Alto Networks">
+              <link>https://www.paloaltonetworks.com/documentation/81/panorama/panorama_adminguide/manage-large-scale-firewall-deployments/panorama-interconnect</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/44443</member>
+            </port>
+          </default>
+          <use-applications>
+            <member>ssl</member>
+          </use-applications>
+          <implicit-use-applications>
+            <member>ssl</member>
+          </implicit-use-applications>
+          <applicable-decoders>
+            <member>ssl</member>
+          </applicable-decoders>
+          <risk>1</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2959" minver="5.0.0" name="protonmail" ori_country="USA" ori_language="English">
+          <category>collaboration</category>
+          <subcategory>email</subcategory>
+          <technology>browser-based</technology>
+          <description>ProtonMail is an end-to-end encrypted email service. ProtonMail uses client-side encryption to protect email contents and user data before they are sent to ProtonMail servers, unlike other common email providers such as Gmail and Outlook.com.</description>
+          <appident>yes</appident>
+          <spyware-ident>yes</spyware-ident>
+          <vulnerability-ident>yes</vulnerability-ident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>yes</able-to-transfer-file>
+          <has-known-vulnerability>yes</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="Wikipedia">
+              <link>https://en.wikipedia.org/wiki/ProtonMail</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/80,443</member>
+            </port>
+          </default>
+          <use-applications>
+            <member>ssl</member>
+            <member>web-browsing</member>
+          </use-applications>
+          <implicit-use-applications>
+            <member>ssl</member>
+            <member>web-browsing</member>
+          </implicit-use-applications>
+          <applicable-decoders>
+            <member>http</member>
+            <member>ssl</member>
+          </applicable-decoders>
+          <risk>2</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2949" minver="5.0.0" name="secs-gem" ori_country="USA" ori_language="English">
+          <category>networking</category>
+          <subcategory>infrastructure</subcategory>
+          <technology>network-protocol</technology>
+          <description>This app-id identifies SECS/GEM(SEMI Equipment Communication Standard/Generic Equipment Model) protocol traffic.</description>
+          <appident>yes</appident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>no</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="Wikipedia">
+              <link>https://en.wikipedia.org/wiki/SECS/GEM</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/5000,5001</member>
+            </port>
+          </default>
+          <risk>1</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2970" minver="5.0.0" name="twitter-editing" ori_country="USA" ori_language="English">
+          <category>collaboration</category>
+          <subcategory>social-networking</subcategory>
+          <technology>browser-based</technology>
+          <description>The Twitter-editing application identifies traffic associated with user activity on Twitter for updating the profile info and deleteing the existing profile picture.</description>
+          <appident>yes</appident>
+          <spyware-ident>yes</spyware-ident>
+          <vulnerability-ident>yes</vulnerability-ident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>yes</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>yes</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>yes</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="wikipedia">
+              <link>http://en.wikipedia.org/wiki/Twitter</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/80,443</member>
+            </port>
+          </default>
+          <use-applications>
+            <member>twitter-base</member>
+          </use-applications>
+          <applicable-decoders>
+            <member>http</member>
+          </applicable-decoders>
+          <risk>3</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2973" minver="5.0.0" name="twitter-uploading" ori_country="USA" ori_language="English">
+          <category>collaboration</category>
+          <subcategory>social-networking</subcategory>
+          <technology>browser-based</technology>
+          <description>The Twitter-uploading application identifies traffic associated with user activity on Twitter for uploading the profile picture, uploading picture or video in a tweet.</description>
+          <appident>yes</appident>
+          <virus-ident>yes</virus-ident>
+          <spyware-ident>yes</spyware-ident>
+          <file-type-ident>yes</file-type-ident>
+          <vulnerability-ident>yes</vulnerability-ident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>yes</used-by-malware>
+          <able-to-transfer-file>yes</able-to-transfer-file>
+          <has-known-vulnerability>yes</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>yes</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <data-ident>yes</data-ident>
+          <cachable>no</cachable>
+          <file-forward>yes</file-forward>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <default>
+            <port>
+              <member>tcp/80,443</member>
+            </port>
+          </default>
+          <use-applications>
+            <member>twitter-base</member>
+            <member>twitter-posting</member>
+          </use-applications>
+          <applicable-decoders>
+            <member>http</member>
+          </applicable-decoders>
+          <risk>4</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2975" minver="5.0.0" name="vmware-update" ori_country="USA" ori_language="English">
+          <category>business-systems</category>
+          <subcategory>software-update</subcategory>
+          <technology>client-server</technology>
+          <description>VMware vSphere Update Manager (VUM) is software for automating patch management which enables centralized, automated patch and version management for VMware vSphere and offers support for VMware ESXi hosts, virtual machines, and virtual appliances. Update Manager Download Service (UMDS) provides the bridge for vSphere Update Manager to receive its patch and update binaries.
+This appid covers the traffic between public VMware server and VUM or UMDS, but does not cover the internal traffic between VCenter, VUM, UMDS, and managed ESXi hosts.</description>
+          <appident>yes</appident>
+          <virus-ident>yes</virus-ident>
+          <spyware-ident>yes</spyware-ident>
+          <file-type-ident>yes</file-type-ident>
+          <vulnerability-ident>yes</vulnerability-ident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>yes</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>yes</able-to-transfer-file>
+          <has-known-vulnerability>yes</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <data-ident>yes</data-ident>
+          <cachable>no</cachable>
+          <file-forward>yes</file-forward>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="vmware_vum">
+              <link>https://www.vmware.com/support/pubs/vum_pubs.html</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/80,443</member>
+            </port>
+          </default>
+          <use-applications>
+            <member>ssl</member>
+            <member>web-browsing</member>
+          </use-applications>
+          <implicit-use-applications>
+            <member>web-browsing</member>
+          </implicit-use-applications>
+          <risk>3</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2987" minver="5.0.0" name="bbc-streaming" ori_country="USA" ori_language="English">
+          <category>media</category>
+          <subcategory>photo-video</subcategory>
+          <technology>browser-based</technology>
+          <description>BBC streaming covers video streaming traffic from different BBC websites such as BBC iPlayer or BBC News.</description>
+          <appident>yes</appident>
+          <virus-ident>yes</virus-ident>
+          <spyware-ident>yes</spyware-ident>
+          <file-type-ident>yes</file-type-ident>
+          <vulnerability-ident>yes</vulnerability-ident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>yes</able-to-transfer-file>
+          <has-known-vulnerability>yes</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <data-ident>yes</data-ident>
+          <cachable>no</cachable>
+          <file-forward>yes</file-forward>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="BBC">
+              <link>http://www.bbc.com/</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/80,443</member>
+            </port>
+          </default>
+          <use-applications>
+            <member>web-browsing</member>
+          </use-applications>
+          <applicable-decoders>
+            <member>http</member>
+          </applicable-decoders>
+          <risk>2</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2993" minver="5.0.0" name="coinhave" ori_country="USA" ori_language="English">
+          <category>general-internet</category>
+          <subcategory>internet-utility</subcategory>
+          <technology>browser-based</technology>
+          <description>Coinhave is a javascript miner that is embedded in websites and uses CPU resources while you visit such sites to mine the monero cryptocurrency. This App-ID identifies such mining activity giving you the ability to get visibility into such traffic and block it in an enterprise environment.</description>
+          <appident>yes</appident>
+          <spyware-ident>yes</spyware-ident>
+          <vulnerability-ident>yes</vulnerability-ident>
+          <evasive-behavior>yes</evasive-behavior>
+          <consume-big-bandwidth>yes</consume-big-bandwidth>
+          <used-by-malware>yes</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>yes</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>yes</prone-to-misuse>
+          <pervasive-use>yes</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <data-ident>yes</data-ident>
+          <cachable>no</cachable>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="coinhave">
+              <link>https://coin-have.com</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/443</member>
+            </port>
+          </default>
+          <risk>5</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2977" minver="5.0.0" name="fidelity-active-trader-pro" ori_country="USA" ori_language="English">
+          <category>business-systems</category>
+          <subcategory>general-business</subcategory>
+          <technology>client-server</technology>
+          <description>Fidelity Active Trader Pro is a trading tool which is used for a real-time streaming account, order, and market data updates with a customizable desktop platform. This AppID covers traffic generated from this app.</description>
+          <appident>yes</appident>
+          <spyware-ident>yes</spyware-ident>
+          <vulnerability-ident>yes</vulnerability-ident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>yes</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="Fidelity">
+              <link>https://www.fidelity.com/trading/advanced-trading-tools/active-trader-pro/overview</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/80,443</member>
+            </port>
+          </default>
+          <use-applications>
+            <member>ssl</member>
+            <member>web-browsing</member>
+          </use-applications>
+          <implicit-use-applications>
+            <member>ssl</member>
+          </implicit-use-applications>
+          <risk>1</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2933" minver="5.0.0" name="harvest" ori_country="USA" ori_language="English">
+          <category>business-systems</category>
+          <subcategory>management</subcategory>
+          <technology>browser-based</technology>
+          <description>Harvest is a web-based tool for time tracking, invoicing, expense tracking, and time-based reporting.</description>
+          <appident>yes</appident>
+          <spyware-ident>yes</spyware-ident>
+          <vulnerability-ident>yes</vulnerability-ident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>yes</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <data-ident>yes</data-ident>
+          <cachable>no</cachable>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <is-saas>yes</is-saas>
+          <saas minver="8.1.0">
+            <is-data-breaches>no</is-data-breaches>
+            <is-ip-based-restrictions>no</is-ip-based-restrictions>
+            <is-poor-financial-viability>no</is-poor-financial-viability>
+            <is-poor-terms-of-service>no</is-poor-terms-of-service>
+          </saas>
+          <references>
+            <entry name="Harvest">
+              <link>https://www.getharvest.com/</link>
+            </entry>
+            <entry name="Wikipedia">
+              <link>https://en.wikipedia.org/wiki/Harvest_(software)</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/80,443</member>
+            </port>
+          </default>
+          <use-applications>
+            <member>ssl</member>
+            <member>web-browsing</member>
+          </use-applications>
+          <implicit-use-applications>
+            <member>ssl</member>
+            <member>web-browsing</member>
+          </implicit-use-applications>
+          <applicable-decoders>
+            <member>http</member>
+            <member>ssl</member>
+          </applicable-decoders>
+          <risk>1</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2951" minver="5.0.0" name="infusionsoft" ori_country="USA" ori_language="English">
+          <category>business-systems</category>
+          <subcategory>management</subcategory>
+          <technology>browser-based</technology>
+          <description>Infusionsoft is an e-mail marketing and sales platform for small businesses. This app-id identifies traffic between the infusionsoft servers and the mobile phone app and web-browser client.</description>
+          <appident>yes</appident>
+          <virus-ident>yes</virus-ident>
+          <spyware-ident>yes</spyware-ident>
+          <file-type-ident>yes</file-type-ident>
+          <vulnerability-ident>yes</vulnerability-ident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>yes</able-to-transfer-file>
+          <has-known-vulnerability>yes</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <data-ident>yes</data-ident>
+          <cachable>no</cachable>
+          <file-forward>yes</file-forward>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <is-saas>yes</is-saas>
+          <saas minver="8.1.0">
+            <is-data-breaches>no</is-data-breaches>
+            <is-ip-based-restrictions>no</is-ip-based-restrictions>
+            <is-poor-financial-viability>no</is-poor-financial-viability>
+            <is-poor-terms-of-service>no</is-poor-terms-of-service>
+          </saas>
+          <references>
+            <entry name="Infusionsoft">
+              <link>https://www.infusionsoft.com/</link>
+            </entry>
+            <entry name="Wikipedia">
+              <link>https://en.wikipedia.org/wiki/Infusionsoft</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/80,443</member>
+            </port>
+          </default>
+          <use-applications>
+            <member>google-app-engine</member>
+            <member>ssl</member>
+            <member>web-browsing</member>
+          </use-applications>
+          <implicit-use-applications>
+            <member>ssl</member>
+            <member>web-browsing</member>
+          </implicit-use-applications>
+          <applicable-decoders>
+            <member>http</member>
+            <member>ssl</member>
+          </applicable-decoders>
+          <risk>2</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2952" minver="5.0.0" name="intervals" ori_country="USA" ori_language="English">
+          <category>business-systems</category>
+          <subcategory>management</subcategory>
+          <technology>browser-based</technology>
+          <description>Intervals is a time tracking application. This app-id controls traffic between the intervals servers and the intervals web browser client.</description>
+          <appident>yes</appident>
+          <virus-ident>yes</virus-ident>
+          <spyware-ident>yes</spyware-ident>
+          <file-type-ident>yes</file-type-ident>
+          <vulnerability-ident>yes</vulnerability-ident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>yes</able-to-transfer-file>
+          <has-known-vulnerability>yes</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <data-ident>yes</data-ident>
+          <cachable>no</cachable>
+          <file-forward>yes</file-forward>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <is-saas>yes</is-saas>
+          <saas minver="8.1.0">
+            <is-data-breaches>no</is-data-breaches>
+            <is-ip-based-restrictions>no</is-ip-based-restrictions>
+            <is-poor-financial-viability>no</is-poor-financial-viability>
+            <is-poor-terms-of-service>no</is-poor-terms-of-service>
+          </saas>
+          <references>
+            <entry name="Intervals">
+              <link>https://www.myintervals.com/</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/80,443</member>
+            </port>
+          </default>
+          <use-applications>
+            <member>ssl</member>
+            <member>web-browsing</member>
+          </use-applications>
+          <applicable-decoders>
+            <member>http</member>
+            <member>ssl</member>
+          </applicable-decoders>
+          <risk>2</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2982" minver="5.0.0" name="ivef" ori_country="USA" ori_language="English">
+          <category>networking</category>
+          <subcategory>infrastructure</subcategory>
+          <technology>network-protocol</technology>
+          <description>Inter VTS Exchange Format (IVEF) Service is a transmission framework for the exchange of vessel traffic information between shore-based e-Navigation systems, such as VTS systems, eNavigation stakeholders and relevant external parties. This App-ID identifies the network communication between IP server (data collection), Ship positioning system and Harbor Application server.</description>
+          <appident>yes</appident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>no</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="IALA">
+              <link>https://www.iala-aism.org/product/inter-vts-exchange-format-service-145/</link>
+            </entry>
+            <entry name="Open IVEF">
+              <link>http://openivef.org/</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/7821,7822,8043,8044</member>
+            </port>
+          </default>
+          <risk>1</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2989" minver="5.0.0" name="sel-fast-messaging" ori_country="USA" ori_language="English">
+          <category>business-systems</category>
+          <subcategory>management</subcategory>
+          <technology>client-server</technology>
+          <description>Schweitzer Engineering Labs ("SEL") manufactures and sells digital protective relay equipment for use in industrial high-voltage installations.  SEL Fast Messaging protocol evolved over time as a (semi) proprietary method for auto-configuration of connected SEL devices for retrieval of analog and digital status data. The protocol itself supports embedded binary messages slip-streamed in the data stream with normal ASCII text data. A combination of both are used for full auto-configuration of devices.</description>
+          <appident>yes</appident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>no</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <cachable>no</cachable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="SEL">
+              <link>https://selinc.com/</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/5201-5220</member>
+            </port>
+          </default>
+          <use-applications>
+            <member>telnet</member>
+          </use-applications>
+          <risk>1</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2978" minver="5.0.0" name="sentinelone" ori_country="USA" ori_language="English">
+          <category>business-systems</category>
+          <subcategory>management</subcategory>
+          <technology>client-server</technology>
+          <description>SentinelOne is a  software used to secure endpoint devices against targeted attacks and provides forensics to understand the nature of such attacks. The SentinelOne agent is the component of endpoint security installed on endpoint computers and communicates with the management server. This AppID covers the traffic between the agent and the management server.</description>
+          <appident>yes</appident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>no</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <breaks-decryption>yes</breaks-decryption>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="SentinelOne">
+              <link>https://www.sentinelone.com/</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/443</member>
+            </port>
+          </default>
+          <use-applications>
+            <member>ssl</member>
+          </use-applications>
+          <implicit-use-applications>
+            <member>ssl</member>
+          </implicit-use-applications>
+          <risk>1</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2979" minver="5.0.0" name="silverpeak-edgeconnect" ori_country="USA" ori_language="English">
+          <category>networking</category>
+          <subcategory>infrastructure</subcategory>
+          <technology>network-protocol</technology>
+          <description>SilverPeak Unity EdgeConnect physical or virtual appliances are used to predict the application performance over different transport services. This AppID covers the data plane traffic between the appliances.</description>
+          <appident>yes</appident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>no</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="SilverPeak">
+              <link>https://www.silver-peak.com/products/unity-edge-connect</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>udp/12000,12001</member>
+            </port>
+          </default>
+          <risk>1</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2976" minver="5.0.0" name="snare-server" ori_country="USA" ori_language="English">
+          <category>business-systems</category>
+          <subcategory>management</subcategory>
+          <technology>client-server</technology>
+          <description>Snare is a software tool to collect audit log data from a variety of operating systems and applications. This App-ID identifies traffic between the snare server and the web-browser client.</description>
+          <appident>yes</appident>
+          <spyware-ident>yes</spyware-ident>
+          <vulnerability-ident>yes</vulnerability-ident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>yes</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <data-ident>yes</data-ident>
+          <cachable>no</cachable>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <references>
+            <entry name="Wikipedia">
+              <link>https://en.wikipedia.org/wiki/Snare_(software)</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/80</member>
+            </port>
+          </default>
+          <use-applications>
+            <member>web-browsing</member>
+          </use-applications>
+          <applicable-decoders>
+            <member>http</member>
+          </applicable-decoders>
+          <risk>1</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2984" minver="5.0.0" name="zoom-downloading" ori_country="USA" ori_language="English">
+          <category>collaboration</category>
+          <subcategory>internet-conferencing</subcategory>
+          <technology>client-server</technology>
+          <description>This App-ID identifies the downloading activity of zoom.</description>
+          <appident>yes</appident>
+          <virus-ident>yes</virus-ident>
+          <spyware-ident>yes</spyware-ident>
+          <file-type-ident>yes</file-type-ident>
+          <vulnerability-ident>yes</vulnerability-ident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>yes</able-to-transfer-file>
+          <has-known-vulnerability>yes</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <data-ident>yes</data-ident>
+          <cachable>no</cachable>
+          <file-forward>yes</file-forward>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <is-saas>yes</is-saas>
+          <saas minver="8.1.0">
+            <certifications>
+              <is-hipaa>yes</is-hipaa>
+              <is-pci>yes</is-pci>
+              <is-soc2>yes</is-soc2>
+              <is-truste>yes</is-truste>
+            </certifications>
+            <is-data-breaches>no</is-data-breaches>
+            <is-ip-based-restrictions>no</is-ip-based-restrictions>
+            <is-poor-financial-viability>no</is-poor-financial-viability>
+            <is-poor-terms-of-service>no</is-poor-terms-of-service>
+          </saas>
+          <references>
+            <entry name="Zoom">
+              <link>https://zoom.us/about</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/80,443</member>
+            </port>
+          </default>
+          <use-applications minver="3.1.0">
+            <member minver="3.1.0">zoom-base</member>
+          </use-applications>
+          <applicable-decoders>
+            <member>http</member>
+          </applicable-decoders>
+          <risk>2</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="1758" minver="3.1.0" name="zoom-base" ori_country="USA" ori_language="English">
+          <ottawa-name>zoom</ottawa-name>
+          <category>collaboration</category>
+          <subcategory>internet-conferencing</subcategory>
+          <technology>client-server</technology>
+          <description>Zoom is a meeting platform that unifies HD video conferencing, mobility and web meetings into a cloud service.</description>
+          <icon minver="7.0.0">data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsSAAALEgHS3X78AAAFJ0lEQVRo3u2VW2xVVRCGv1lr73162lMBAxKVVkkMEUtthQqKEbVeUIiID0SkXpBqIhpQCIkxxjcVNYrUavCGEiIqwQSiJBojl8YLhgq0JRXwilHjhWLEltOes/de40NbeygHX33Z39POzKyZf9aavRYkJCQkJCQkJCQkJCQk/D9I9bP6Akop4BBAh5xOMdmII/On8NjK66R70D61WW/K5rkWh289dgWWd1qXSl+xArWrtcLF3KLKRBH+QHivY7nsGvRPfFovLC/hemt5uTekIopoFMEXZWvHCvkQoK5Jx8bKXX15zitL0WmEtbuXyt8AUtOkP8YhlWKGVVZAIIphVIaNny+W+ZNf0LTGbApDZiNDYQbajXB7+3LZX5hi8nN6a+hoUhgzmA8gsKze+6AsA5j0jM5G2CrCtwKVkSMAsAJewIogYHu2h80K5yggCur4ypYxu+N+OSyTmzUTOR5WGGuE6GgWBHrHlJEJHY0okoto/XqFTK19Xn/KR4wzBoxhkwi9OGZFMaONwohK6j6dJ3sAatfovfnjrBEL1vKVFb5wSmXsuMbFkCphx777pX7SKp0klv3q+ncjFbAR0L6Q+UJ/086BwMGSFLtyIVdHEZWBT7Z8NGfJqWZr/LO6odRjAcKxzqUycspLuirby7JUin2BcOXuxf1HCFDVrK/haIxDjhxcIWdctEbPiPL8HvbXX3zgAXlpMLa6SWsjpUXgtNI09bHyWZgj54B0OTP3LJKPAKrW6FUSsk0dUlrGR633yMzBHDPWasvvx5hR4rHSFBM/4w39whoWEMP4CUy4bKPanl6WeQG5wGdaoXiAziVyt/U5ZFOMmf6anpfyqe+JoWIUbxSKB9j/gLSdO5ab+xQCj0fLU4zPOsik2T8oHqBzseywPjtVAJ/HC3M45RHrgzNcfFIDNS/rh9/8ybTSEnAjmbr1evmj+yiz/BRYn22775Gw6G1geUU86A655njE9LI0dGVZWyz2g1tl+2ml5P7KccVfOeoyacjGHB8e56DPS0G2p/Bqga4ceD5gwSt0VDTr5tAxc3QGPI/6jkXSCmAsJu7/W4uKB8CQH5hHH8EzQF5OHS8Wp4pRwSIgw7QM5PRUwAT4hWbfJxjoKP73BC54VdeNSjPXeGAD5u1tlB1DK+gQAw6u/o8GGmOBIMXHJSV83hPCmSO4rVjonK06rTtPuryEzzKl7A0HrrKTsAN2c2q7AZj2pr4I3Imh20txadtd8m5hfNsi+cGm+DiCTO163T68zgVr9YlQqRU4vmehHAgdO9Mp+O1vllS9rnMLY6vX67jvu9jiW3ABT+WFQ9ZSvIEBkWJPHCFkyOdduF6X9YTcZ31A+EWhbtI6vVH650EUxHp0tjfItRNf164w5qrqddolhreMkEO5IXJU4WDkWcwGaFsoP9ds0IejHCsRNtes1+1GaHXK2XHMbc5Bqoy9Xy6Q96vXaZXxQCFTpIFyAJWT7OmBr9gzlsNu6FE6X6FZ7InN5kO4fJOKMYw72ssnzlFnYEmk/Q+ZNfwqhjs+nSUtg+vaG+TJizZoPnI8Eyv1sVI/ePxBwMa2BpkP4Azn0J/j+yIj9A1wCcKIE/T7HHQOgCleW4NsrnlLl8eOamHYUQ117Occ5bvnSd/0TTo9H7OwN2KygOcZDvrwzpcL5Jfhy/Y1yKqat7XFOeaoUiHCMaClrUG2FOzQj57H6nJL00n6LQ85OKKOw4X29gb5ruZtXaKO00lISEhISEhISEhISEj4n/gHxNYCUUzF3wwAAAAASUVORK5CYII=</icon>
+          <appident>yes</appident>
+          <vulnerability-ident>yes</vulnerability-ident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>yes</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>no</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <udp-timeout>300</udp-timeout>
+          <deny-action>drop-reset</deny-action>
+          <cachable>no</cachable>
+          <breaks-decryption>yes</breaks-decryption>
+          <is-saas>yes</is-saas>
+          <saas minver="8.1.0">
+            <certifications>
+              <is-hipaa>yes</is-hipaa>
+              <is-pci>yes</is-pci>
+              <is-soc2>yes</is-soc2>
+              <is-truste>yes</is-truste>
+            </certifications>
+            <is-data-breaches>no</is-data-breaches>
+            <is-ip-based-restrictions>no</is-ip-based-restrictions>
+            <is-poor-financial-viability>no</is-poor-financial-viability>
+            <is-poor-terms-of-service>no</is-poor-terms-of-service>
+          </saas>
+          <references>
+            <entry name="Zoom">
+              <link>http://zoom.us/about</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/80,443,3478,3479,5060,5061,5090,5091,8801,8802</member>
+              <member>udp/dynamic</member>
+            </port>
+          </default>
+          <use-applications>
+            <member>jabber</member>
+            <member>ssl</member>
+            <member>stun</member>
+            <member>web-browsing</member>
+          </use-applications>
+          <tunnel-applications minver="5.0.0">
+            <member minver="5.0.0">zoom-downloading</member>
+            <member minver="5.0.0">zoom-meeting</member>
+            <member minver="5.0.0">zoom-sharing</member>
+            <member minver="5.0.0">zoom-uploading</member>
+          </tunnel-applications>
+          <implicit-use-applications>
+            <member>jabber</member>
+            <member>web-browsing</member>
+          </implicit-use-applications>
+          <applicable-decoders>
+            <member>http</member>
+            <member>ssl</member>
+          </applicable-decoders>
+          <risk>1</risk>
+          <application-container>zoom</application-container>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2990" minver="5.0.0" name="zoom-meeting" ori_country="USA" ori_language="English">
+          <category>collaboration</category>
+          <subcategory>internet-conferencing</subcategory>
+          <technology>client-server</technology>
+          <description>This App-ID identifies the group video/audio meeting activity of zoom.</description>
+          <appident>yes</appident>
+          <spyware-ident>yes</spyware-ident>
+          <vulnerability-ident>yes</vulnerability-ident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>yes</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>yes</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <data-ident>yes</data-ident>
+          <cachable>no</cachable>
+          <new-appid>yes</new-appid>
+          <is-saas>yes</is-saas>
+          <saas minver="8.1.0">
+            <certifications>
+              <is-hipaa>yes</is-hipaa>
+              <is-pci>yes</is-pci>
+              <is-soc2>yes</is-soc2>
+              <is-truste>yes</is-truste>
+            </certifications>
+            <is-data-breaches>no</is-data-breaches>
+            <is-ip-based-restrictions>no</is-ip-based-restrictions>
+            <is-poor-financial-viability>no</is-poor-financial-viability>
+            <is-poor-terms-of-service>no</is-poor-terms-of-service>
+          </saas>
+          <references>
+            <entry name="Zoom">
+              <link>https://zoom.us/about</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/443,8801,8802</member>
+              <member>udp/8801</member>
+            </port>
+          </default>
+          <use-applications minver="3.1.0">
+            <member minver="3.1.0">zoom-base</member>
+          </use-applications>
+          <applicable-decoders>
+            <member>http</member>
+          </applicable-decoders>
+          <risk>2</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2986" minver="5.0.0" name="zoom-sharing" ori_country="USA" ori_language="English">
+          <category>collaboration</category>
+          <subcategory>internet-conferencing</subcategory>
+          <technology>client-server</technology>
+          <description>This App-ID identifies the sharing activity of zoom.</description>
+          <appident>yes</appident>
+          <spyware-ident>yes</spyware-ident>
+          <vulnerability-ident>yes</vulnerability-ident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>no</able-to-transfer-file>
+          <has-known-vulnerability>yes</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <data-ident>yes</data-ident>
+          <cachable>no</cachable>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <is-saas>yes</is-saas>
+          <saas minver="8.1.0">
+            <certifications>
+              <is-hipaa>yes</is-hipaa>
+              <is-pci>yes</is-pci>
+              <is-soc2>yes</is-soc2>
+              <is-truste>yes</is-truste>
+            </certifications>
+            <is-data-breaches>no</is-data-breaches>
+            <is-ip-based-restrictions>no</is-ip-based-restrictions>
+            <is-poor-financial-viability>no</is-poor-financial-viability>
+            <is-poor-terms-of-service>no</is-poor-terms-of-service>
+          </saas>
+          <references>
+            <entry name="Zoom">
+              <link>https://zoom.us/about</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/80,443</member>
+            </port>
+          </default>
+          <use-applications minver="3.1.0">
+            <member minver="3.1.0">zoom-base</member>
+          </use-applications>
+          <applicable-decoders>
+            <member>http</member>
+          </applicable-decoders>
+          <risk>1</risk>
+          <preview>yes</preview>
+        </entry>
+        <entry id="2985" minver="5.0.0" name="zoom-uploading" ori_country="USA" ori_language="English">
+          <category>collaboration</category>
+          <subcategory>internet-conferencing</subcategory>
+          <technology>client-server</technology>
+          <description>This App-ID identifies the uploading activity of zoom.</description>
+          <appident>yes</appident>
+          <virus-ident>yes</virus-ident>
+          <spyware-ident>yes</spyware-ident>
+          <file-type-ident>yes</file-type-ident>
+          <vulnerability-ident>yes</vulnerability-ident>
+          <evasive-behavior>no</evasive-behavior>
+          <consume-big-bandwidth>no</consume-big-bandwidth>
+          <used-by-malware>no</used-by-malware>
+          <able-to-transfer-file>yes</able-to-transfer-file>
+          <has-known-vulnerability>yes</has-known-vulnerability>
+          <tunnel-other-application>no</tunnel-other-application>
+          <prone-to-misuse>no</prone-to-misuse>
+          <pervasive-use>no</pervasive-use>
+          <per-direction-regex>no</per-direction-regex>
+          <deny-action>drop-reset</deny-action>
+          <data-ident>yes</data-ident>
+          <cachable>no</cachable>
+          <file-forward>yes</file-forward>
+          <can-disable>yes</can-disable>
+          <new-appid>yes</new-appid>
+          <is-saas>yes</is-saas>
+          <saas minver="8.1.0">
+            <certifications>
+              <is-hipaa>yes</is-hipaa>
+              <is-pci>yes</is-pci>
+              <is-soc2>yes</is-soc2>
+              <is-truste>yes</is-truste>
+            </certifications>
+            <is-data-breaches>no</is-data-breaches>
+            <is-ip-based-restrictions>no</is-ip-based-restrictions>
+            <is-poor-financial-viability>no</is-poor-financial-viability>
+            <is-poor-terms-of-service>no</is-poor-terms-of-service>
+          </saas>
+          <references>
+            <entry name="Zoom">
+              <link>https://zoom.us/about</link>
+            </entry>
+          </references>
+          <default>
+            <port>
+              <member>tcp/80,443</member>
+            </port>
+          </default>
+          <use-applications minver="3.1.0">
+            <member minver="3.1.0">zoom-base</member>
+          </use-applications>
+          <applicable-decoders>
+            <member>http</member>
+          </applicable-decoders>
+          <risk>2</risk>
+          <preview>yes</preview>
+        </entry>
+      </application>
+      <application-type>
+        <category/>
+        <technology/>
+      </application-type>
+    </content-preview>
+  </shared>
+
