@@ -77,7 +77,7 @@
       retries: 2
       delay: 60        
 
-    #  Upgrade Panorama software to latest version
+    #  Upgrade Panorama software to requested version
     - name: Panorama Upgrade software
       panos_software:
         ip_address: "{{pano_ip}}"

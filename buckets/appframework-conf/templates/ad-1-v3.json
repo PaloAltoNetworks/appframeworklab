@@ -271,23 +271,23 @@
 
     "Mappings": {
         "AWSAMIRegionMap": {
-            "AMI": {"WS2012R2": "Windows_Server-2012-R2_RTM-English-64Bit-Base-2018.10.14"},
-            "ap-south-1": { "WS2012R2": "ami-0bd1dc65d74266ee2" },
-            "eu-west-3": { "WS2012R2": "ami-040ef025ec13d58bf" },
-            "eu-north-1": { "WS2012R2": "ami-08e8ecaacd7cfa6d5" },
-            "eu-west-2": { "WS2012R2": "ami-0a7551990da17b8d6" },
-            "eu-west-1": { "WS2012R2": "ami-01dbaf1c50a36891d" },
-            "ap-northeast-2": { "WS2012R2": "ami-0b3a3970b73d5b63a" },
-            "ap-northeast-1": { "WS2012R2": "ami-0a45b66bda01c89c8" },
-            "sa-east-1": { "WS2012R2": "ami-01d74c2e93478e2f5" },
-            "ca-central-1": { "WS2012R2": "ami-0a27bbef221046aae" },
-            "ap-southeast-1": { "WS2012R2": "ami-0bf96f139bff648cc" },
-            "ap-southeast-2": { "WS2012R2": "ami-0664c039c4dea5193" },
-            "eu-central-1": { "WS2012R2": "ami-0d55859ee09a59138" },
-            "us-east-1": { "WS2012R2": "ami-0fba87d7f8c8744d4" },
-            "us-east-2": { "WS2012R2": "ami-0679e5ac84d15f15e" },
-            "us-west-1": { "WS2012R2": "ami-04370c2a300903acc" },
-            "us-west-2": { "WS2012R2": "ami-02e27664434db6def" }
+            "AMI": {"WS2012R2": "Windows_Server-2012-R2_RTM-English-64Bit-Base-2019.02.09"},
+            "eu-north-1": { "WS2012R2": "ami-079a31276dea24ed6" },
+            "ap-south-1": { "WS2012R2": "ami-0448c9cf094da7b91" },
+            "eu-west-3": { "WS2012R2": "ami-058a64ee9797242fa" },
+            "eu-west-2": { "WS2012R2": "ami-0a49e07ad89b75eb3" },
+            "eu-west-1": { "WS2012R2": "ami-0e5a30250d183cbca" },
+            "ap-northeast-2": { "WS2012R2": "ami-0afb366607c174211" },
+            "ap-northeast-1": { "WS2012R2": "ami-0774be841d6bafc75" },
+            "sa-east-1": { "WS2012R2": "ami-05adf856578247431" },
+            "ca-central-1": { "WS2012R2": "ami-0154560b85c903ce7" },
+            "ap-southeast-1": { "WS2012R2": "ami-05299d581cb45232f" },
+            "ap-southeast-2": { "WS2012R2": "ami-03a19537798432187" },
+            "eu-central-1": { "WS2012R2": "ami-00703784f224b7a9a" },
+            "us-east-1": { "WS2012R2": "ami-0d99daa98c8711fe1" },
+            "us-east-2": { "WS2012R2": "ami-0a3150789e97668b2" },
+            "us-west-1": { "WS2012R2": "ami-0e6c720d4efbe17d7" },
+            "us-west-2": { "WS2012R2": "ami-004d6bbd25fdba500" }
         }
     },
     "Resources": {

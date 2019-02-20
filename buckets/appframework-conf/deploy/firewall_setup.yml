@@ -98,7 +98,7 @@
       retries: 2
       delay: 60        
 
-    # update NGFW software to latest release
+    # update NGFW software to requested version
     - name: NGFW Upgrade Software
       panos_software:
         ip_address: "{{ngfw_ip}}"
