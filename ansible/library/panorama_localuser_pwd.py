@@ -16,10 +16,10 @@
 
 DOCUMENTATION = '''
 ---
-module: panos_mgtconfig
-short_description: Module used to configure some of the device management.
+module: panos_localuser_pwd
+short_description: Module used to change the password of a local user via Panorama
 description:
-    - Configure management settings of device. Not all configuration options are configurable at this time.
+    - Module used to change the password of a local user via Panorama
 author: "Luigi Mori (@jtschichold), Ivan Bojer (@ivanbojer), Patrik Malinen (@pmalinen), Francesco Vigo (@fvigo)"
 version_added: "2.4"
 requirements:
@@ -44,42 +44,15 @@ options:
     api_key:
         description:
             - API key that can be used instead of I(username)/I(password) credentials.
-    dns_server_primary:
+    template:
         description:
-            - IP address of primary DNS server.
-    dns_server_secondary:
+            - Template name.
+    localuser:
         description:
-            - IP address of secondary DNS server.
-    panorama_primary:
+            - Local User.
+    newpassword:
         description:
-            - IP address (or hostname) of primary Panorama server.
-    panorama_secondary:
-        description:
-            - IP address (or hostname) of secondary Panorama server.
-    ntp_server_primary:
-        description:
-            - IP address (or hostname) of primary NTP server.
-    ntp_server_secondary:
-        description:
-            - IP address (or hostname) of secondary NTP server.
-    timezone:
-        description:
-            - Device timezone.
-    login_banner:
-        description:
-            - Login banner text.
-    update_server:
-        description:
-            - IP or hostname of the update server.
-    hostname:
-        description:
-            - The hostname of the device.
-    domain:
-        description:
-            - The domain of the device
-    devicegroup:
-        description:
-            - Device groups are used for the Panorama interaction with Firewall(s). The group must exists on Panorama.
+            - New Password.
     commit:
         description:
             - Commit configuration if changed.
@@ -88,16 +61,13 @@ options:
 '''
 
 EXAMPLES = '''
-- name: set dns and panorama
-  panos_mgtconfig:
+- name: set localuser password
+  panorama_localuser_pwd:
     ip_address: "192.168.1.1"
     password: "admin"
-    dns_server_primary: "1.1.1.1"
-    dns_server_secondary: "1.1.1.2"
-    panorama_primary: "1.1.1.3"
-    panorama_secondary: "1.1.1.4"
-    ntp_server_primary: "1.1.1.5"
-    ntp_server_secondary: "1.1.1.6"
+    template: "Template1
+    localuser: "testuser"
+    newpassword: "password"
 '''
 
 RETURN = '''
@@ -121,59 +91,15 @@ try:
 except ImportError:
     HAS_LIB = False
 
-
-def get_devicegroup(device, devicegroup):
-    dg_list = device.refresh_devices()
-    for group in dg_list:
-        if isinstance(group, pandevice.panorama.DeviceGroup):
-            if group.name == devicegroup:
-                return group
-    return False
-
-def set_ntp_server(system_settings, new_ntp_server, primary=True):
-    ntp = None
-    classType = None
-    if primary:
-        from pandevice.device import NTPServerPrimary
-        classType = NTPServerPrimary
-        ntp = NTPServerPrimary(address=new_ntp_server)
-    else:
-        from pandevice.device import NTPServerSecondary
-        classType = NTPServerSecondary
-        ntp = NTPServerSecondary(address=new_ntp_server)
-
-    # find the duplicate
-    nodes = system_settings.findall(classType)
-    for n in nodes:
-        a = getattr(n, 'address')
-        if a and a == new_ntp_server:
-            return False
-
-    # continue with the change
-    system_settings.removeall(classType)
-    system_settings.add(ntp)
-
-    return True
-
-
 def main():
     argument_spec = dict(
         ip_address=dict(required=True),
         password=dict(required=True, no_log=True),
         username=dict(default='admin'),
         api_key=dict(no_log=True),
-        dns_server_primary=dict(),
-        dns_server_secondary=dict(),
-        panorama_primary=dict(),
-        panorama_secondary=dict(),
-        ntp_server_primary=dict(),
-        ntp_server_secondary=dict(),
-        timezone=dict(),
-        login_banner=dict(),
-        update_server=dict(),
-        hostname=dict(),
-        domain=dict(),
-        devicegroup=dict(),
+        newpassword=dict(required=True, no_log=True),
+        localuser=dict(required=True),
+        template=dict(required=True),
         commit=dict(type='bool', default=True)
     )
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=False,
@@ -184,35 +110,19 @@ def main():
     ip_address = module.params["ip_address"]
     password = module.params["password"]
     username = module.params['username']
-    dns_server_primary = module.params['dns_server_primary']
-    dns_server_secondary = module.params['dns_server_secondary']
-    ntp_server_primary = module.params['ntp_server_primary']
-    ntp_server_secondary = module.params['ntp_server_secondary']
-    panorama_primary = module.params['panorama_primary']
-    panorama_secondary = module.params['panorama_secondary']
+    local = module.params['localuser']
     commit = module.params['commit']
     api_key = module.params['api_key']
-    timezone = module.params['timezone']
-    login_banner = module.params['login_banner']
-    update_server = module.params['update_server']
-    hostname = module.params['hostname']
-    domain = module.params['domain']
-    devicegroup = module.params['devicegroup']
+    newpassword = module.params["newpassword"]    
+    template = module.params['template']
 
     # Create the device with the appropriate pandevice type
     device = base.PanDevice.create_from_device(ip_address, username, password, api_key=api_key)
-
-    # If Panorama, validate the devicegroup
-    dev_group = None
-    if devicegroup and isinstance(device, panorama.Panorama):
-        dev_group = get_devicegroup(device, devicegroup)
-        if dev_group:
-            device.add(dev_group)
-        else:
-            module.fail_json(msg='\'%s\' device group not found in Panorama. Is the name correct?' % devicegroup)
-
     changed = False
     try:
+        phash = device.request_password_hash(password)
+
+        #return phash        
         ss = SystemSettings.refreshall(device)[0]
 
         print('changed = {}'.format(changed))
@@ -262,9 +172,10 @@ def main():
     except PanXapiError:
         exc = get_exception()
         module.fail_json(msg=exc.message)
+    except PanDeviceError as e:
+        module.fail_json(msg='Failed to change password: {}'.format(e))
 
     module.exit_json(changed=changed, msg="okey dokey")
-
 
 if __name__ == '__main__':
     main()

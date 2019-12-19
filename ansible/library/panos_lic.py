@@ -111,6 +111,11 @@ def apply_authcode(xapi, module, auth_code):
         if 'Invalid Auth Code' in xapi.xml_document:
             module.fail_json(msg="Invalid Auth Code")
 
+        # Duplicate capacity license fails gracefully as it could be expected
+        if 'Failed to install licenses. Cannot apply a provisioning license feature to an already provisioned device' in xapi.xml_document:
+            return
+
+        # Other exception
         raise
 
     return
@@ -169,6 +174,8 @@ def main():
         except pan.xapi.PanXapiError as e:
             if 'ElementTree.fromstring ParseError' in str(e):
                 pass
+            else:
+                raise
     else:
         fetch_authcode(xapi, module)
 

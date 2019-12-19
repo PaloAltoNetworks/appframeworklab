@@ -77,15 +77,27 @@ options:
         default: "./template-stack.xml"
     devgroup_name:
         description:
-            - Name in the Device Group in the configuration
+            - Name of the Device Group in the configuration
         required: true
     template_name:
         description:
-            - Name in the Template in the configuration
+            - Name of the Template in the configuration
         required: true
     template_stack_name:
         description:
-            - Name in the Template Stack in the configuration
+            - Name of the Template Stack in the configuration
+        required: true
+    localuser_name:
+        description:
+            - Name of the local user
+        required: true
+    localuser_newpassword:
+        description:
+            - New password of the local user
+        required: true
+    external_ip:
+        description:
+            - External IP for GlobalProtect
         required: true
 '''
 
@@ -126,7 +138,7 @@ except ImportError:
 def editPanoramaEntry(pn, xpath, file, module):
     if 'hostname' not in pn or 'username' not in pn or 'password' not in pn:
         module.fail_json(msg='Panorama credentials not specified!')
-  
+
     #print('Reading configuration file: {}'. format(file))
     try:
         f = open(file,'r')
@@ -177,7 +189,7 @@ def setPanoramaEntry(pn, xpath, value, module):
     #print('Configuration successfully set!')
     return True
 
-def configurePanorama(pn, fwSerial, sharedFile, devGroupName, devGroupFile, templateName, templateFile, templateStackName, templateStackFile, module):
+def configurePanorama(pn, fwSerial, sharedFile, devGroupName, devGroupFile, templateName, templateFile, templateStackName, templateStackFile, localuser_name, phash, extip, module):
     if 'hostname' not in pn or 'username' not in pn or 'password' not in pn:
         raise RuntimeError('Panorama credentials not specified!')
 
@@ -215,6 +227,17 @@ def configurePanorama(pn, fwSerial, sharedFile, devGroupName, devGroupFile, temp
     if not setPanoramaEntry(pn, xpath, element, module):
         raise RuntimeError('Error adding device to Panorama Template Stack')
     #print('Panorama Configuration complete!')
+
+    xpath = "/config/devices/entry[@name='localhost.localdomain']/template/entry[@name='{}']/config/shared/local-user-database/user/entry[@name='{}']".format(templateName, localuser_name)
+    element = '<phash>{}</phash>'.format(phash)
+    if not setPanoramaEntry(pn, xpath, element, module):
+        raise RuntimeError('Error configuring local user password')
+
+    xpath = "/config/devices/entry[@name='localhost.localdomain']/template/entry[@name='Template1']/config/devices/entry[@name='localhost.localdomain']/vsys/entry[@name='vsys1']/global-protect/global-protect-portal/entry[@name='GP-Portal']/client-config/configs/entry[@name='agentconfig']/gateways/external/list/entry[@name='ext']/ip".format(templateName)
+    element = '<ipv4>{}</ipv4>'.format(extip)
+    if not setPanoramaEntry(pn, xpath, element, module):
+        raise RuntimeError('Error configuring GP External IP')
+
     return True
 
 def getDeviceSerial(fw, module):
@@ -228,14 +251,27 @@ def getDeviceSerial(fw, module):
     return devSerial
 
 
-def panoramaCommitAll(pn, devicegroup, module):
-    try: 
+def getDevicePhash(device, password, module):
+    if 'hostname' not in device or 'username' not in device or 'password' not in device:
+        module.fail_json(msg='Device credentials not specified!')
+
+    dev = firewall.Firewall(device['hostname'], device['username'], device['password'])
+    phash = dev.request_password_hash(password)
+    return phash
+
+
+def panoramaCommitAll(pn, devicegroup, force_template_values, module):
+    try:
         pano = panorama.Panorama(pn['hostname'], pn['username'], pn['password'])
         #print("Committing on Panorama")
         pano.commit(sync=True)
         #print("Committed on Panorama")
         #print("Committing All on Panorama")
-        pano.commit_all(sync=True, sync_all=True, devicegroup=devicegroup)
+        if not force_template_values:
+            pano.commit_all(sync=True, sync_all=True, devicegroup=devicegroup)
+        else:
+            # commit with force template values
+            pano.commit_all(sync=True, sync_all=True, cmd='<commit-all><shared-policy><device-group><entry name="{}" /></device-group><force-template-values>yes</force-template-values><merge-with-candidate-cfg>yes</merge-with-candidate-cfg><include-template>yes</include-template><validate-only>no</validate-only></shared-policy></commit-all>'.format(devicegroup))
         #print("Committed All on Panorama")
     except Exception as e:
         module.fail_json(msg='Fail on commit: {}'.format(e))
@@ -255,7 +291,11 @@ def main():
         template_stack_file=dict(default='./template_stack.xml'),
         devgroup_name=dict(default=None),
         template_name=dict(default=None),
-        template_stack_name=dict(default=None)
+        template_stack_name=dict(default=None),
+        localuser_name=dict(default=None),
+        localuser_newpassword=dict(default=None, no_log=True),
+        external_ip=dict(default=None, no_log=True)
+
     )
     module = AnsibleModule(argument_spec=argument_spec)
 
@@ -275,7 +315,6 @@ def main():
         module.fail_json(msg="NGFW password is required")
     ngfw_username = module.params['ngfw_username']
 
-
     shared_file = module.params['shared_file']
     devgroup_file = module.params['devgroup_file']
     template_file = module.params['template_file']
@@ -284,7 +323,7 @@ def main():
     devgroup_name = module.params['devgroup_name']
     if not devgroup_name:
         module.fail_json(msg="Device Group name must be specified")
-    
+
     template_name = module.params['template_name']
     if not template_name:
         module.fail_json(msg="Template name must be specified")
@@ -292,7 +331,11 @@ def main():
     template_stack_name = module.params['template_stack_name']
     if not template_stack_name:
         module.fail_json(msg="Template Stack name must be specified")
-    
+
+    localuser_name = module.params['localuser_name']
+    localuser_newpassword = module.params['localuser_newpassword']
+    extip = module.params['external_ip']
+
     changed = False
 
     pn = {
@@ -308,15 +351,15 @@ def main():
 
     try:
         fwSerial = getDeviceSerial(fw, module)
-        changed |= configurePanorama(pn, fwSerial, shared_file, devgroup_name, devgroup_file, template_name, template_file, template_stack_name, template_stack_file, module)
-        changed |= panoramaCommitAll(pn, devgroup_name, module)
+        phash = getDevicePhash(pn, localuser_newpassword, module)
+        changed |= configurePanorama(pn, fwSerial, shared_file, devgroup_name, devgroup_file, template_name, template_file, template_stack_name, template_stack_file, localuser_name, phash, extip, module)
+        changed |= panoramaCommitAll(pn, devgroup_name, True, module)
     except Exception as e:
         module.fail_json(msg='Got exception: {}'.format(e))
 
     module.exit_json(changed=changed, msg="okey dokey")
 
 from ansible.module_utils.basic import *  # noqa
-
 
 if __name__ == "__main__":
     main()

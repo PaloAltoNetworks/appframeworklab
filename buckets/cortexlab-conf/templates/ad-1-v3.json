@@ -1,6 +1,6 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "Palo Alto Networks Application Framework Lab Domain Controller Nested Template",
+    "Description": "Palo Alto Networks Cortex Lab Domain Controller Nested Template",
     "Metadata": {
         "AWS::CloudFormation::Interface": {
             "ParameterGroups": [
@@ -139,7 +139,7 @@
         },
         "ADServer1PrivateIP": {
             "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$",
-            "Default": "10.0.1.10",
+            "Default": "10.0.1.20",
             "Description": "Fixed private IP for the first Active Directory server located in Availability Zone 1",
             "Type": "String"
         },
@@ -210,14 +210,14 @@
         "QSS3BucketName": {
             "AllowedPattern": "^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$",
             "ConstraintDescription": "Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
-            "Default": "quickstart-reference",
+            "Default": "aws-quickstart",
             "Description": "S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
             "Type": "String"
         },
         "QSS3KeyPrefix": {
             "AllowedPattern": "^[0-9a-zA-Z-/]*$",
             "ConstraintDescription": "Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).",
-            "Default": "microsoft/activedirectory/latest/",
+            "Default": "quickstart-microsoft-activedirectory/",
             "Description": "S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).",
             "Type": "String"
         },
@@ -243,7 +243,7 @@
 		"FirewallCertURL":{
 			"Description": "Firewall Certificate URL",
 			"Type": "String",
-			"Default": "https://paloaltonetworks.box.com/shared/static/rkuuqhaxrmce2pl6kajsea95czpndrvm"
+			"Default": "https://s3.amazonaws.com/cortexlab-conf/opt/cortexlabca.pem"
 		}
     },
     "Rules": {
@@ -271,23 +271,23 @@
 
     "Mappings": {
         "AWSAMIRegionMap": {
-            "AMI": {"WS2012R2": "Windows_Server-2012-R2_RTM-English-64Bit-Base-2019.02.09"},
-            "eu-north-1": { "WS2012R2": "ami-079a31276dea24ed6" },
-            "ap-south-1": { "WS2012R2": "ami-0448c9cf094da7b91" },
-            "eu-west-3": { "WS2012R2": "ami-058a64ee9797242fa" },
-            "eu-west-2": { "WS2012R2": "ami-0a49e07ad89b75eb3" },
-            "eu-west-1": { "WS2012R2": "ami-0e5a30250d183cbca" },
-            "ap-northeast-2": { "WS2012R2": "ami-0afb366607c174211" },
-            "ap-northeast-1": { "WS2012R2": "ami-0774be841d6bafc75" },
-            "sa-east-1": { "WS2012R2": "ami-05adf856578247431" },
-            "ca-central-1": { "WS2012R2": "ami-0154560b85c903ce7" },
-            "ap-southeast-1": { "WS2012R2": "ami-05299d581cb45232f" },
-            "ap-southeast-2": { "WS2012R2": "ami-03a19537798432187" },
-            "eu-central-1": { "WS2012R2": "ami-00703784f224b7a9a" },
-            "us-east-1": { "WS2012R2": "ami-0d99daa98c8711fe1" },
-            "us-east-2": { "WS2012R2": "ami-0a3150789e97668b2" },
-            "us-west-1": { "WS2012R2": "ami-0e6c720d4efbe17d7" },
-            "us-west-2": { "WS2012R2": "ami-004d6bbd25fdba500" }
+            "AMI": {"WS2012R2": "Windows_Server-2012-R2_RTM-English-64Bit-Base-2019.04.26"},
+            "eu-north-1": { "WS2012R2": "ami-0568f6fec2ee2b41c" },
+            "ap-south-1": { "WS2012R2": "ami-02f0a763aeda0077b" },
+            "eu-west-3": { "WS2012R2": "ami-07c11c4d4df6d5a81" },
+            "eu-west-2": { "WS2012R2": "ami-0ddbb61e1ac0b740c" },
+            "eu-west-1": { "WS2012R2": "ami-03cc072e1eb1504ad" },
+            "ap-northeast-2": { "WS2012R2": "ami-0025e3f1eacf7d130" },
+            "ap-northeast-1": { "WS2012R2": "ami-046ee6b9fdfea3161" },
+            "sa-east-1": { "WS2012R2": "ami-06e9846cb29996e35" },
+            "ca-central-1": { "WS2012R2": "ami-077d8740d7c88a083" },
+            "ap-southeast-1": { "WS2012R2": "ami-0a0a6f3903d43aedb" },
+            "ap-southeast-2": { "WS2012R2": "ami-011faffd94de75db6" },
+            "eu-central-1": { "WS2012R2": "ami-02e33b7f1cfec85c3" },
+            "us-east-1": { "WS2012R2": "ami-0b6158cfa2ae7b493" },
+            "us-east-2": { "WS2012R2": "ami-0f33ca435060daee9" },
+            "us-west-1": { "WS2012R2": "ami-0d4f8a9abc53cca9c" },
+            "us-west-2": { "WS2012R2": "ami-00ddbceb28e44364c" }
         }
     },
     "Resources": {
@@ -348,6 +348,41 @@
                 "Path": "/"
             }
         },
+        "DHCPOptions": {
+            "Type": "AWS::EC2::DHCPOptions",
+            "DependsOn": [
+                "DomainController1WaitCondition"
+            ],
+            "Properties": {
+                "DomainName": {
+                    "Ref": "DomainDNSName"
+                },
+                "DomainNameServers": [
+                    {
+                        "Ref": "ADServer1PrivateIP"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Domain",
+                        "Value": {
+                            "Ref": "DomainDNSName"
+                        }
+                    }
+                ]
+            }
+        },
+        "VPCDHCPOptionsAssociation": {
+            "Type": "AWS::EC2::VPCDHCPOptionsAssociation",
+            "Properties": {
+                "VpcId": {
+                    "Ref": "VPCID"
+                },
+                "DhcpOptionsId": {
+                    "Ref": "DHCPOptions"
+                }
+            }
+        },        
         "DomainController1": {
             "Type": "AWS::EC2::Instance",
             "Metadata": {
@@ -884,7 +919,7 @@
                 "Tags": [
                     {
                         "Key": "Name",
-                        "Value": "AppFrameworkLab Windows DC"
+                        "Value": "CortexLab Windows DC"
                     }
                 ],
                 "BlockDeviceMappings": [
@@ -960,260 +995,6 @@
         },
         "DomainController1WaitHandle": {
             "Type": "AWS::CloudFormation::WaitConditionHandle"
-        },
-        "DomainController1SG": {
-            "Type": "AWS::EC2::SecurityGroup",
-            "Properties": {
-                "GroupDescription": "Domain Controller",
-                "VpcId": {
-                    "Ref": "VPCID"
-                },
-                "SecurityGroupIngress": [
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "5985",
-                        "ToPort": "5985",
-                        "CidrIp": {
-                            "Ref": "VPCCIDR"
-                        }
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "80",
-                        "ToPort": "80",
-                        "CidrIp": {
-                            "Ref": "VPCCIDR"
-                        }
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "53",
-                        "ToPort": "53",
-                        "CidrIp": {
-                            "Ref": "VPCCIDR"
-                        }
-                    },
-                    {
-                        "IpProtocol": "udp",
-                        "FromPort": "53",
-                        "ToPort": "53",
-                        "CidrIp": {
-                            "Ref": "VPCCIDR"
-                        }
-                    },
-                    {
-                        "IpProtocol": "udp",
-                        "FromPort": "123",
-                        "ToPort": "123",
-                        "SourceSecurityGroupId": {
-                            "Ref": "DomainMemberSG"
-                        }
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "135",
-                        "ToPort": "135",
-                        "SourceSecurityGroupId": {
-                            "Ref": "DomainMemberSG"
-                        }
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "9389",
-                        "ToPort": "9389",
-                        "SourceSecurityGroupId": {
-                            "Ref": "DomainMemberSG"
-                        }
-                    },
-                    {
-                        "IpProtocol": "udp",
-                        "FromPort": "138",
-                        "ToPort": "138",
-                        "SourceSecurityGroupId": {
-                            "Ref": "DomainMemberSG"
-                        }
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "445",
-                        "ToPort": "445",
-                        "SourceSecurityGroupId": {
-                            "Ref": "DomainMemberSG"
-                        }
-                    },
-                    {
-                        "IpProtocol": "udp",
-                        "FromPort": "445",
-                        "ToPort": "445",
-                        "SourceSecurityGroupId": {
-                            "Ref": "DomainMemberSG"
-                        }
-                    },
-                    {
-                        "IpProtocol": "udp",
-                        "FromPort": "464",
-                        "ToPort": "464",
-                        "SourceSecurityGroupId": {
-                            "Ref": "DomainMemberSG"
-                        }
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "464",
-                        "ToPort": "464",
-                        "SourceSecurityGroupId": {
-                            "Ref": "DomainMemberSG"
-                        }
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "49152",
-                        "ToPort": "65535",
-                        "SourceSecurityGroupId": {
-                            "Ref": "DomainMemberSG"
-                        }
-                    },
-                    {
-                        "IpProtocol": "udp",
-                        "FromPort": "49152",
-                        "ToPort": "65535",
-                        "SourceSecurityGroupId": {
-                            "Ref": "DomainMemberSG"
-                        }
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "389",
-                        "ToPort": "389",
-                        "SourceSecurityGroupId": {
-                            "Ref": "DomainMemberSG"
-                        }
-                    },
-                    {
-                        "IpProtocol": "udp",
-                        "FromPort": "389",
-                        "ToPort": "389",
-                        "SourceSecurityGroupId": {
-                            "Ref": "DomainMemberSG"
-                        }
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "636",
-                        "ToPort": "636",
-                        "SourceSecurityGroupId": {
-                            "Ref": "DomainMemberSG"
-                        }
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "3268",
-                        "ToPort": "3268",
-                        "SourceSecurityGroupId": {
-                            "Ref": "DomainMemberSG"
-                        }
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "3269",
-                        "ToPort": "3269",
-                        "SourceSecurityGroupId": {
-                            "Ref": "DomainMemberSG"
-                        }
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "88",
-                        "ToPort": "88",
-                        "SourceSecurityGroupId": {
-                            "Ref": "DomainMemberSG"
-                        }
-                    },
-                    {
-                        "IpProtocol": "udp",
-                        "FromPort": "88",
-                        "ToPort": "88",
-                        "SourceSecurityGroupId": {
-                            "Ref": "DomainMemberSG"
-                        }
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "3389",
-                        "ToPort": "3389",
-                        "CidrIp": {
-                            "Ref": "PublicSubnet1CIDR"
-                        }
-                    },
-                    {
-                        "IpProtocol": "icmp",
-                        "FromPort": "-1",
-                        "ToPort": "-1",
-                        "CidrIp": {
-                            "Ref": "PublicSubnet1CIDR"
-                        }
-                    }
-                ]
-            }
-        },
-        "DomainMemberSG": {
-            "Type": "AWS::EC2::SecurityGroup",
-            "Properties": {
-                "GroupDescription": "Domain Members",
-                "VpcId": {
-                    "Ref": "VPCID"
-                },
-                "SecurityGroupIngress": [
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "5985",
-                        "ToPort": "5985",
-                        "CidrIp": {
-                            "Ref": "PrivateSubnet1CIDR"
-                        }
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "53",
-                        "ToPort": "53",
-                        "CidrIp": {
-                            "Ref": "PrivateSubnet1CIDR"
-                        }
-                    },
-                    {
-                        "IpProtocol": "udp",
-                        "FromPort": "53",
-                        "ToPort": "53",
-                        "CidrIp": {
-                            "Ref": "PrivateSubnet1CIDR"
-                        }
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "49152",
-                        "ToPort": "65535",
-                        "CidrIp": {
-                            "Ref": "PrivateSubnet1CIDR"
-                        }
-                    },
-                    {
-                        "IpProtocol": "udp",
-                        "FromPort": "49152",
-                        "ToPort": "65535",
-                        "CidrIp": {
-                            "Ref": "PrivateSubnet1CIDR"
-                        }
-                    },
-                    {
-                        "IpProtocol": "tcp",
-                        "FromPort": "3389",
-                        "ToPort": "3389",
-                        "CidrIp": {
-                            "Ref": "PublicSubnet1CIDR"
-                        }
-                    }
-                ]
-            }
         }
     },
     "Outputs": {
@@ -1233,12 +1014,6 @@
                 ]
             },
             "Description": "Domain administrator account"
-        },
-        "DomainMemberSGID": {
-            "Value": {
-                "Ref": "DomainMemberSG"
-            },
-            "Description": "Domain Member Security Group ID"
         }
     }
 }

@@ -54,7 +54,44 @@
           <pre-rulebase>
             <security>
               <rules>
-                <entry name="SSH inbound">
+                <entry name="GP Inbound" uuid="10ec7165-7c95-4460-ab7c-ad3306e85947">
+                  <target>
+                    <negate>no</negate>
+                  </target>
+                  <to>
+                    <member>L3-Untrust</member>
+                  </to>
+                  <from>
+                    <member>L3-Untrust</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>10.0.0.100</member>
+                  </destination>
+                  <source-user>
+                    <member>any</member>
+                  </source-user>
+                  <category>
+                    <member>any</member>
+                  </category>
+                  <application>
+                    <member>panos-global-protect</member>
+                    <member>ssl</member>
+                  </application>
+                  <service>
+                    <member>service-https</member>
+                  </service>
+                  <hip-profiles>
+                    <member>any</member>
+                  </hip-profiles>
+                  <action>allow</action>
+                  <log-start>yes</log-start>
+                  <log-end>yes</log-end>
+                  <log-setting>ForwardToLoggingService</log-setting>
+                </entry>
+                <entry name="SSH inbound" uuid="803b2da5-0bb9-4234-8d7b-1b2a9065a42b">
                   <to>
                     <member>L3-Trust</member>
                   </to>
@@ -83,12 +120,15 @@
                   <hip-profiles>
                     <member>any</member>
                   </hip-profiles>
-                  <log-start>no</log-start>
+                  <log-start>yes</log-start>
                   <log-end>yes</log-end>
                   <action>allow</action>
                   <log-setting>ForwardToLoggingService</log-setting>
+                  <target>
+                    <negate>no</negate>
+                  </target>
                 </entry>
-                <entry name="RDP 3389 Inbound">
+                <entry name="RDP 3389 Inbound" uuid="fe1c0b17-26cd-473b-a9a0-b8b0bbf868c1">
                   <to>
                     <member>L3-Trust</member>
                   </to>
@@ -116,12 +156,15 @@
                   <hip-profiles>
                     <member>any</member>
                   </hip-profiles>
-                  <log-start>no</log-start>
+                  <log-start>yes</log-start>
                   <log-end>yes</log-end>
                   <action>allow</action>
                   <log-setting>ForwardToLoggingService</log-setting>
+                  <target>
+                    <negate>no</negate>
+                  </target>
                 </entry>
-                <entry name="SSH 221 inbound">
+                <entry name="SSH 221 inbound" uuid="64e43f6c-ae75-434a-8dbc-bccc98b08138">
                   <to>
                     <member>L3-Trust</member>
                   </to>
@@ -150,12 +193,15 @@
                   <hip-profiles>
                     <member>any</member>
                   </hip-profiles>
-                  <log-start>no</log-start>
+                  <log-start>yes</log-start>
                   <log-end>yes</log-end>
                   <action>allow</action>
                   <log-setting>ForwardToLoggingService</log-setting>
+                  <target>
+                    <negate>no</negate>
+                  </target>
                 </entry>
-                <entry name="Allow all ping">
+                <entry name="Allow all ping" uuid="99a6b620-f029-4589-85d4-b4b4dcd1dc40">
                   <to>
                     <member>any</member>
                   </to>
@@ -183,12 +229,15 @@
                   <hip-profiles>
                     <member>any</member>
                   </hip-profiles>
-                  <log-start>no</log-start>
+                  <log-start>yes</log-start>
                   <log-end>yes</log-end>
                   <action>allow</action>
                   <log-setting>ForwardToLoggingService</log-setting>
+                  <target>
+                    <negate>no</negate>
+                  </target>
                 </entry>
-                <entry name="Allow Inbound Web">
+                <entry name="Allow Inbound Web" uuid="a6e172af-09cc-4c78-8b58-feb20cbe1a04">
                   <to>
                     <member>L3-Trust</member>
                   </to>
@@ -216,7 +265,7 @@
                   <hip-profiles>
                     <member>any</member>
                   </hip-profiles>
-                  <log-start>no</log-start>
+                  <log-start>yes</log-start>
                   <log-end>yes</log-end>
                   <action>allow</action>
                   <log-setting>ForwardToLoggingService</log-setting>
@@ -237,8 +286,11 @@
                       </wildfire-analysis>
                     </profiles>
                   </profile-setting>
+                  <target>
+                    <negate>no</negate>
+                  </target>
                 </entry>
-                <entry name="Allow Outbound Browsing">
+                <entry name="Allow VPN Browsing Windows" uuid="0d8bb403-aea0-4581-b5fd-5efc8ee1277a">
                   <profile-setting>
                     <profiles>
                       <url-filtering>
@@ -248,7 +300,121 @@
                         <member>default</member>
                       </virus>
                       <spyware>
-                        <member>strict</member>
+                        <member>CustomWithDNSSec</member>
+                      </spyware>
+                      <vulnerability>
+                        <member>default</member>
+                      </vulnerability>
+                      <wildfire-analysis>
+                        <member>default</member>
+                      </wildfire-analysis>
+                    </profiles>
+                  </profile-setting>
+                  <to>
+                    <member>L3-Untrust</member>
+                  </to>
+                  <from>
+                    <member>L3-Trust</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <source-user>
+                    <member>any</member>
+                  </source-user>
+                  <category>
+                    <member>any</member>
+                  </category>
+                  <application>
+                    <member>paloalto-wildfire-cloud</member>
+                    <member>ssl</member>
+                    <member>web-browsing</member>
+                  </application>
+                  <service>
+                    <member>service-http</member>
+                    <member>service-https</member>
+                  </service>
+                  <hip-profiles>
+                    <member>All_Windows</member>
+                  </hip-profiles>
+                  <action>allow</action>
+                  <target>
+                    <negate>no</negate>
+                  </target>
+                  <log-start>yes</log-start>
+                  <log-setting>ForwardToLoggingService</log-setting>
+                </entry>
+                <entry name="Allow VPN Browsing Mac" uuid="3a048285-a0aa-4058-90eb-7883344599be">
+                  <profile-setting>
+                    <profiles>
+                      <url-filtering>
+                        <member>BlockSportsAlertFinance</member>
+                      </url-filtering>
+                      <virus>
+                        <member>default</member>
+                      </virus>
+                      <spyware>
+                        <member>CustomWithDNSSec</member>
+                      </spyware>
+                      <vulnerability>
+                        <member>default</member>
+                      </vulnerability>
+                      <wildfire-analysis>
+                        <member>default</member>
+                      </wildfire-analysis>
+                    </profiles>
+                  </profile-setting>
+                  <to>
+                    <member>L3-Untrust</member>
+                  </to>
+                  <from>
+                    <member>L3-Trust</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <source-user>
+                    <member>any</member>
+                  </source-user>
+                  <category>
+                    <member>any</member>
+                  </category>
+                  <application>
+                    <member>paloalto-wildfire-cloud</member>
+                    <member>ssl</member>
+                    <member>web-browsing</member>
+                  </application>
+                  <service>
+                    <member>service-http</member>
+                    <member>service-https</member>
+                  </service>
+                  <hip-profiles>
+                    <member>All_Mac</member>
+                  </hip-profiles>
+                  <action>allow</action>
+                  <target>
+                    <negate>no</negate>
+                  </target>
+                  <log-setting>ForwardToLoggingService</log-setting>
+                  <log-start>yes</log-start>
+                </entry>
+                <entry name="Allow Outbound Browsing" uuid="3277fbe1-3371-4770-bc55-4325f36b8d8e">
+                  <profile-setting>
+                    <profiles>
+                      <url-filtering>
+                        <member>BlockSportsAlertFinance</member>
+                      </url-filtering>
+                      <virus>
+                        <member>default</member>
+                      </virus>
+                      <spyware>
+                        <member>CustomWithDNSSec</member>
                       </spyware>
                       <vulnerability>
                         <member>default</member>
@@ -289,8 +455,13 @@
                     <member>any</member>
                   </hip-profiles>
                   <action>allow</action>
+                  <target>
+                    <negate>no</negate>
+                  </target>
+                  <log-setting>ForwardToLoggingService</log-setting>
+                  <log-start>yes</log-start>
                 </entry>
-                <entry name="Allow all outbound">
+                <entry name="Allow all outbound" uuid="834c8bc7-4503-4aff-aaec-5e93bdedae08">
                   <to>
                     <member>L3-Untrust</member>
                   </to>
@@ -318,7 +489,7 @@
                   <hip-profiles>
                     <member>any</member>
                   </hip-profiles>
-                  <log-start>no</log-start>
+                  <log-start>yes</log-start>
                   <log-end>yes</log-end>
                   <action>allow</action>
                   <log-setting>ForwardToLoggingService</log-setting>
@@ -331,7 +502,7 @@
                         <member>default</member>
                       </virus>
                       <spyware>
-                        <member>default</member>
+                        <member>CustomWithDNSSec</member>
                       </spyware>
                       <vulnerability>
                         <member>default</member>
@@ -341,8 +512,11 @@
                       </wildfire-analysis>
                     </profiles>
                   </profile-setting>
+                  <target>
+                    <negate>no</negate>
+                  </target>
                 </entry>
-                <entry name="Log default deny">
+                <entry name="Log default deny" uuid="9dd99e35-1348-48e5-b6bd-d3849f981512">
                   <to>
                     <member>any</member>
                   </to>
@@ -370,16 +544,42 @@
                   <hip-profiles>
                     <member>any</member>
                   </hip-profiles>
-                  <log-start>no</log-start>
+                  <log-start>yes</log-start>
                   <log-end>yes</log-end>
                   <action>deny</action>
                   <log-setting>ForwardToLoggingService</log-setting>
+                  <target>
+                    <negate>no</negate>
+                  </target>
                 </entry>
               </rules>
             </security>
             <nat>
               <rules>
-                <entry name="Web Inbound SSH">
+                <entry name="GP Inbound NAT LB" uuid="27adda87-b6a5-4255-89e5-d36b1642da3a">
+                  <destination-translation>
+                    <translated-address>10.2.10.10</translated-address>
+                    <translated-port>443</translated-port>
+                  </destination-translation>
+                  <to>
+                    <member>L3-Untrust</member>
+                  </to>
+                  <from>
+                    <member>L3-Untrust</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>10.0.0.100</member>
+                  </destination>
+                  <service>service-https</service>
+                  <nat-type>ipv4</nat-type>
+                  <target>
+                    <negate>no</negate>
+                  </target>
+                </entry>
+                <entry name="Web Inbound SSH" uuid="e8cc2a94-9c7e-4fc2-b21e-e1b13d736ec9">
                   <destination-translation>
                     <translated-address>10.0.1.101</translated-address>
                     <translated-port>22</translated-port>
@@ -406,7 +606,7 @@
                   <service>service-tcp-221</service>
                   <nat-type>ipv4</nat-type>
                 </entry>
-                <entry name="AD Inbound RDP">
+                <entry name="AD Inbound RDP" uuid="4a390cc0-aa3e-4890-bea2-6d6427fd109a">
                   <destination-translation>
                     <translated-address>10.0.1.20</translated-address>
                     <translated-port>3389</translated-port>
@@ -433,7 +633,7 @@
                   <service>service-rdp</service>
                   <nat-type>ipv4</nat-type>
                 </entry>
-                <entry name="Web Inbound NAT">
+                <entry name="Web Inbound NAT" uuid="e1d448b5-ba04-4832-a730-6101f55aac4d">
                   <destination-translation>
                     <translated-address>10.0.1.101</translated-address>
                     <translated-port>80</translated-port>
@@ -460,7 +660,7 @@
                   <service>service-http</service>
                   <nat-type>ipv4</nat-type>
                 </entry>
-                <entry name="Outbound nat">
+                <entry name="Outbound nat" uuid="553edd04-15a0-4b4b-aa83-bfc67c055ca3">
                   <source-translation>
                     <dynamic-ip-and-port>
                       <interface-address>
@@ -487,7 +687,7 @@
             </nat>
             <decryption>
               <rules>
-                <entry name="Decrypt Outbound Web">
+                <entry name="Decrypt Outbound Web" uuid="b135eedd-8bfe-40d8-9330-97d43f0aca3d">
                   <category>
                     <member>any</member>
                   </category>
@@ -520,7 +720,7 @@
             </decryption>
             <authentication>
               <rules>
-                <entry name="LocalAuth for SSH">
+                <entry name="LocalAuth for SSH" uuid="aeddf54c-ef5f-4f4b-baf8-5daf5833fe90">
                   <from>
                     <member>L3-Trust</member>
                   </from>
@@ -555,5 +755,113 @@
               </rules>
             </authentication>
           </pre-rulebase>
+          <profiles>
+            <hip-objects>
+              <entry name="Windows">
+                <host-info>
+                  <criteria>
+                    <os>
+                      <contains>
+                        <Microsoft>All</Microsoft>
+                      </contains>
+                    </os>
+                  </criteria>
+                </host-info>
+                <disable-override>no</disable-override>
+                <description>Windows Systems</description>
+              </entry>
+              <entry name="Mac">
+                <host-info>
+                  <criteria>
+                    <os>
+                      <contains>
+                        <Apple>All</Apple>
+                      </contains>
+                    </os>
+                  </criteria>
+                </host-info>
+                <disable-override>no</disable-override>
+                <description>Apple Systems</description>
+              </entry>
+            </hip-objects>
+            <hip-profiles>
+              <entry name="All_Windows">
+                <match>"Windows"</match>
+              </entry>
+              <entry name="All_Mac">
+                <match>"Mac"</match>
+              </entry>
+            </hip-profiles>
+            <custom-url-category/>
+            <spyware>
+              <entry name="CustomWithDNSSec">
+                <rules>
+                  <entry name="simple-critical">
+                    <action>
+                      <reset-both/>
+                    </action>
+                    <severity>
+                      <member>critical</member>
+                    </severity>
+                    <threat-name>any</threat-name>
+                    <category>any</category>
+                    <packet-capture>single-packet</packet-capture>
+                  </entry>
+                  <entry name="simple-high">
+                    <action>
+                      <reset-both/>
+                    </action>
+                    <severity>
+                      <member>high</member>
+                    </severity>
+                    <threat-name>any</threat-name>
+                    <category>any</category>
+                    <packet-capture>single-packet</packet-capture>
+                  </entry>
+                  <entry name="simple-medium">
+                    <action>
+                      <alert/>
+                    </action>
+                    <severity>
+                      <member>medium</member>
+                    </severity>
+                    <threat-name>any</threat-name>
+                    <category>any</category>
+                    <packet-capture>single-packet</packet-capture>
+                  </entry>
+                  <entry name="simple-low">
+                    <action>
+                      <alert/>
+                    </action>
+                    <severity>
+                      <member>low</member>
+                    </severity>
+                    <threat-name>any</threat-name>
+                    <category>any</category>
+                    <packet-capture>single-packet</packet-capture>
+                  </entry>
+                </rules>
+                <botnet-domains>
+                  <lists>
+                    <entry name="default-paloalto-dns">
+                      <packet-capture>single-packet</packet-capture>
+                      <action>
+                        <sinkhole/>
+                      </action>
+                    </entry>
+                    <entry name="default-paloalto-cloud">
+                      <packet-capture>single-packet</packet-capture>
+                      <action>
+                        <sinkhole/>
+                      </action>
+                    </entry>
+                  </lists>
+                  <sinkhole>
+                    <ipv4-address>pan-sinkhole-default-ip</ipv4-address>
+                    <ipv6-address>::1</ipv6-address>
+                  </sinkhole>
+                </botnet-domains>
+              </entry>
+            </spyware>
+          </profiles>
         </entry>
-        

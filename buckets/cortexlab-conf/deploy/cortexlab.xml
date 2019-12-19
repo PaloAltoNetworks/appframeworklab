@@ -1,0 +1,3580 @@
+<?xml version="1.0"?>
+<config version="9.0.0" urldb="paloaltonetworks">
+  <devices>
+    <entry name="localhost.localdomain">
+      <deviceconfig>
+        <system>
+          <update-server>updates.paloaltonetworks.com</update-server>
+          <server-verification>yes</server-verification>
+          <type>
+            <dhcp-client>
+              <send-hostname>yes</send-hostname>
+              <send-client-id>no</send-client-id>
+              <accept-dhcp-hostname>no</accept-dhcp-hostname>
+              <accept-dhcp-domain>no</accept-dhcp-domain>
+            </dhcp-client>
+          </type>
+          <update-schedule>
+            <anti-virus>
+              <recurring>
+                <daily>
+                  <at>00:45</at>
+                  <action>download-and-install</action>
+                </daily>
+              </recurring>
+            </anti-virus>
+            <wildfire>
+              <recurring>
+                <every-15-mins/>
+              </recurring>
+            </wildfire>
+            <threats>
+              <recurring>
+                <daily>
+                  <at>01:45</at>
+                  <action>download-and-install</action>
+                </daily>
+              </recurring>
+            </threats>
+            <global-protect-datafile>
+              <recurring>
+                <hourly>
+                  <action>download-and-install</action>
+                </hourly>
+              </recurring>
+            </global-protect-datafile>
+            <global-protect-clientless-vpn>
+              <recurring>
+                <hourly>
+                  <action>download-and-install</action>
+                </hourly>
+              </recurring>
+            </global-protect-clientless-vpn>
+          </update-schedule>
+          <hostname>ngfw</hostname>
+          <domain>cortexlab.rocks</domain>
+          <dns-setting>
+            <servers>
+              <primary>8.8.8.8</primary>
+              <secondary>8.8.4.4</secondary>
+            </servers>
+          </dns-setting>
+          <timezone>US/Pacific</timezone>
+          <ntp-servers>
+            <primary-ntp-server>
+              <ntp-server-address>169.254.169.123</ntp-server-address>
+            </primary-ntp-server>
+          </ntp-servers>
+        </system>
+        <setting>
+          <logging>
+            <logging-service-forwarding>
+              <logging-service-regions>americas</logging-service-regions>
+              <enable>yes</enable>
+            </logging-service-forwarding>
+            <enhanced-application-logging>
+              <enable>yes</enable>
+            </enhanced-application-logging>
+          </logging>
+          <config>
+            <rematch>yes</rematch>
+          </config>
+          <management>
+            <hostname-type-in-syslog>FQDN</hostname-type-in-syslog>
+            <initcfg>
+              <type>
+                <dhcp-client>
+                  <send-hostname>yes</send-hostname>
+                  <send-client-id>no</send-client-id>
+                  <accept-dhcp-hostname>no</accept-dhcp-hostname>
+                  <accept-dhcp-domain>no</accept-dhcp-domain>
+                </dhcp-client>
+              </type>
+              <public-key>c3NoLXJzYSBBQUFBQjNOemFDMXljMkVBQUFBREFRQUJBQUFCQVFDckFRTnBtanlhYVhmN2pOeWNPS0E0cnpWdE9kL1BHY0taZHNMR0c1THZQbVJzRlc4NXJSVHVBL3dyaWtTR3pKbnF6a1hvckh4NHgweTZnenN1WDB3RmJqbTIvalNBSUVVczE0TXAreS9WOTBJRXJyN1ZleDdvSG9kV3ZmUGVzL1JlQU5CdFZRT2FsZ3BFWDZlZzJmL002aVBseHpWcWRBU25pWk9FaGJvT0FNVW9tck9wWEhmU2xFaGRuYWJyRU9heXptalcrODk2VlZudWE1blFvZERDT0Rab01aUUZoZ25YRlU3d3RsbjRQUEs2cTlZZWZFNjYxS01mbXBtN3hyQ1VlYndIQ0NOZ3VuTnQ0NFRvNXdxK0N4SlB2SG1DUlVXZjM1QkhuZTZUSWVXSzRldTFpQzNIRmV3SG9YdzJib2tUS01iVVh5NzdaaDJCekZLNGxsWFQgYXBwZnJhbWV3b3JrbGFiLUFwcEZyYW1ld29ya0xhYg==</public-key>
+            </initcfg>
+          </management>
+          <autofocus>
+            <enabled>yes</enabled>
+            <query-timeout>30</query-timeout>
+          </autofocus>
+          <session>
+            <ipv6-firewalling>yes</ipv6-firewalling>
+          </session>
+        </setting>
+      </deviceconfig>
+      <network>
+        <interface>
+          <ethernet>
+            <entry name="ethernet1/1">
+              <layer3>
+                <ipv6>
+                  <neighbor-discovery>
+                    <router-advertisement>
+                      <enable>no</enable>
+                    </router-advertisement>
+                  </neighbor-discovery>
+                </ipv6>
+                <ndp-proxy>
+                  <enabled>no</enabled>
+                </ndp-proxy>
+                <lldp>
+                  <enable>no</enable>
+                </lldp>
+                <dhcp-client/>
+              </layer3>
+            </entry>
+            <entry name="ethernet1/2">
+              <layer3>
+                <ipv6>
+                  <neighbor-discovery>
+                    <router-advertisement>
+                      <enable>no</enable>
+                    </router-advertisement>
+                  </neighbor-discovery>
+                </ipv6>
+                <ndp-proxy>
+                  <enabled>no</enabled>
+                </ndp-proxy>
+                <dhcp-client>
+                  <create-default-route>no</create-default-route>
+                </dhcp-client>
+                <interface-management-profile>Management</interface-management-profile>
+                <lldp>
+                  <enable>no</enable>
+                </lldp>
+              </layer3>
+            </entry>
+          </ethernet>
+          <loopback>
+            <units>
+              <entry name="loopback.1">
+                <adjust-tcp-mss>
+                  <enable>no</enable>
+                </adjust-tcp-mss>
+              </entry>
+              <entry name="loopback.10">
+                <adjust-tcp-mss>
+                  <enable>no</enable>
+                </adjust-tcp-mss>
+                <ip>
+                  <entry name="10.2.10.10"/>
+                </ip>
+                <comment>GP Loopback Interface</comment>
+              </entry>
+            </units>
+          </loopback>
+          <tunnel>
+            <units>
+              <entry name="tunnel.10">
+                <ip>
+                  <entry name="10.3.1.1/24"/>
+                </ip>
+                <interface-management-profile>allow-ping-userid</interface-management-profile>
+                <comment>GP Tunnel</comment>
+                <ipv6>
+                  <enabled>yes</enabled>
+                </ipv6>
+              </entry>
+            </units>
+          </tunnel>
+        </interface>
+        <profiles>
+          <monitor-profile>
+            <entry name="default">
+              <interval>3</interval>
+              <threshold>5</threshold>
+              <action>wait-recover</action>
+            </entry>
+          </monitor-profile>
+          <interface-management-profile>
+            <entry name="allow-ping-userid">
+              <ssh>no</ssh>
+              <userid-service>yes</userid-service>
+              <ping>yes</ping>
+              <response-pages>yes</response-pages>
+            </entry>
+            <entry name="Management">
+              <https>yes</https>
+              <ssh>yes</ssh>
+              <userid-service>yes</userid-service>
+              <ping>yes</ping>
+              <response-pages>yes</response-pages>
+            </entry>
+          </interface-management-profile>
+          <zone-protection-profile>
+            <entry name="ExtZoneProtection">
+              <flood>
+                <tcp-syn>
+                  <red>
+                    <alarm-rate>50</alarm-rate>
+                    <activate-rate>500</activate-rate>
+                    <maximal-rate>1000</maximal-rate>
+                  </red>
+                  <enable>yes</enable>
+                </tcp-syn>
+                <udp>
+                  <red>
+                    <alarm-rate>50</alarm-rate>
+                    <activate-rate>500</activate-rate>
+                    <maximal-rate>1000</maximal-rate>
+                  </red>
+                  <enable>yes</enable>
+                </udp>
+                <icmp>
+                  <red>
+                    <alarm-rate>10</alarm-rate>
+                    <activate-rate>100</activate-rate>
+                    <maximal-rate>200</maximal-rate>
+                  </red>
+                  <enable>yes</enable>
+                </icmp>
+                <icmpv6>
+                  <red>
+                    <alarm-rate>10</alarm-rate>
+                    <activate-rate>100</activate-rate>
+                    <maximal-rate>200</maximal-rate>
+                  </red>
+                  <enable>yes</enable>
+                </icmpv6>
+                <other-ip>
+                  <red>
+                    <alarm-rate>20</alarm-rate>
+                    <activate-rate>100</activate-rate>
+                    <maximal-rate>200</maximal-rate>
+                  </red>
+                  <enable>yes</enable>
+                </other-ip>
+              </flood>
+              <scan>
+                <entry name="8001">
+                  <action>
+                    <alert/>
+                  </action>
+                  <interval>2</interval>
+                  <threshold>100</threshold>
+                </entry>
+                <entry name="8002">
+                  <action>
+                    <alert/>
+                  </action>
+                  <interval>10</interval>
+                  <threshold>100</threshold>
+                </entry>
+                <entry name="8003">
+                  <action>
+                    <alert/>
+                  </action>
+                  <interval>2</interval>
+                  <threshold>100</threshold>
+                </entry>
+              </scan>
+              <discard-ip-frag>no</discard-ip-frag>
+              <discard-unknown-option>yes</discard-unknown-option>
+              <discard-malformed-option>yes</discard-malformed-option>
+              <description>External Zone Protection Profile</description>
+            </entry>
+          </zone-protection-profile>
+        </profiles>
+        <ike>
+          <crypto-profiles>
+            <ike-crypto-profiles>
+              <entry name="default">
+                <encryption>
+                  <member>aes-128-cbc</member>
+                  <member>3des</member>
+                </encryption>
+                <hash>
+                  <member>sha1</member>
+                </hash>
+                <dh-group>
+                  <member>group2</member>
+                </dh-group>
+                <lifetime>
+                  <hours>8</hours>
+                </lifetime>
+              </entry>
+              <entry name="Suite-B-GCM-128">
+                <encryption>
+                  <member>aes-128-cbc</member>
+                </encryption>
+                <hash>
+                  <member>sha256</member>
+                </hash>
+                <dh-group>
+                  <member>group19</member>
+                </dh-group>
+                <lifetime>
+                  <hours>8</hours>
+                </lifetime>
+              </entry>
+              <entry name="Suite-B-GCM-256">
+                <encryption>
+                  <member>aes-256-cbc</member>
+                </encryption>
+                <hash>
+                  <member>sha384</member>
+                </hash>
+                <dh-group>
+                  <member>group20</member>
+                </dh-group>
+                <lifetime>
+                  <hours>8</hours>
+                </lifetime>
+              </entry>
+            </ike-crypto-profiles>
+            <ipsec-crypto-profiles>
+              <entry name="default">
+                <esp>
+                  <encryption>
+                    <member>aes-128-cbc</member>
+                    <member>3des</member>
+                  </encryption>
+                  <authentication>
+                    <member>sha1</member>
+                  </authentication>
+                </esp>
+                <dh-group>group2</dh-group>
+                <lifetime>
+                  <hours>1</hours>
+                </lifetime>
+              </entry>
+              <entry name="Suite-B-GCM-128">
+                <esp>
+                  <encryption>
+                    <member>aes-128-gcm</member>
+                  </encryption>
+                  <authentication>
+                    <member>none</member>
+                  </authentication>
+                </esp>
+                <dh-group>group19</dh-group>
+                <lifetime>
+                  <hours>1</hours>
+                </lifetime>
+              </entry>
+              <entry name="Suite-B-GCM-256">
+                <esp>
+                  <encryption>
+                    <member>aes-256-gcm</member>
+                  </encryption>
+                  <authentication>
+                    <member>none</member>
+                  </authentication>
+                </esp>
+                <dh-group>group20</dh-group>
+                <lifetime>
+                  <hours>1</hours>
+                </lifetime>
+              </entry>
+            </ipsec-crypto-profiles>
+            <global-protect-app-crypto-profiles>
+              <entry name="default">
+                <encryption>
+                  <member>aes-128-cbc</member>
+                </encryption>
+                <authentication>
+                  <member>sha1</member>
+                </authentication>
+              </entry>
+            </global-protect-app-crypto-profiles>
+          </crypto-profiles>
+        </ike>
+        <qos>
+          <profile>
+            <entry name="default">
+              <class>
+                <entry name="class1">
+                  <priority>real-time</priority>
+                </entry>
+                <entry name="class2">
+                  <priority>high</priority>
+                </entry>
+                <entry name="class3">
+                  <priority>high</priority>
+                </entry>
+                <entry name="class4">
+                  <priority>medium</priority>
+                </entry>
+                <entry name="class5">
+                  <priority>medium</priority>
+                </entry>
+                <entry name="class6">
+                  <priority>low</priority>
+                </entry>
+                <entry name="class7">
+                  <priority>low</priority>
+                </entry>
+                <entry name="class8">
+                  <priority>low</priority>
+                </entry>
+              </class>
+            </entry>
+          </profile>
+        </qos>
+        <virtual-router>
+          <entry name="default">
+            <ecmp>
+              <algorithm>
+                <ip-modulo/>
+              </algorithm>
+            </ecmp>
+            <protocol>
+              <bgp>
+                <routing-options>
+                  <graceful-restart>
+                    <enable>yes</enable>
+                  </graceful-restart>
+                </routing-options>
+                <enable>no</enable>
+              </bgp>
+              <rip>
+                <enable>no</enable>
+              </rip>
+              <ospf>
+                <enable>no</enable>
+              </ospf>
+              <ospfv3>
+                <enable>no</enable>
+              </ospfv3>
+            </protocol>
+            <interface>
+              <member>loopback.10</member>
+              <member>tunnel.10</member>
+              <member>ethernet1/1</member>
+              <member>ethernet1/2</member>
+            </interface>
+          </entry>
+        </virtual-router>
+        <dns-proxy/>
+        <tunnel>
+          <global-protect-gateway>
+            <entry name="GP-Gateway-N">
+              <client>
+                <exclude-video-traffic>
+                  <applications/>
+                  <enabled>no</enabled>
+                </exclude-video-traffic>
+                <dns-server>
+                  <primary>8.8.8.8</primary>
+                  <secondary>8.8.4.4</secondary>
+                </dns-server>
+              </client>
+              <ipsec>
+                <third-party-client>
+                  <enable>no</enable>
+                </third-party-client>
+              </ipsec>
+              <local-address>
+                <interface>loopback.10</interface>
+                <ip>
+                  <ipv4>10.2.10.10</ipv4>
+                </ip>
+              </local-address>
+              <ip-pool>
+                <member>10.3.1.10-10.3.1.100</member>
+              </ip-pool>
+              <tunnel-interface>tunnel.10</tunnel-interface>
+              <max-user>10</max-user>
+            </entry>
+          </global-protect-gateway>
+          <global-protect-site-to-site/>
+        </tunnel>
+      </network>
+      <vsys>
+        <entry name="vsys1">
+          <zone>
+            <entry name="L3-Trust">
+              <network>
+                <layer3>
+                  <member>tunnel.10</member>
+                  <member>ethernet1/2</member>
+                </layer3>
+              </network>
+              <enable-user-identification>yes</enable-user-identification>
+            </entry>
+            <entry name="L3-Untrust">
+              <network>
+                <layer3>
+                  <member>ethernet1/1</member>
+                  <member>loopback.10</member>
+                </layer3>
+                <zone-protection-profile>ExtZoneProtection</zone-protection-profile>
+                <log-setting>ForwardToDataLake</log-setting>
+              </network>
+            </entry>
+          </zone>
+          <import>
+            <network>
+              <interface>
+                <member>vlan</member>
+                <member>loopback</member>
+                <member>tunnel</member>
+                <member>loopback.1</member>
+                <member>loopback.10</member>
+                <member>tunnel.10</member>
+                <member>ethernet1/1</member>
+                <member>ethernet1/2</member>
+              </interface>
+              <vlan/>
+              <virtual-router>
+                <member>default</member>
+              </virtual-router>
+              <virtual-wire/>
+            </network>
+          </import>
+          <captive-portal>
+            <redirect-host>10.0.0.99</redirect-host>
+            <mode>
+              <redirect/>
+            </mode>
+            <enable-captive-portal>no</enable-captive-portal>
+          </captive-portal>
+          <global-protect>
+            <global-protect-portal>
+              <entry name="GP-Portal">
+                <portal-config>
+                  <local-address>
+                    <ip>
+                      <ipv4>10.2.10.10</ipv4>
+                    </ip>
+                    <interface>loopback.10</interface>
+                  </local-address>
+                  <client-auth>
+                    <entry name="client">
+                      <user-credential-or-client-cert-required>no</user-credential-or-client-cert-required>
+                      <os>Any</os>
+                      <authentication-profile>LocalAuth</authentication-profile>
+                      <authentication-message>Enter login credentials</authentication-message>
+                      <username-label>Username</username-label>
+                      <password-label>Password</password-label>
+                    </entry>
+                  </client-auth>
+                  <custom-login-page>factory-default</custom-login-page>
+                  <custom-home-page>factory-default</custom-home-page>
+                  <ssl-tls-service-profile>portal</ssl-tls-service-profile>
+                </portal-config>
+                <client-config>
+                  <configs>
+                    <entry name="agentconfig">
+                      <hip-collection>
+                        <max-wait-time>20</max-wait-time>
+                        <collect-hip-data>yes</collect-hip-data>
+                      </hip-collection>
+                      <gateways>
+                        <internal>
+                          <list>
+                            <entry name="internal">
+                              <ip>
+                                <ipv4>10.0.1.11</ipv4>
+                              </ip>
+                              <source-ip>
+                                <member>10.0.1.0/24</member>
+                              </source-ip>
+                            </entry>
+                          </list>
+                        </internal>
+                        <external>
+                          <list>
+                            <entry name="ext">
+                              <ip>
+                                <ipv4>1.2.3.4</ipv4>
+                              </ip>
+                              <priority-rule>
+                                <entry name="Any">
+                                  <priority>1</priority>
+                                </entry>
+                              </priority-rule>
+                              <manual>no</manual>
+                            </entry>
+                          </list>
+                          <cutoff-time>5</cutoff-time>
+                        </external>
+                      </gateways>
+                      <authentication-override>
+                        <accept-cookie>
+                          <cookie-lifetime>
+                            <lifetime-in-hours>48</lifetime-in-hours>
+                          </cookie-lifetime>
+                        </accept-cookie>
+                        <cookie-encrypt-decrypt-cert>fwcert</cookie-encrypt-decrypt-cert>
+                        <generate-cookie>yes</generate-cookie>
+                      </authentication-override>
+                      <source-user>
+                        <member>any</member>
+                      </source-user>
+                      <os>
+                        <member>any</member>
+                      </os>
+                      <agent-ui>
+                        <max-agent-user-overrides>0</max-agent-user-overrides>
+                        <agent-user-override-timeout>0</agent-user-override-timeout>
+                      </agent-ui>
+                      <gp-app-config>
+                        <config>
+                          <entry name="connect-method">
+                            <value>
+                              <member>user-logon</member>
+                            </value>
+                          </entry>
+                          <entry name="refresh-config-interval">
+                            <value>
+                              <member>24</member>
+                            </value>
+                          </entry>
+                          <entry name="agent-user-override">
+                            <value>
+                              <member>allowed</member>
+                            </value>
+                          </entry>
+                          <entry name="client-upgrade">
+                            <value>
+                              <member>prompt</member>
+                            </value>
+                          </entry>
+                          <entry name="use-sso">
+                            <value>
+                              <member>yes</member>
+                            </value>
+                          </entry>
+                          <entry name="logout-remove-sso">
+                            <value>
+                              <member>yes</member>
+                            </value>
+                          </entry>
+                          <entry name="krb-auth-fail-fallback">
+                            <value>
+                              <member>yes</member>
+                            </value>
+                          </entry>
+                          <entry name="retry-tunnel">
+                            <value>
+                              <member>30</member>
+                            </value>
+                          </entry>
+                          <entry name="retry-timeout">
+                            <value>
+                              <member>5</member>
+                            </value>
+                          </entry>
+                          <entry name="enforce-globalprotect">
+                            <value>
+                              <member>no</member>
+                            </value>
+                          </entry>
+                          <entry name="captive-portal-exception-timeout">
+                            <value>
+                              <member>0</member>
+                            </value>
+                          </entry>
+                          <entry name="traffic-blocking-notification-delay">
+                            <value>
+                              <member>15</member>
+                            </value>
+                          </entry>
+                          <entry name="display-traffic-blocking-notification-msg">
+                            <value>
+                              <member>yes</member>
+                            </value>
+                          </entry>
+                          <entry name="traffic-blocking-notification-msg">
+                            <value>
+                              <member>&lt;div style="font-family:'Helvetica Neue';"&gt;&lt;h1 style="color:red;text-align:center; margin: 0; font-size: 30px;"&gt;Notice&lt;/h1&gt;&lt;p style="margin: 0;font-size: 15px; line-height: 1.2em;"&gt;To access the network, you must first connect to GlobalProtect.&lt;/p&gt;&lt;/div&gt;</member>
+                            </value>
+                          </entry>
+                          <entry name="allow-traffic-blocking-notification-dismissal">
+                            <value>
+                              <member>yes</member>
+                            </value>
+                          </entry>
+                          <entry name="display-captive-portal-detection-msg">
+                            <value>
+                              <member>no</member>
+                            </value>
+                          </entry>
+                          <entry name="captive-portal-detection-msg">
+                            <value>
+                              <member>&lt;div style="font-family:'Helvetica Neue';"&gt;&lt;h1 style="color:red;text-align:center; margin: 0; font-size: 30px;"&gt;Captive Portal Detected&lt;/h1&gt;&lt;p style="margin: 0; font-size: 15px; line-height: 1.2em;"&gt;GlobalProtect has temporarily permitted network access for you to connect to the Internet. Follow instructions from your internet provider.&lt;/p&gt;&lt;p style="margin: 0; font-size: 15px; line-height: 1.2em;"&gt;If you let the connection time out, open GlobalProtect and click Connect to try again.&lt;/p&gt;&lt;/div&gt;</member>
+                            </value>
+                          </entry>
+                          <entry name="captive-portal-notification-delay">
+                            <value>
+                              <member>5</member>
+                            </value>
+                          </entry>
+                          <entry name="certificate-store-lookup">
+                            <value>
+                              <member>user-and-machine</member>
+                            </value>
+                          </entry>
+                          <entry name="scep-certificate-renewal-period">
+                            <value>
+                              <member>7</member>
+                            </value>
+                          </entry>
+                          <entry name="retain-connection-smartcard-removal">
+                            <value>
+                              <member>yes</member>
+                            </value>
+                          </entry>
+                          <entry name="enable-advanced-view">
+                            <value>
+                              <member>yes</member>
+                            </value>
+                          </entry>
+                          <entry name="enable-do-not-display-this-welcome-page-again">
+                            <value>
+                              <member>yes</member>
+                            </value>
+                          </entry>
+                          <entry name="rediscover-network">
+                            <value>
+                              <member>yes</member>
+                            </value>
+                          </entry>
+                          <entry name="resubmit-host-info">
+                            <value>
+                              <member>yes</member>
+                            </value>
+                          </entry>
+                          <entry name="can-change-portal">
+                            <value>
+                              <member>yes</member>
+                            </value>
+                          </entry>
+                          <entry name="can-continue-if-portal-cert-invalid">
+                            <value>
+                              <member>yes</member>
+                            </value>
+                          </entry>
+                          <entry name="show-agent-icon">
+                            <value>
+                              <member>yes</member>
+                            </value>
+                          </entry>
+                          <entry name="user-switch-tunnel-rename-timeout">
+                            <value>
+                              <member>0</member>
+                            </value>
+                          </entry>
+                          <entry name="pre-logon-tunnel-rename-timeout">
+                            <value>
+                              <member>-1</member>
+                            </value>
+                          </entry>
+                          <entry name="show-system-tray-notifications">
+                            <value>
+                              <member>no</member>
+                            </value>
+                          </entry>
+                          <entry name="max-internal-gateway-connection-attempts">
+                            <value>
+                              <member>0</member>
+                            </value>
+                          </entry>
+                          <entry name="portal-timeout">
+                            <value>
+                              <member>5</member>
+                            </value>
+                          </entry>
+                          <entry name="connect-timeout">
+                            <value>
+                              <member>5</member>
+                            </value>
+                          </entry>
+                          <entry name="receive-timeout">
+                            <value>
+                              <member>30</member>
+                            </value>
+                          </entry>
+                          <entry name="enforce-dns">
+                            <value>
+                              <member>yes</member>
+                            </value>
+                          </entry>
+                          <entry name="flush-dns">
+                            <value>
+                              <member>no</member>
+                            </value>
+                          </entry>
+                          <entry name="proxy-multiple-autodetect">
+                            <value>
+                              <member>no</member>
+                            </value>
+                          </entry>
+                          <entry name="use-proxy">
+                            <value>
+                              <member>yes</member>
+                            </value>
+                          </entry>
+                          <entry name="wsc-autodetect">
+                            <value>
+                              <member>yes</member>
+                            </value>
+                          </entry>
+                          <entry name="mfa-enabled">
+                            <value>
+                              <member>no</member>
+                            </value>
+                          </entry>
+                          <entry name="mfa-listening-port">
+                            <value>
+                              <member>4501</member>
+                            </value>
+                          </entry>
+                          <entry name="mfa-notification-msg">
+                            <value>
+                              <member>You have attempted to access a protected resource that requires additional authentication. Proceed to authenticate at</member>
+                            </value>
+                          </entry>
+                          <entry name="ipv6-preferred">
+                            <value>
+                              <member>yes</member>
+                            </value>
+                          </entry>
+                          <entry name="init-panel">
+                            <value>
+                              <member>no</member>
+                            </value>
+                          </entry>
+                        </config>
+                      </gp-app-config>
+                      <save-user-credentials>1</save-user-credentials>
+                      <portal-2fa>no</portal-2fa>
+                      <manual-only-gateway-2fa>no</manual-only-gateway-2fa>
+                      <internal-gateway-2fa>no</internal-gateway-2fa>
+                      <auto-discovery-external-gateway-2fa>no</auto-discovery-external-gateway-2fa>
+                      <mdm-enrollment-port>443</mdm-enrollment-port>
+                    </entry>
+                  </configs>
+                  <agent-user-override-key>-AQ==9EIXqBFzhp4IZxdTxSVTZG/12Vs=iH76LFLerpHJ1S680bBopQ==</agent-user-override-key>
+                  <root-ca>
+                    <entry name="CortexLabCA">
+                      <install-in-cert-store>yes</install-in-cert-store>
+                    </entry>
+                  </root-ca>
+                </client-config>
+                <satellite-config>
+                  <client-certificate>
+                    <local/>
+                  </client-certificate>
+                </satellite-config>
+              </entry>
+            </global-protect-portal>
+            <global-protect-gateway>
+              <entry name="GP-Gateway">
+                <roles>
+                  <entry name="default">
+                    <login-lifetime>
+                      <days>30</days>
+                    </login-lifetime>
+                    <inactivity-logout>
+                      <hours>3</hours>
+                    </inactivity-logout>
+                    <disconnect-on-idle>
+                      <minutes>180</minutes>
+                    </disconnect-on-idle>
+                  </entry>
+                </roles>
+                <client-auth>
+                  <entry name="client">
+                    <os>Any</os>
+                    <authentication-profile>LocalAuth</authentication-profile>
+                    <authentication-message>Enter login credentials</authentication-message>
+                    <username-label>Username</username-label>
+                    <password-label>Password</password-label>
+                  </entry>
+                </client-auth>
+                <remote-user-tunnel-configs>
+                  <entry name="override">
+                    <authentication-override>
+                      <accept-cookie>
+                        <cookie-lifetime>
+                          <lifetime-in-hours>48</lifetime-in-hours>
+                        </cookie-lifetime>
+                      </accept-cookie>
+                      <cookie-encrypt-decrypt-cert>fwcert</cookie-encrypt-decrypt-cert>
+                      <generate-cookie>yes</generate-cookie>
+                    </authentication-override>
+                    <split-tunneling>
+                      <access-route>
+                        <member>0.0.0.0/0</member>
+                      </access-route>
+                    </split-tunneling>
+                    <source-user>
+                      <member>any</member>
+                    </source-user>
+                    <os>
+                      <member>any</member>
+                    </os>
+                    <retrieve-framed-ip-address>no</retrieve-framed-ip-address>
+                    <no-direct-access-to-local-network>no</no-direct-access-to-local-network>
+                  </entry>
+                </remote-user-tunnel-configs>
+                <ssl-tls-service-profile>portal</ssl-tls-service-profile>
+                <tunnel-mode>yes</tunnel-mode>
+                <remote-user-tunnel>tunnel.10</remote-user-tunnel>
+              </entry>
+            </global-protect-gateway>
+          </global-protect>
+          <application/>
+          <application-group/>
+          <service>
+            <entry name="service-tcp-22">
+              <protocol>
+                <tcp>
+                  <port>22</port>
+                </tcp>
+              </protocol>
+            </entry>
+            <entry name="service-tcp-221">
+              <protocol>
+                <tcp>
+                  <port>221</port>
+                </tcp>
+              </protocol>
+            </entry>
+            <entry name="service-tcp-222">
+              <protocol>
+                <tcp>
+                  <port>222</port>
+                </tcp>
+              </protocol>
+            </entry>
+            <entry name="service-rdp">
+              <protocol>
+                <tcp>
+                  <port>3389</port>
+                  <override>
+                    <no/>
+                  </override>
+                </tcp>
+              </protocol>
+              <description>rdp</description>
+            </entry>
+          </service>
+          <service-group/>
+          <schedule/>
+          <rulebase>
+            <security>
+              <rules>
+                <entry name="GP Inbound" uuid="64ff497f-fc09-45d7-9010-f63184d8993d">
+                  <to>
+                    <member>L3-Untrust</member>
+                  </to>
+                  <from>
+                    <member>L3-Untrust</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>10.0.0.100</member>
+                  </destination>
+                  <source-user>
+                    <member>any</member>
+                  </source-user>
+                  <category>
+                    <member>any</member>
+                  </category>
+                  <application>
+                    <member>panos-global-protect</member>
+                    <member>ssl</member>
+                  </application>
+                  <service>
+                    <member>service-https</member>
+                  </service>
+                  <hip-profiles>
+                    <member>any</member>
+                  </hip-profiles>
+                  <action>allow</action>
+                  <log-start>yes</log-start>
+                  <log-end>yes</log-end>
+                  <log-setting>ForwardToDataLake</log-setting>
+                </entry>
+                <entry name="SSH inbound" uuid="062f0cb0-4d8a-4fd2-99c3-2c3af8c42288">
+                  <to>
+                    <member>L3-Trust</member>
+                  </to>
+                  <from>
+                    <member>L3-Untrust</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <source-user>
+                    <member>any</member>
+                  </source-user>
+                  <category>
+                    <member>any</member>
+                  </category>
+                  <application>
+                    <member>ping</member>
+                    <member>ssh</member>
+                  </application>
+                  <service>
+                    <member>application-default</member>
+                  </service>
+                  <hip-profiles>
+                    <member>any</member>
+                  </hip-profiles>
+                  <log-start>yes</log-start>
+                  <log-end>yes</log-end>
+                  <action>allow</action>
+                  <log-setting>ForwardToDataLake</log-setting>
+                </entry>
+                <entry name="RDP 3389 Inbound" uuid="466e6799-7103-4a4d-a88d-1961f1612f47">
+                  <to>
+                    <member>L3-Trust</member>
+                  </to>
+                  <from>
+                    <member>L3-Untrust</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <source-user>
+                    <member>any</member>
+                  </source-user>
+                  <category>
+                    <member>any</member>
+                  </category>
+                  <application>
+                    <member>ms-rdp</member>
+                  </application>
+                  <service>
+                    <member>service-rdp</member>
+                  </service>
+                  <hip-profiles>
+                    <member>any</member>
+                  </hip-profiles>
+                  <log-start>yes</log-start>
+                  <log-end>yes</log-end>
+                  <action>allow</action>
+                  <log-setting>ForwardToDataLake</log-setting>
+                </entry>
+                <entry name="SSH 221 inbound" uuid="98b3f23b-81d9-47e3-9594-a7221585d7dc">
+                  <to>
+                    <member>L3-Trust</member>
+                  </to>
+                  <from>
+                    <member>L3-Untrust</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <source-user>
+                    <member>any</member>
+                  </source-user>
+                  <category>
+                    <member>any</member>
+                  </category>
+                  <application>
+                    <member>ping</member>
+                    <member>ssh</member>
+                  </application>
+                  <service>
+                    <member>service-tcp-221</member>
+                  </service>
+                  <hip-profiles>
+                    <member>any</member>
+                  </hip-profiles>
+                  <log-start>yes</log-start>
+                  <log-end>yes</log-end>
+                  <action>allow</action>
+                  <log-setting>ForwardToDataLake</log-setting>
+                </entry>
+                <entry name="Allow all ping" uuid="f84bb52c-1d0b-4e07-9a47-1c769b325efe">
+                  <to>
+                    <member>any</member>
+                  </to>
+                  <from>
+                    <member>any</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <source-user>
+                    <member>any</member>
+                  </source-user>
+                  <category>
+                    <member>any</member>
+                  </category>
+                  <application>
+                    <member>ping</member>
+                  </application>
+                  <service>
+                    <member>application-default</member>
+                  </service>
+                  <hip-profiles>
+                    <member>any</member>
+                  </hip-profiles>
+                  <log-start>yes</log-start>
+                  <log-end>yes</log-end>
+                  <action>allow</action>
+                  <log-setting>ForwardToDataLake</log-setting>
+                </entry>
+                <entry name="Allow Inbound Web" uuid="a7572477-460b-4c79-b5cb-fd8987acf35f">
+                  <to>
+                    <member>L3-Trust</member>
+                  </to>
+                  <from>
+                    <member>L3-Untrust</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <source-user>
+                    <member>any</member>
+                  </source-user>
+                  <category>
+                    <member>any</member>
+                  </category>
+                  <application>
+                    <member>web-browsing</member>
+                  </application>
+                  <service>
+                    <member>application-default</member>
+                  </service>
+                  <hip-profiles>
+                    <member>any</member>
+                  </hip-profiles>
+                  <log-start>yes</log-start>
+                  <log-end>yes</log-end>
+                  <action>allow</action>
+                  <log-setting>ForwardToDataLake</log-setting>
+                  <disabled>no</disabled>
+                  <profile-setting>
+                    <profiles>
+                      <virus>
+                        <member>default</member>
+                      </virus>
+                      <spyware>
+                        <member>strict</member>
+                      </spyware>
+                      <vulnerability>
+                        <member>custom</member>
+                      </vulnerability>
+                      <wildfire-analysis>
+                        <member>default</member>
+                      </wildfire-analysis>
+                    </profiles>
+                  </profile-setting>
+                </entry>
+                <entry name="Allow VPN Browsing Windows" uuid="2b95efdb-d7e0-4558-aaf7-91c25012238a">
+                  <profile-setting>
+                    <profiles>
+                      <url-filtering>
+                        <member>BlockSportsAlertFinance</member>
+                      </url-filtering>
+                      <virus>
+                        <member>default</member>
+                      </virus>
+                      <spyware>
+                        <member>CustomWithDNSSec</member>
+                      </spyware>
+                      <vulnerability>
+                        <member>default</member>
+                      </vulnerability>
+                      <wildfire-analysis>
+                        <member>default</member>
+                      </wildfire-analysis>
+                    </profiles>
+                  </profile-setting>
+                  <to>
+                    <member>L3-Untrust</member>
+                  </to>
+                  <from>
+                    <member>L3-Trust</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <source-user>
+                    <member>any</member>
+                  </source-user>
+                  <category>
+                    <member>any</member>
+                  </category>
+                  <application>
+                    <member>paloalto-wildfire-cloud</member>
+                    <member>ssl</member>
+                    <member>web-browsing</member>
+                  </application>
+                  <service>
+                    <member>service-http</member>
+                    <member>service-https</member>
+                  </service>
+                  <hip-profiles>
+                    <member>All_Windows</member>
+                  </hip-profiles>
+                  <action>allow</action>
+                  <log-start>yes</log-start>
+                  <log-setting>ForwardToDataLake</log-setting>
+                </entry>
+                <entry name="Allow VPN Browsing Mac" uuid="f8d79262-7381-4be8-beca-9552662de8be">
+                  <profile-setting>
+                    <profiles>
+                      <url-filtering>
+                        <member>BlockSportsAlertFinance</member>
+                      </url-filtering>
+                      <virus>
+                        <member>default</member>
+                      </virus>
+                      <spyware>
+                        <member>CustomWithDNSSec</member>
+                      </spyware>
+                      <vulnerability>
+                        <member>default</member>
+                      </vulnerability>
+                      <wildfire-analysis>
+                        <member>default</member>
+                      </wildfire-analysis>
+                    </profiles>
+                  </profile-setting>
+                  <to>
+                    <member>L3-Untrust</member>
+                  </to>
+                  <from>
+                    <member>L3-Trust</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <source-user>
+                    <member>any</member>
+                  </source-user>
+                  <category>
+                    <member>any</member>
+                  </category>
+                  <application>
+                    <member>paloalto-wildfire-cloud</member>
+                    <member>ssl</member>
+                    <member>web-browsing</member>
+                  </application>
+                  <service>
+                    <member>service-http</member>
+                    <member>service-https</member>
+                  </service>
+                  <hip-profiles>
+                    <member>All_Mac</member>
+                  </hip-profiles>
+                  <action>allow</action>
+                  <log-setting>ForwardToDataLake</log-setting>
+                  <log-start>yes</log-start>
+                </entry>
+                <entry name="Allow Outbound Browsing" uuid="0fb63ce4-9435-4573-989e-aef52bacc746">
+                  <profile-setting>
+                    <profiles>
+                      <url-filtering>
+                        <member>BlockSportsAlertFinance</member>
+                      </url-filtering>
+                      <virus>
+                        <member>default</member>
+                      </virus>
+                      <spyware>
+                        <member>CustomWithDNSSec</member>
+                      </spyware>
+                      <vulnerability>
+                        <member>default</member>
+                      </vulnerability>
+                      <wildfire-analysis>
+                        <member>default</member>
+                      </wildfire-analysis>
+                    </profiles>
+                  </profile-setting>
+                  <to>
+                    <member>L3-Untrust</member>
+                  </to>
+                  <from>
+                    <member>L3-Trust</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <source-user>
+                    <member>any</member>
+                  </source-user>
+                  <category>
+                    <member>any</member>
+                  </category>
+                  <application>
+                    <member>paloalto-wildfire-cloud</member>
+                    <member>ssl</member>
+                    <member>web-browsing</member>
+                  </application>
+                  <service>
+                    <member>service-http</member>
+                    <member>service-https</member>
+                  </service>
+                  <hip-profiles>
+                    <member>any</member>
+                  </hip-profiles>
+                  <action>allow</action>
+                  <log-setting>ForwardToDataLake</log-setting>
+                  <log-start>yes</log-start>
+                </entry>
+                <entry name="Allow all outbound" uuid="8efa3563-13fc-4c01-b186-b6295399698a">
+                  <to>
+                    <member>L3-Untrust</member>
+                  </to>
+                  <from>
+                    <member>L3-Trust</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <source-user>
+                    <member>any</member>
+                  </source-user>
+                  <category>
+                    <member>any</member>
+                  </category>
+                  <application>
+                    <member>any</member>
+                  </application>
+                  <service>
+                    <member>application-default</member>
+                  </service>
+                  <hip-profiles>
+                    <member>any</member>
+                  </hip-profiles>
+                  <log-start>yes</log-start>
+                  <log-end>yes</log-end>
+                  <action>allow</action>
+                  <log-setting>ForwardToDataLake</log-setting>
+                  <profile-setting>
+                    <profiles>
+                      <url-filtering>
+                        <member>BlockSportsAlertFinance</member>
+                      </url-filtering>
+                      <virus>
+                        <member>default</member>
+                      </virus>
+                      <spyware>
+                        <member>CustomWithDNSSec</member>
+                      </spyware>
+                      <vulnerability>
+                        <member>default</member>
+                      </vulnerability>
+                      <wildfire-analysis>
+                        <member>default</member>
+                      </wildfire-analysis>
+                    </profiles>
+                  </profile-setting>
+                </entry>
+                <entry name="Log default deny" uuid="6e96d645-e835-4dbd-a2a3-72127d8e7f55">
+                  <to>
+                    <member>any</member>
+                  </to>
+                  <from>
+                    <member>any</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <source-user>
+                    <member>any</member>
+                  </source-user>
+                  <category>
+                    <member>any</member>
+                  </category>
+                  <application>
+                    <member>any</member>
+                  </application>
+                  <service>
+                    <member>any</member>
+                  </service>
+                  <hip-profiles>
+                    <member>any</member>
+                  </hip-profiles>
+                  <log-start>yes</log-start>
+                  <log-end>yes</log-end>
+                  <action>deny</action>
+                  <log-setting>ForwardToDataLake</log-setting>
+                </entry>
+              </rules>
+            </security>
+            <default-security-rules>
+              <rules/>
+            </default-security-rules>
+            <application-override>
+              <rules/>
+            </application-override>
+            <decryption>
+              <rules>
+                <entry name="Decrypt Outbound Web" uuid="b78fa9e0-e9a9-4506-baa1-365e45754482">
+                  <category>
+                    <member>any</member>
+                  </category>
+                  <service>
+                    <member>service-https</member>
+                  </service>
+                  <type>
+                    <ssl-forward-proxy/>
+                  </type>
+                  <from>
+                    <member>L3-Trust</member>
+                  </from>
+                  <to>
+                    <member>L3-Untrust</member>
+                  </to>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <source-user>
+                    <member>any</member>
+                  </source-user>
+                  <action>decrypt</action>
+                  <profile>DecryptProfile1</profile>
+                  <disabled>no</disabled>
+                </entry>
+              </rules>
+            </decryption>
+            <tunnel-inspect>
+              <rules/>
+            </tunnel-inspect>
+            <authentication>
+              <rules/>
+            </authentication>
+            <nat>
+              <rules>
+                <entry name="GP Inbound NAT LB" uuid="a998119b-7559-4fe6-aa7d-ccf4b6f5f5f8">
+                  <destination-translation>
+                    <translated-address>10.2.10.10</translated-address>
+                    <translated-port>443</translated-port>
+                  </destination-translation>
+                  <to>
+                    <member>L3-Untrust</member>
+                  </to>
+                  <from>
+                    <member>L3-Untrust</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>10.0.0.100</member>
+                  </destination>
+                  <service>service-https</service>
+                  <nat-type>ipv4</nat-type>
+                </entry>
+                <entry name="Web Inbound SSH" uuid="2af28482-c7e8-41ff-8368-3850f80ca543">
+                  <destination-translation>
+                    <translated-address>10.0.1.101</translated-address>
+                    <translated-port>22</translated-port>
+                  </destination-translation>
+                  <source-translation>
+                    <dynamic-ip-and-port>
+                      <interface-address>
+                        <interface>ethernet1/2</interface>
+                      </interface-address>
+                    </dynamic-ip-and-port>
+                  </source-translation>
+                  <to>
+                    <member>L3-Untrust</member>
+                  </to>
+                  <from>
+                    <member>L3-Untrust</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>10.0.0.100</member>
+                  </destination>
+                  <service>service-tcp-221</service>
+                  <nat-type>ipv4</nat-type>
+                </entry>
+                <entry name="AD Inbound RDP" uuid="df82b283-d64c-4c7e-9396-409b5d844b39">
+                  <destination-translation>
+                    <translated-address>10.0.1.20</translated-address>
+                    <translated-port>3389</translated-port>
+                  </destination-translation>
+                  <source-translation>
+                    <dynamic-ip-and-port>
+                      <interface-address>
+                        <interface>ethernet1/2</interface>
+                      </interface-address>
+                    </dynamic-ip-and-port>
+                  </source-translation>
+                  <to>
+                    <member>L3-Untrust</member>
+                  </to>
+                  <from>
+                    <member>L3-Untrust</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>10.0.0.100</member>
+                  </destination>
+                  <service>service-rdp</service>
+                  <nat-type>ipv4</nat-type>
+                </entry>
+                <entry name="Web Inbound NAT" uuid="c9aeadea-2780-498a-bd52-69d881ab19a5">
+                  <destination-translation>
+                    <translated-address>10.0.1.101</translated-address>
+                    <translated-port>80</translated-port>
+                  </destination-translation>
+                  <source-translation>
+                    <dynamic-ip-and-port>
+                      <interface-address>
+                        <interface>ethernet1/2</interface>
+                      </interface-address>
+                    </dynamic-ip-and-port>
+                  </source-translation>
+                  <to>
+                    <member>L3-Untrust</member>
+                  </to>
+                  <from>
+                    <member>L3-Untrust</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>10.0.0.100</member>
+                  </destination>
+                  <service>service-http</service>
+                  <nat-type>ipv4</nat-type>
+                </entry>
+                <entry name="Outbound nat" uuid="d3a29023-dbd7-45fc-8723-6307f4346fdd">
+                  <source-translation>
+                    <dynamic-ip-and-port>
+                      <interface-address>
+                        <interface>ethernet1/1</interface>
+                      </interface-address>
+                    </dynamic-ip-and-port>
+                  </source-translation>
+                  <to>
+                    <member>L3-Untrust</member>
+                  </to>
+                  <from>
+                    <member>L3-Trust</member>
+                  </from>
+                  <source>
+                    <member>any</member>
+                  </source>
+                  <destination>
+                    <member>any</member>
+                  </destination>
+                  <service>any</service>
+                  <nat-type>ipv4</nat-type>
+                </entry>
+              </rules>
+            </nat>
+            <qos>
+              <rules/>
+            </qos>
+            <pbf>
+              <rules/>
+            </pbf>
+            <dos>
+              <rules/>
+            </dos>
+          </rulebase>
+          <address>
+            <entry name="DC1">
+              <ip-netmask>10.0.1.20/32</ip-netmask>
+              <description>DC1</description>
+            </entry>
+          </address>
+          <address-group/>
+          <external-list/>
+          <region/>
+          <application-tag/>
+          <application-filter/>
+          <profile-group/>
+          <authentication-object/>
+          <tag/>
+          <application-status/>
+          <threats>
+            <vulnerability/>
+            <spyware>
+              <entry name="15100">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 100 Continue">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>100</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 100 Continue</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15101">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 101 Switching Protocols">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>101</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 101 Switching Protocols</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15102">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 102 Processing">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>102</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 102 Processing</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15200">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 200 OK">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>200</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 200 OK</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15201">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 201 Created">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>201</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 201 Created</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15202">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 202 Accepted">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>202</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 202 Accepted</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15203">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 203">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>203</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 203 Non-Author Info</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15204">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 204 No Content">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>204</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 204 No Content</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15205">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 205 Reset Content">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>205</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 205 Reset Content</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15206">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 206 Partial Content">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>206</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 206 Partial Content</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15207">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 207 Multi Status">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>207</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 207 Multi Status</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15300">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 300 Multiple Choices">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>300</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 300 Multiple Choices</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15301">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 301 Moved Permanently">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>301</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 301 Moved Permanently</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15302">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 302 Moved Temporarily">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>302</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 302 Moved Temporarily</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15303">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 303 See Other">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>303</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 303 See Other</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15304">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 304 Not Modified">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>304</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 304 Not Modified</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15305">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 305 Use Proxy">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>305</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 305 Use Proxy</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15307">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 307 Temporary Redirect">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>307</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 307 Temporary Redirect</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15400">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 400 Bad Request">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>400</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 400 Bad Request</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15401">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 401 Unauthorized">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>401</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 401 Unauthorized</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15402">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 402 Payment Required">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>402</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 402 Payment Required</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15403">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 403 Forbidden">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>403</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 403 Forbidden</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15404">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 404 Not Found">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>404</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 404 Not Found</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15405">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 405 Method Not Allowed">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>405</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 405 Method Not Allowed</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15406">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 406 Not Acceptable">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>406</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 406 Not Acceptable</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15407">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 407">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>407</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 407 Proxy Auth Req</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15408">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 408 Request Timeout">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>408</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 408 Request Timeout</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15409">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 409 Conflict">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>409</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 409 Conflict</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15410">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 410 Gone">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>410</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 410 Gone</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15411">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 411 Length Required">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>411</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 411 Length Required</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15412">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 412 Precondition Failed">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>412</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 412 Precondition Failed</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15413">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 413">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>413</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 413 Req Entity 2Large</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15414">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 414 Request URI Too Large">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>414</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 414 Request URI Too Large</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15415">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 415 Unsupported Media Type">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>415</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 415 Unsupported Media Type</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15416">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 416">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>416</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 416 Req Range Not Satis</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15417">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 417 Expectation Failed">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>417</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 417 Expectation Failed</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15422">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 422 Unprocessable Entity">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>422</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 422 Unprocessable Entity</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15424">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 424 Locked">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>424</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 424 Locked</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15424">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 424 Failed Dependency">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>424</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 424 Failed Dependency</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15433">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 433 Unprocessable Entity">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>433</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 433 Unprocessable Entity</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15500">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 500 Internal Server Error">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>500</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 500 Internal Server Error</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15501">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 501 Not Implemented">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>501</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 501 Not Implemented</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15502">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 502 Bad Gateway">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>502</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 502 Bad Gateway</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15503">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 503 Service Unavailable">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>503</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 503 Service Unavailable</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15504">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 504 Gateway Timeout">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>504</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 504 Gateway Timeout</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15505">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 505">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>505</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 505 HTTP Ver Not Suppor</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15507">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 507 Insufficient Storage">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>507</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 507 Insufficient Storage</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15600">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 600">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>600</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 600 Squid header parsing error</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+              <entry name="15603">
+                <signature>
+                  <standard>
+                    <entry name="HTTP 603">
+                      <and-condition>
+                        <entry name="And Condition 1">
+                          <or-condition>
+                            <entry name="Or Condition 1">
+                              <operator>
+                                <equal-to>
+                                  <value>603</value>
+                                  <context>http-rsp-code</context>
+                                </equal-to>
+                              </operator>
+                            </entry>
+                          </or-condition>
+                        </entry>
+                      </and-condition>
+                      <order-free>no</order-free>
+                      <scope>protocol-data-unit</scope>
+                    </entry>
+                  </standard>
+                </signature>
+                <default-action>
+                  <alert/>
+                </default-action>
+                <threatname>HTTP 603 roundcube invalid authorization</threatname>
+                <severity>informational</severity>
+                <direction>server2client</direction>
+              </entry>
+            </spyware>
+          </threats>
+          <profiles>
+            <virus/>
+            <spyware>
+              <entry name="CustomWithDNSSec">
+                <rules>
+                  <entry name="simple-critical">
+                    <action>
+                      <reset-both/>
+                    </action>
+                    <severity>
+                      <member>critical</member>
+                    </severity>
+                    <threat-name>any</threat-name>
+                    <category>any</category>
+                    <packet-capture>single-packet</packet-capture>
+                  </entry>
+                  <entry name="simple-high">
+                    <action>
+                      <reset-both/>
+                    </action>
+                    <severity>
+                      <member>high</member>
+                    </severity>
+                    <threat-name>any</threat-name>
+                    <category>any</category>
+                    <packet-capture>single-packet</packet-capture>
+                  </entry>
+                  <entry name="simple-medium">
+                    <action>
+                      <alert/>
+                    </action>
+                    <severity>
+                      <member>medium</member>
+                    </severity>
+                    <threat-name>any</threat-name>
+                    <category>any</category>
+                    <packet-capture>single-packet</packet-capture>
+                  </entry>
+                  <entry name="simple-low">
+                    <action>
+                      <alert/>
+                    </action>
+                    <severity>
+                      <member>low</member>
+                    </severity>
+                    <threat-name>any</threat-name>
+                    <category>any</category>
+                    <packet-capture>single-packet</packet-capture>
+                  </entry>
+                </rules>
+                <botnet-domains>
+                  <lists>
+                    <entry name="default-paloalto-dns">
+                      <packet-capture>single-packet</packet-capture>
+                      <action>
+                        <sinkhole/>
+                      </action>
+                    </entry>
+                    <entry name="default-paloalto-cloud">
+                      <packet-capture>single-packet</packet-capture>
+                      <action>
+                        <sinkhole/>
+                      </action>
+                    </entry>
+                  </lists>
+                  <sinkhole>
+                    <ipv4-address>pan-sinkhole-default-ip</ipv4-address>
+                    <ipv6-address>::1</ipv6-address>
+                  </sinkhole>
+                </botnet-domains>
+              </entry>
+            </spyware>
+            <vulnerability>
+              <entry name="custom">
+                <rules>
+                  <entry name="reset_high_critical_medium">
+                    <action>
+                      <reset-both/>
+                    </action>
+                    <vendor-id>
+                      <member>any</member>
+                    </vendor-id>
+                    <severity>
+                      <member>critical</member>
+                      <member>high</member>
+                      <member>medium</member>
+                    </severity>
+                    <cve>
+                      <member>any</member>
+                    </cve>
+                    <threat-name>any</threat-name>
+                    <host>any</host>
+                    <category>any</category>
+                    <packet-capture>single-packet</packet-capture>
+                  </entry>
+                  <entry name="alert_low_informational">
+                    <action>
+                      <default/>
+                    </action>
+                    <vendor-id>
+                      <member>any</member>
+                    </vendor-id>
+                    <severity>
+                      <member>low</member>
+                      <member>informational</member>
+                    </severity>
+                    <cve>
+                      <member>any</member>
+                    </cve>
+                    <threat-name>any</threat-name>
+                    <host>any</host>
+                    <category>any</category>
+                    <packet-capture>single-packet</packet-capture>
+                  </entry>
+                </rules>
+                <description>custom</description>
+              </entry>
+            </vulnerability>
+            <url-filtering>
+              <entry name="BlockSportsAlertFinance">
+                <credential-enforcement>
+                  <mode>
+                    <disabled/>
+                  </mode>
+                  <log-severity>medium</log-severity>
+                  <block>
+                    <member>sports</member>
+                  </block>
+                </credential-enforcement>
+                <log-http-hdr-xff>yes</log-http-hdr-xff>
+                <log-http-hdr-user-agent>yes</log-http-hdr-user-agent>
+                <log-http-hdr-referer>yes</log-http-hdr-referer>
+                <alert>
+                  <member>financial-services</member>
+                </alert>
+                <block>
+                  <member>sports</member>
+                </block>
+              </entry>
+            </url-filtering>
+            <custom-url-category/>
+            <file-blocking/>
+            <data-filtering/>
+            <data-objects/>
+            <hip-objects>
+              <entry name="Windows">
+                <host-info>
+                  <criteria>
+                    <os>
+                      <contains>
+                        <Microsoft>All</Microsoft>
+                      </contains>
+                    </os>
+                  </criteria>
+                </host-info>
+                <description>Windows Systems</description>
+              </entry>
+              <entry name="Mac">
+                <host-info>
+                  <criteria>
+                    <os>
+                      <contains>
+                        <Apple>All</Apple>
+                      </contains>
+                    </os>
+                  </criteria>
+                </host-info>
+                <description>Apple Systems</description>
+              </entry>
+            </hip-objects>
+            <hip-profiles>
+              <entry name="All_Windows">
+                <match>"Windows"</match>
+              </entry>
+              <entry name="All_Mac">
+                <match>"Mac"</match>
+              </entry>
+            </hip-profiles>
+            <dos-protection/>
+            <decryption>
+              <entry name="DecryptProfile1"/>
+            </decryption>
+            <wildfire-analysis/>
+            <gtp/>
+            <sctp/>
+          </profiles>
+        </entry>
+      </vsys>
+    </entry>
+  </devices>
+  <mgt-config>
+    <users>
+      <entry name="admin">
+        <phash>NOTVALID</phash>
+        <permissions>
+          <role-based>
+            <superuser>yes</superuser>
+          </role-based>
+        </permissions>
+      </entry>
+    </users>
+  </mgt-config>
+  <shared>
+    <certificate>
+      <entry name="fwcert">
+        <subject-hash>3ec69736</subject-hash>
+        <issuer-hash>2760e3b2</issuer-hash>
+        <not-valid-before>May 17 22:51:34 2019 GMT</not-valid-before>
+        <issuer>/CN=CortexLabCA</issuer>
+        <not-valid-after>May 14 22:51:34 2029 GMT</not-valid-after>
+        <common-name>10.0.0.99</common-name>
+        <expiry-epoch>1873493494</expiry-epoch>
+        <ca>no</ca>
+        <subject>/CN=10.0.0.99</subject>
+        <public-key>-----BEGIN CERTIFICATE-----
+MIIDFTCCAf2gAwIBAgIEGTWrsDANBgkqhkiG9w0BAQsFADAWMRQwEgYDVQQDEwtD
+b3J0ZXhMYWJDQTAeFw0xOTA1MTcyMjUxMzRaFw0yOTA1MTQyMjUxMzRaMBQxEjAQ
+BgNVBAMTCTEwLjAuMC45OTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB
+APeSCP/6f0Y4KQc7+cF8lz2sMugptw6hfDeSpMbkEyj5t2CwZS85J09dlxcYvhJb
+79+JeOMKm16ziHc08PjG9mZMw+jTqLMykKo0Dq+ION3TRHzgcrUX2IASYDiZeo4p
+Mp74KqkhsN6+A/9caoewipGpU3bvgqlAgB4FPyTgMzFQb3INmSNMES6dl60wGoTb
+TeuDVnLssyaaCQYBJEdBeRjJ2wtSPLU8iR/6NC0TL6r9SD28uy2y3vRmMw1WjDSC
+08IOvOiQvAiRe7dmJq8UeCFOsbOOSHSXDiCAgab+tdg3Vo/5yGA+YyXYvgZirl1N
+qi2dynETTztFoReqTmvUj/cCAwEAAaNtMGswCQYDVR0TBAIwADALBgNVHQ8EBAMC
+A7gwJwYDVR0lBCAwHgYIKwYBBQUHAwEGCCsGAQUFBwMCBggrBgEFBQcDBTAJBgNV
+HSMEAjAAMB0GA1UdDgQWBBQuFO36s9GEzzGZJY1bmeT77YW4AzANBgkqhkiG9w0B
+AQsFAAOCAQEAUeNNZFsmo9hREb9TkRwYpDyRHgvvL8zp0OwH4RPPduAxiP77H5r4
+LDPk/ACXVhLHlzfmI6e0TE9aPNIGXB6KHXK/2VRKrzQuHoYrEsZJ8Y/e3nY34xFj
+/uCsylfAiE6q/R+Ou/cJg63QIeq+kIvBK7c5RNp+LBuzK/v++VEYi2XmtGLkYECE
+J6RU1q3Nrv/vOrT13YfTS3BTgFMrKsN6aw4sLbWD6KifiXkhLDms72UM/luXdiWY
+aUtubTfxLLePTB5vHYJLXMvzr7V/wgB0j3+btBETiADXa90cr5VbJwyrbs7KFKxM
+vcw6B+/QV6xstC4Y7y5tOqBuNMHStk20kg==
+-----END CERTIFICATE-----
+</public-key>
+        <algorithm>RSA</algorithm>
+        <private-key>-AQ==4zlTxpi4wIkJi/OMSPHVDXc5eAA=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</private-key>
+      </entry>
+      <entry name="publiceip">
+        <subject-hash>02d11cb5</subject-hash>
+        <issuer-hash>2760e3b2</issuer-hash>
+        <not-valid-before>May 17 22:51:54 2019 GMT</not-valid-before>
+        <issuer>/CN=CortexLabCA</issuer>
+        <not-valid-after>May 14 22:51:54 2029 GMT</not-valid-after>
+        <common-name>1.2.3.4</common-name>
+        <expiry-epoch>1873493514</expiry-epoch>
+        <ca>no</ca>
+        <subject>/CN=1.2.3.4</subject>
+        <public-key>-----BEGIN CERTIFICATE-----
+MIIDEzCCAfugAwIBAgIEGTWrsTANBgkqhkiG9w0BAQsFADAWMRQwEgYDVQQDEwtD
+b3J0ZXhMYWJDQTAeFw0xOTA1MTcyMjUxNTRaFw0yOTA1MTQyMjUxNTRaMBIxEDAO
+BgNVBAMTBzEuMi4zLjQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCn
+cKCrghfTSlIUGBARMHxoP1UwKDLklQOJv9LiE2bzKMLBomALqoIbt6/joWvDXOUz
+UrzIlFMmKGIP8rjzZqhsqGE2O1JDO547HsbCN2o43Hamxar+H1ZV1Lich4l9LhnD
+n2YByqu0Lh6WaWqDu4zXkpgUluHukJ9B8nhvN/kvMzECDJ0Iez8DEe59U0VegALt
+eHHX6N0FFC4bnnEOTsqzMdaDOAd8lmmf6nU5m/F9zAcL/FW7X9h27JOeObX4Ipm4
++TAQIcf3P7vfSWzqDOZTZQYYFH0wVYfBqKNKsGL9tWTWwYZfp9U92SzfGCL6p9gm
+vn57htOKGGeAklHSujy1AgMBAAGjbTBrMAkGA1UdEwQCMAAwCwYDVR0PBAQDAgO4
+MCcGA1UdJQQgMB4GCCsGAQUFBwMBBggrBgEFBQcDAgYIKwYBBQUHAwUwCQYDVR0j
+BAIwADAdBgNVHQ4EFgQU3QUuvS0zeIsJVQqSHZLBHao3IewwDQYJKoZIhvcNAQEL
+BQADggEBAGacu5U8S/G+8JNjaY8GYI3wK/cJykFL0QCdzzJ6I2ZJ6Afhbm+NGpnm
+c0GEtMwTC3rWK20ko8rnwsfcXcU7hltncSTy4fQ0t4TlIZHIg9Jpfp8kNH3mBRxU
+gawEGLehj1gKi+H9SI4XV9/VwXKJgj9juZC2a9Gx2/O44DlAvpouSCE4Cq0jNykw
+aN1PRMCDR3BJIKCuqixeFrAuBtR9eXJ49hswlpEtyMToz3tZZEP3Wz2YRbZgcRlS
+TPeJXDNTHUTmbjgaISVhPxycgK9vXYs+ztdOTgf3BMxT1LMsrCGEiEIK37mYeMVK
+8Dxk+CjUZGBxr24E7cF1bwEtFaZXhjk=
+-----END CERTIFICATE-----
+</public-key>
+        <algorithm>RSA</algorithm>
+        <private-key>-AQ==uxx1gKG9mqN+rQ+Auf2cdoekhw8=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</private-key>
+      </entry>
+      <entry name="CortexLabCA">
+        <subject-hash>2760e3b2</subject-hash>
+        <issuer-hash>2760e3b2</issuer-hash>
+        <not-valid-before>May 17 22:50:34 2019 GMT</not-valid-before>
+        <issuer>/CN=CortexLabCA</issuer>
+        <not-valid-after>May 14 22:50:34 2029 GMT</not-valid-after>
+        <common-name>CortexLabCA</common-name>
+        <expiry-epoch>1873493434</expiry-epoch>
+        <ca>yes</ca>
+        <subject>/CN=CortexLabCA</subject>
+        <public-key>-----BEGIN CERTIFICATE-----
+MIICzDCCAbSgAwIBAgIJAJNO3Ltrws1jMA0GCSqGSIb3DQEBCwUAMBYxFDASBgNV
+BAMTC0NvcnRleExhYkNBMB4XDTE5MDUxNzIyNTAzNFoXDTI5MDUxNDIyNTAzNFow
+FjEUMBIGA1UEAxMLQ29ydGV4TGFiQ0EwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAw
+ggEKAoIBAQCXcD4BlBuoIU6q6vO27l0k0wNmvmSQslGAhEEXbMm85ytG+h/ZMjTI
+IzMf5EJzyWmmRMtw9DHljTmc+kwTPK6069AxFrt6IcqIs6PZ/Lhz4nHsdE35sJtL
+T5cY6zhlLKaEOKxpe7HjYMD1Cza6PCXRocU00Z/u+GA+diQV23vDJWc19Ageq4pj
+lAJmllijWGM/c2JvdoMde+H3bpCi4QbETvTlC1S1SfewtCdui0tPg8XYqivbe4U0
+viLuiQzMzpBTgRNeFTwgnvEVicFJZCy5vaedlqDxNGz7YDhMf4/nDG5fAbPUBY4o
+zdxMcg+Hy75rLKoau/5+8gfnwq/MP5YZAgMBAAGjHTAbMAwGA1UdEwQFMAMBAf8w
+CwYDVR0PBAQDAgIEMA0GCSqGSIb3DQEBCwUAA4IBAQCSpA78t/WwpkhbhA4trE78
+UAZl4dju8uUvBoSFqmwAqp8KmaLczx9y+kZ/ibSKOBcqMK+r2LwXfzzUB3Zz2jWY
+mCN9MJytQQ4nfPHbU4ev0ioKtZ3QrELFqNtYq+e5z+ReqExODuwZNq3kg9M0hFIG
+TSQESlscitUCUf0hzyCAUvCxaotzVumPBDSr0MJqTSej9LXtVOX5mKTgh4WCfTsI
+eJWyr4JyDKGLbFoqe2NAYrkVWuJSEmKE3zkOCoOrm2QgQLwMMV7Qm48+gGUYNbgI
+Q8BaUBtbiAVgHKksPhGTLy9Cdr4uARgjBwy6EuosvEK86b6IohBY22Exe2Dbl9AQ
+-----END CERTIFICATE-----
+</public-key>
+        <algorithm>RSA</algorithm>
+        <private-key>-AQ==kTmrs97OfUfJaHazAz+S0+jQwNU=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</private-key>
+      </entry>
+    </certificate>
+    <ssl-decrypt>
+      <forward-trust-certificate>
+        <rsa>CortexLabCA</rsa>
+      </forward-trust-certificate>
+      <forward-untrust-certificate>
+        <rsa>CortexLabCA</rsa>
+      </forward-untrust-certificate>
+      <trusted-root-CA>
+        <member>CortexLabCA</member>
+      </trusted-root-CA>
+    </ssl-decrypt>
+    <local-user-database>
+      <user>
+      </user>
+    </local-user-database>
+    <authentication-profile>
+      <entry name="LocalAuth">
+        <multi-factor-auth>
+          <mfa-enable>no</mfa-enable>
+        </multi-factor-auth>
+        <method>
+          <local-database/>
+        </method>
+        <allow-list>
+          <member>all</member>
+        </allow-list>
+        <user-domain>localdomain.test</user-domain>
+      </entry>
+    </authentication-profile>
+    <ssl-tls-service-profile>
+      <entry name="portal">
+        <protocol-settings>
+          <min-version>tls1-0</min-version>
+          <max-version>max</max-version>
+        </protocol-settings>
+        <certificate>publiceip</certificate>
+      </entry>
+    </ssl-tls-service-profile>
+    <log-settings>
+      <system>
+        <match-list>
+          <entry name="SystemToCortex">
+            <filter>All Logs</filter>
+            <send-to-panorama>yes</send-to-panorama>
+          </entry>
+        </match-list>
+      </system>
+      <config>
+        <match-list>
+          <entry name="ConfigToCortex">
+            <filter>All Logs</filter>
+            <send-to-panorama>yes</send-to-panorama>
+          </entry>
+        </match-list>
+      </config>
+      <userid>
+        <match-list>
+          <entry name="UserIDToCortex">
+            <filter>All Logs</filter>
+            <send-to-panorama>yes</send-to-panorama>
+          </entry>
+        </match-list>
+      </userid>
+      <hipmatch>
+        <match-list>
+          <entry name="HIPMatchToCortex">
+            <filter>All Logs</filter>
+            <send-to-panorama>yes</send-to-panorama>
+          </entry>
+        </match-list>
+      </hipmatch>
+      <profiles>
+        <entry name="ForwardToDataLake">
+          <match-list>
+            <entry name="TrafficToCDL">
+              <log-type>traffic</log-type>
+              <filter>All Logs</filter>
+              <send-to-panorama>yes</send-to-panorama>
+            </entry>
+            <entry name="ThreatToCDL">
+              <log-type>threat</log-type>
+              <filter>All Logs</filter>
+              <send-to-panorama>yes</send-to-panorama>
+            </entry>
+            <entry name="AuthToCDL">
+              <log-type>auth</log-type>
+              <filter>All Logs</filter>
+              <send-to-panorama>yes</send-to-panorama>
+            </entry>
+            <entry name="DataToCDL">
+              <log-type>data</log-type>
+              <filter>All Logs</filter>
+              <send-to-panorama>yes</send-to-panorama>
+            </entry>
+            <entry name="WFToCDL">
+              <log-type>wildfire</log-type>
+              <filter>All Logs</filter>
+              <send-to-panorama>yes</send-to-panorama>
+            </entry>
+            <entry name="TunnelToCDL">
+              <log-type>tunnel</log-type>
+              <filter>All Logs</filter>
+              <send-to-panorama>yes</send-to-panorama>
+            </entry>
+            <entry name="URLToCDL">
+              <log-type>url</log-type>
+              <filter>All Logs</filter>
+              <send-to-panorama>yes</send-to-panorama>
+            </entry>
+          </match-list>
+          <description>Forward to DataLake</description>
+          <enhanced-application-logging>yes</enhanced-application-logging>
+        </entry>
+      </profiles>
+    </log-settings>
+    <content-preview>
+      <application/>
+      <application-type>
+        <category/>
+        <technology/>
+      </application-type>
+    </content-preview>
+    <application/>
+    <application-group/>
+    <service/>
+    <service-group/>
+    <botnet>
+      <configuration>
+        <http>
+          <dynamic-dns>
+            <enabled>yes</enabled>
+            <threshold>5</threshold>
+          </dynamic-dns>
+          <malware-sites>
+            <enabled>yes</enabled>
+            <threshold>5</threshold>
+          </malware-sites>
+          <recent-domains>
+            <enabled>yes</enabled>
+            <threshold>5</threshold>
+          </recent-domains>
+          <ip-domains>
+            <enabled>yes</enabled>
+            <threshold>10</threshold>
+          </ip-domains>
+          <executables-from-unknown-sites>
+            <enabled>yes</enabled>
+            <threshold>5</threshold>
+          </executables-from-unknown-sites>
+        </http>
+        <other-applications>
+          <irc>yes</irc>
+        </other-applications>
+        <unknown-applications>
+          <unknown-tcp>
+            <destinations-per-hour>10</destinations-per-hour>
+            <sessions-per-hour>10</sessions-per-hour>
+            <session-length>
+              <maximum-bytes>100</maximum-bytes>
+              <minimum-bytes>50</minimum-bytes>
+            </session-length>
+          </unknown-tcp>
+          <unknown-udp>
+            <destinations-per-hour>10</destinations-per-hour>
+            <sessions-per-hour>10</sessions-per-hour>
+            <session-length>
+              <maximum-bytes>100</maximum-bytes>
+              <minimum-bytes>50</minimum-bytes>
+            </session-length>
+          </unknown-udp>
+        </unknown-applications>
+      </configuration>
+      <report>
+        <topn>100</topn>
+        <scheduled>yes</scheduled>
+      </report>
+    </botnet>
+  </shared>
+</config>

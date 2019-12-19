@@ -101,6 +101,20 @@
       retries: 10
       delay: 30
 
+    # update content to latest release
+    - name: Panorama Update Content
+      panos_content:
+        ip_address: "{{pano_ip}}"
+        username: "{{admin_username}}"
+        password: "{{admin_password}}"
+        wildfire_update: yes
+        content_update: yes
+        anti_virus_update: yes
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60
+
     # Install Cloud Services Plugin
     - name: Panorama Install cloud services plugin
       panorama_plugin:

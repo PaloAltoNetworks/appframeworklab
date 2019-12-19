@@ -59,38 +59,8 @@ if [ ! -r "${DEPLOYPATH}/key.pem" ]; then
     exit 1
 fi
 
-if [ ! -r "${DEPLOYPATH}/devices_setup.yml" ]; then
-    msg="Cannot find devices_setup.yml, aborting..."
-    echo $msg
-    if [ "${FIRSTRUN}" = true ]; then
-        echo "FIRSTRUN: Sending CFN fail signal!"    
-        ${CFNSIGNAL} -s false --stack ${AWSSTACKNAME} --region ${AWSREGION} --resource ${SELF} -r ${msg}
-    fi
-    exit 1
-fi
-
-if [ ! -r "${DEPLOYPATH}/panorama_setup.yml" ]; then
-    msg="Cannot find panorama_setup.yml, aborting..."
-    echo $msg
-    if [ "${FIRSTRUN}" = true ]; then
-        echo "FIRSTRUN: Sending CFN fail signal!"    
-        ${CFNSIGNAL} -s false --stack ${AWSSTACKNAME} --region ${AWSREGION} --resource ${SELF} -r ${msg}
-    fi
-    exit 1
-fi
-
-if [ ! -r "${DEPLOYPATH}/firewall_setup.yml" ]; then
-    msg="Cannot find firewall_setup.yml, aborting..."
-    echo $msg
-    if [ "${FIRSTRUN}" = true ]; then
-        echo "FIRSTRUN: Sending CFN fail signal!"    
-        ${CFNSIGNAL} -s false --stack ${AWSSTACKNAME} --region ${AWSREGION} --resource ${SELF} -r ${msg}
-    fi
-    exit 1
-fi
-
-if [ ! -r "${DEPLOYPATH}/appframework_lab.yml" ]; then
-    msg="Cannot find appframework_lab.yml, aborting..."
+if [ ! -r "${DEPLOYPATH}/ngfw_setup.yml" ]; then
+    msg="Cannot find ngfw_setup.yml, aborting..."
     echo $msg
     if [ "${FIRSTRUN}" = true ]; then
         echo "FIRSTRUN: Sending CFN fail signal!"    
@@ -112,19 +82,13 @@ if [ "${FIRSTRUN}" = true ]; then
     ${CFNSIGNAL} -s true --stack ${AWSSTACKNAME} --region ${AWSREGION} --resource ${SELF}
 fi
 
-ansible-playbook ${DEPLOYPATH}/devices_setup.yml
+ansible-playbook ${DEPLOYPATH}/ngfw_setup.yml
 retVal=$?
 if [ $retVal -gt 1 ]; then
-    echo "Error running devices_setup.yml!"
+    echo "Error running ngfw_setup.yml!"
     exit 1
 fi
 
-ansible-playbook ${DEPLOYPATH}/appframework_lab.yml
-retVal=$?
-if [ $retVal -gt 1 ]; then
-    echo echo "Error running appframework_lab.yml!"
-    exit 1
-fi
 # Cleanup
 #rm -f ${DEPLOYPATH}/vars.yml
 #   rm -f ${DEPLOYPATH}/key.pem

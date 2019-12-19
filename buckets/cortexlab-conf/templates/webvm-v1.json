@@ -1,0 +1,166 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Palo Alto Networks Cortex Lab Web Server VM Nested Template",
+    "Parameters": {
+            "EnvironmentBootInstanceProfile": {"Type": "String"},
+            "NewWebSubnet": {"Type": "String"},
+            "PrivateIPAddress": {"Type": "String"},
+            "sgWideOpen": {"Type": "String"},
+            "ServerKeyName": {"Type": "String"},
+            "FirewallCertURL": {"Type": "String"},
+            "FirewallMgmtIP": {"Type": "String"},
+            "FirewallIntIP": {"Type": "String"},
+            "AdminPassword": {"Type": "String"},
+            "DomainNetBIOSName": {"Type": "String"},
+            "WebGenConfURL": {"Type" : "String" },
+            "WebServerBuilderScriptName": {"Type": "String"},
+            "WebServerBuilderScriptURL": {"Type": "String"}
+    },
+    "Mappings": {
+      "UbuntuRegionMap" : {
+        "eu-north-1": { "AMI": "ami-d9ef64a7" },
+        "ap-south-1": { "AMI": "ami-0f382fa26248923ea" },
+        "eu-west-3": { "AMI": "ami-06c4f3f1ba08a36f9" },
+        "eu-west-2": { "AMI": "ami-0629d16d9e818369f" },
+        "eu-west-1": { "AMI": "ami-09e0dc5839aa7eca9" },
+        "ap-northeast-2": { "AMI": "ami-07c0f6470713d969b" },
+        "ap-northeast-1": { "AMI": "ami-0910fb379f9c0dda9" },
+        "sa-east-1": { "AMI": "ami-027c2142d479531cb" },
+        "ca-central-1": { "AMI": "ami-00ecb370195d6a225" },
+        "ap-southeast-1": { "AMI": "ami-0dff5e99784353c4a" },
+        "ap-southeast-2": { "AMI": "ami-042ed6b729919aa24" },
+        "eu-central-1": { "AMI": "ami-0d30b058bf84b0a0c" },
+        "us-east-1": { "AMI": "ami-021d9d94f93a07a43" },
+        "us-east-2": { "AMI": "ami-04239d579c52de263" },
+        "us-west-1": { "AMI": "ami-0a3a5bb61a81e3135" },
+        "us-west-2": { "AMI": "ami-000de76905d16b042" }
+      }
+    },
+    "Resources": {
+        "WebVM": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+              "DisableApiTermination": "false",
+              "InstanceInitiatedShutdownBehavior": "stop",
+              "IamInstanceProfile": {"Ref": "EnvironmentBootInstanceProfile"},		
+              "ImageId": { "Fn::FindInMap" : [ "UbuntuRegionMap", { "Ref" : "AWS::Region" }, "AMI" ] },
+              "InstanceType": "t2.micro",
+              "KeyName": { "Ref": "ServerKeyName" },
+              "Monitoring": "false",
+              "Tags": [{"Key": "Name","Value": "CortexLab Linux Web Server"}],
+              "NetworkInterfaces": [
+                {
+                  "DeleteOnTermination": "true",
+                  "Description": "Primary network interface",
+                  "DeviceIndex": 0,
+                  "SubnetId": {
+                    "Ref": "NewWebSubnet"
+                  },
+                  "PrivateIpAddresses": [
+                    {
+                      "PrivateIpAddress": { "Ref" : "PrivateIPAddress" },
+                      "Primary": "true"
+                    }
+                  ],
+                  "GroupSet": [
+                    {
+                      "Ref": "sgWideOpen"
+                    }
+                  ]
+                }
+              ],
+              "UserData" : { "Fn::Base64" : { "Fn::Join" : ["", [
+                  "#!/bin/bash\n",
+                  "exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1\n",
+                  "sleep 10s\n",
+                  "\n# Populate Environment variables\n",
+                  "export DEPLOYPATH=\"/tmp/deploy\"\n",
+                  "export FIREWALLIP=\"",{"Ref" : "FirewallMgmtIP" },"\"\n",
+                  "ENCPWD=\"",{ "Fn::Base64" : {"Ref" : "AdminPassword" } },"\"\n",
+                  "export ADMINPWD=$(echo \"${ENCPWD}\" | /usr/bin/base64 -d -)\n",
+                  "export URLENCODEDPWD=$(/usr/bin/python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.argv[1]))' \"${ADMINPWD}\")\n",
+                  "export FIREWALLCERTURL=\"",{"Ref" : "FirewallCertURL" },"\"\n",
+                  "export NETBIOSDOMAIN=\"",{"Ref" : "DomainNetBIOSName" },"\"\n",
+                  "export WEBGENCONF=\"",{"Ref" : "WebGenConfURL" },"\"\n",
+                  "export BUILDERSCRIPTNAME=\"",{"Ref" : "WebServerBuilderScriptName" },"\"\n",
+                  "export BUILDERSCRIPTURL=\"",{"Ref" : "WebServerBuilderScriptURL" },"\"\n",
+                  "#export SELF=\"WebVM\"\n",
+                  "#export AWSSTACKNAME=\"",{"Ref" : "AWS::StackName" },"\"\n",
+                  "#export AWSREGION=\"",{"Ref" : "AWS::Region" },"\"\n",
+                  "export WAITHANDLEURL=\"",{"Ref" : "WebVMWaitHandle" },"\"\n",
+                   "\n# Configure network and wait until Firewall is up\n",
+                  "echo \"export new_routers='",{"Ref" : "FirewallIntIP" },"'\" >> /etc/dhcp/dhclient-enter-hooks.d/aws-default-route\n",
+                  "ifdown eth0\n",
+                  "ifup eth0\n",
+                  "while true\n",
+                  "  do\n",
+                  "    resp=$(curl -s -S -g --insecure -X POST -m 10 --connect-timeout 10 -k \"https://${FIREWALLIP}/api/?password=${URLENCODEDPWD}&type=keygen&user=admin\")\n",
+                  "    if [[ \"$resp\" =~ \"success\" ]]; then\n",
+                  "      APIKEY=$(echo $resp | sed \"s/^.*<key>\\(.*\\)<\\/key>.*$/\\1/\")\n",
+                  "      break\n",
+                  "    fi\n",
+                  "  sleep 10s\n",
+                  "done\n",			
+                  "while true\n",
+                  "  do\n",
+                  "   resp=$(curl -s -S -g --insecure \"https://${FIREWALLIP}/api/?type=op&cmd=<show><chassis-ready></chassis-ready></show>&key=${APIKEY}\")\n",
+                  "   if [[ $resp == *\"[CDATA[yes\"* ]] ; then\n",
+                  "     break\n",
+                  "   fi\n",
+                  "  sleep 10s\n",
+                  "done\n",
+                  "sleep 120s\n",
+                  "\n# Download Firewall CA SSL Certificate\n",
+                  "wget --no-check-certificate -O /tmp/cortexlabca.pem \"${FIREWALLCERTURL}\"\n",
+                  "openssl x509 -in /tmp/cortexlabca.pem -inform PEM -out /usr/local/share/ca-certificates/cortexlabca.crt\n",
+                  "/usr/sbin/update-ca-certificates\n",
+                  "\n# Install all required software\n",			
+                  "apt-get update\n",
+                  "apt-get install -y wget python python-pip git apache2 python-setuptools\n",
+                  "cat /tmp/cortexlabca.pem >> /usr/local/lib/python2.7/dist-packages/certifi/cacert.pem",
+                  "pip install --cert=/usr/local/share/ca-certificates/cortexlabca.crt --upgrade pip\n",
+                  "pip install --cert=/usr/local/share/ca-certificates/cortexlabca.crt pan-python boto3 requests awscli\n",
+                  "/usr/bin/easy_install --script-dir /opt/aws/bin https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz\n",
+                  "sudo -u ubuntu bash -c 'cd /home/ubuntu; git clone https://github.com/ecapuano/web-traffic-generator.git'\n",
+                  "wget --no-check-certificate -O \"/home/ubuntu/web-traffic-generator/config.py\" \"${WEBGENCONF}\"\n",
+                  "chmod 644 /home/ubuntu/web-traffic-generator/config.py\n",
+                  "chown ubuntu:ubuntu /home/ubuntu/web-traffic-generator/config.py\n",
+                  "\n# Create deploy path\n",
+                  "mkdir -p ${DEPLOYPATH}\n",
+                  "\n# Prepare source file\n",
+                  "rm -f ${DEPLOYPATH}/vars.sh\n",
+                  "echo \"#!/bin/bash\" >> ${DEPLOYPATH}/vars.sh\n",
+                  "echo DEPLOYPATH=\"${DEPLOYPATH}\" >> ${DEPLOYPATH}/vars.sh\n",
+                  "echo FIREWALLIP=\"${FIREWALLIP}\" >> ${DEPLOYPATH}/vars.sh\n",
+                  "echo ADMINPWD=\"${ADMINPWD}\" >> ${DEPLOYPATH}/vars.sh\n",
+                  "echo NETBIOSDOMAIN=\"${NETBIOSDOMAIN}\" >> ${DEPLOYPATH}/vars.sh\n",
+                  "chmod +x ./${DEPLOYPATH}/vars.sh\n",
+                  "\n# Download builder script\n",
+                  "wget --no-check-certificate -O \"${DEPLOYPATH}/${BUILDERSCRIPTNAME}\" \"${BUILDERSCRIPTURL}\"\n",
+                  "\n# Start build script\n",
+                  "cd ${DEPLOYPATH}\n",
+                  "if [ ! -f ${DEPLOYPATH}/${BUILDERSCRIPTNAME} ] ; then REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt /opt/aws/bin/cfn-signal -s false -r 'No deployment script found' ${WAITHANDLEURL}; fi\n",
+                  "#REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt /opt/aws/bin/cfn-signal -s true ${WAITHANDLEURL}\n",
+                  "chmod +x ${DEPLOYPATH}/${BUILDERSCRIPTNAME}\n",
+                  "./${BUILDERSCRIPTNAME}\n",
+                  "\n# Cleanup (done in the script, redundant here)\n"
+                  ]]}
+              }		
+            }
+          },
+          "WebVMWaitCondition": {
+              "Type": "AWS::CloudFormation::WaitCondition",
+              "DependsOn": "WebVM",
+              "Properties": {
+                  "Handle": {
+                      "Ref": "WebVMWaitHandle"
+                  },
+                  "Timeout": "3600"
+              }
+          },
+          "WebVMWaitHandle": {
+              "Type": "AWS::CloudFormation::WaitConditionHandle"
+          }
+    },
+    "Outputs": {}
+}

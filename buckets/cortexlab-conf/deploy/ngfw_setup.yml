@@ -1,0 +1,201 @@
+# FILENAME
+# ngfw_setup.yml
+#
+# DESCRIPTION
+# Set up NGFW
+#
+# REQUIREMENTS
+# pip install boto3
+# pip install botocore
+# pip install ansible
+# ansible-galaxy install git+https://github.com/fvigo/ansible-pan.git
+#
+# STEPS
+# update vars.yml with your own credentials/settings
+#
+# Good practice: The var files are provided in cleartext. They should be edited and encrypred using:
+# ansible-vault encrypt firewall-secrets.yml
+#
+# EXECUTE
+# ansible-playbook ngfw_setup.yml
+---
+- hosts: localhost
+  connection: local
+  gather_facts: False
+
+  roles:
+    - role: ansible-pan
+
+  tasks:
+    # load variables
+    - name: NGFW Include variables (free-form)
+      include_vars: vars.yml
+      no_log: 'yes'
+
+    # wait for SSH
+    - name: NGFW Wait for SSH prompt
+      wait_for: port=22 host="{{ngfw_ip}}" timeout=900
+
+    # Set admin password
+    - name: NGFW Set admin password
+      panos_admpwd: ip_address="{{ngfw_ip}}" key_filename="{{key_filename}}" newpassword="{{admin_password}}"
+      register: result
+      until: not result is failed
+      retries: 30
+      delay: 30
+
+    # set Managment configuration
+    - name: NGFW Set Management
+      panos_mgtconfig:
+        ip_address: "{{ngfw_ip}}"
+        password: "{{admin_password}}"
+        dns_server_primary: "8.8.8.8"
+        dns_server_secondary: "8.8.4.4"
+        ntp_server_primary: "169.254.169.123"
+        hostname: "{{ngfw_hostname}}"
+        domain: "{{ngfw_domain}}"
+        timezone: "{{ngfw_timezone}}"
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60
+
+    - name: NGFW Add first authcode
+      panos_lic:
+        ip_address: "{{ngfw_ip}}"
+        password: "{{admin_password}}"
+        auth_code: "{{authcode1}}"
+        force: true
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60
+
+    # Wait 60 seconds for restart to begin
+    - pause: seconds=60
+
+    # check for 10 times, every 30 seconds, if device
+    # is ready, using credentials admin/admin
+    - name: NGFW Wait for reboot
+      panos_check:
+        ip_address: "{{ngfw_ip}}"
+        username: "{{admin_username}}"
+        password: "{{admin_password}}"
+      register: result
+      until: not result is failed
+      retries: 10
+      delay: 30
+
+    - name: NGFW Add second authcode
+      panos_lic:
+        ip_address: "{{ngfw_ip}}"
+        password: "{{admin_password}}"
+        auth_code: "{{authcode2}}"
+        force: true
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60        
+
+    # update NGFW software to requested version
+    - name: NGFW Upgrade Software
+      panos_software:
+        ip_address: "{{ngfw_ip}}"
+        username: "{{admin_username}}"
+        password: "{{admin_password}}"
+        version: "{{panos_version}}"
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60        
+
+    # check for 10 times, every 30 seconds, if device
+    # is ready, using credentials admin/admin
+    - name: NGFW Wait for reboot
+      panos_check:
+        ip_address: "{{ngfw_ip}}"
+        username: "{{admin_username}}"
+        password: "{{admin_password}}"
+      register: result
+      until: not result is failed
+      retries: 10
+      delay: 30
+      
+    # update content to latest release
+    - name: NGFW Update Content
+      panos_content:
+        ip_address: "{{ngfw_ip}}"
+        username: "{{admin_username}}"
+        password: "{{admin_password}}"
+        wildfire_update: yes
+        content_update: yes
+        anti_virus_update: yes
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60        
+
+    # Import and Load NGFW Config
+    - name: import config
+      panos_import:
+        ip_address: "{{ngfw_ip}}"
+        username: "{{admin_username}}"
+        password: "{{admin_password}}"
+        file: "{{ngfw_config_file}}"
+        category: "configuration"
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60
+    - name: load config
+      panos_loadcfg:
+        ip_address: "{{ngfw_ip}}"
+        username: "{{admin_username}}"
+        password: "{{admin_password}}"
+        file: "{{result.filename}}"
+        commit: false
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60
+
+    # Configure Cortex Lab specific attributes
+    - name: configure cortex lab
+      cortexlab:
+        ngfw_ip_address: "{{ngfw_ip}}"
+        ngfw_username: "{{admin_username}}"
+        ngfw_password: "{{admin_password}}"
+        datalake_region: "{{datalake_region}}"
+        datalake_psk: "{{datalake_psk}}"
+        localuser_name: "{{localuser_name}}"
+        localuser_newpassword: "{{localuser_newpassword}}"
+        external_ip: "{{external_ip}}"
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60
+    
+    # Create GP Configuration File
+    - name: generate self signed certificate
+      panos_cert_gen_ssh:
+        ip_address: "{{ngfw_ip}}"
+        username: "{{admin_username}}"
+        password: "{{admin_password}}"
+        cert_cn: "{{external_ip}}"
+        cert_friendly_name: "publiceip"
+        days: "3650"
+        signed_by: "CortexLabCA"
+      register: result
+      until: not result is failed
+      retries: 2
+      delay: 60
+
+    - name: NGFW Commit
+      panos_commit:
+        ip_address: "{{ngfw_ip}}"
+        username: "{{admin_username}}"
+        password: "{{admin_password}}"
+      register: result
+      until: not result is failed
+      retries: 5
+      delay: 60        
