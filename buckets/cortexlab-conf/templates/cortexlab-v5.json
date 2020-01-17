@@ -2097,7 +2097,7 @@
             "Description": "Handle EC2 KeyPair",
             "Handler": "index.handleKeyPair",
             "Role": {"Fn::GetAtt" : [ "LambdaEC2Role", "Arn" ] },
-            "Runtime": "nodejs8.10",
+            "Runtime": "nodejs12.x",
             "Timeout": 30
         },
         "DependsOn": [
