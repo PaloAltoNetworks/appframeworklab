@@ -1,607 +1,601 @@
 {
-    "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "Palo Alto Networks Cortex Lab Windows VM Nested Template",
-    "Metadata": {
-        "AWS::CloudFormation::Interface": {
-            "ParameterGroups": [
-                {
-                    "Label": {
-                        "default": "VPC Network Configuration"
-                    },
-                    "Parameters": [
-                        "VPCCIDR",
-                        "VPCID",
-                        "PrivateSubnet1CIDR",
-                        "PrivateSubnet1ID",
-						"SecurityGroupWideOpen",
-						"GatewayIP"
-                    ]
-                },
-                {
-                    "Label": {
-                        "default": "Amazon EC2 VM Configuration"
-                    },
-                    "Parameters": [
-                        "KeyPairName",
-                        "WindowsServerInstanceType",
-                        "WindowsServerNetBIOSName",
-                        "WindowsServerPrivateIP"
-                    ]
-                },
-                {
-                    "Label": {
-                        "default": "Active Directory Configuration"
-                    },
-                    "Parameters": [
-                        "DomainDNSName",
-                        "DomainAdminUser",
-                        "DomainAdminPassword"
-                    ]
-                },
-                {
-                    "Label": {
-                        "default": "Other Configuration"
-                    },
-                    "Parameters": [
-                        "FirewallCertURL",
-                        "PrepScriptURL"					
-                    ]
-                }
-            ],
-            "ParameterLabels": {
-                "WindowsServerInstanceType": {
-                    "default": "Server Instance Type"
-                },
-                "WindowsServerNetBIOSName": {
-                    "default": "Server NetBIOS Name"
-                },
-                "WindowsServerPrivateIP": {
-                    "default": "Server Private IP Address"
-                },
-                "DomainAdminPassword": {
-                    "default": "Domain Admin Password"
-                },
-                "DomainAdminUser": {
-                    "default": "Domain Admin User Name"
-                },
-                "DomainDNSName": {
-                    "default": "Domain DNS Name"
-                },
-                "KeyPairName": {
-                    "default": "Key Pair Name"
-                },
-                "PrivateSubnet1CIDR": {
-                    "default": "Private Subnet CIDR"
-                },
-                "PrivateSubnet1ID": {
-                    "default": "Private Subnet ID"
-                },
-                "GatewayIP": {
-                    "default": "Gateway IP Address"
-                },				
-				"SecurityGroupWideOpen": {
-					"default": "Security Group That Allows All Traffic"
-				},
-                "VPCCIDR": {
-                    "default": "VPC CIDR"
-                },
-                "VPCID": {
-                    "default": "VPC ID"
-                },
-				"FirewallCertURL" : {
-					"default": "Firewall Default Certificate URL"
-                },
-                "PrepScriptURL": {
-                    "default": "Final Preparation Script URL"
-                }
-            }
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Palo Alto Networks Cortex Lab Windows VM Nested Template",
+  "Metadata": {
+    "AWS::CloudFormation::Interface": {
+      "ParameterGroups": [
+        {
+          "Label": {
+            "default": "VPC Network Configuration"
+          },
+          "Parameters": [
+            "VPCCIDR",
+            "VPCID",
+            "PrivateSubnet1CIDR",
+            "PrivateSubnet1ID",
+            "SecurityGroupWideOpen",
+            "GatewayIP"
+          ]
+        },
+        {
+          "Label": {
+            "default": "Amazon EC2 VM Configuration"
+          },
+          "Parameters": [
+            "KeyPairName",
+            "WindowsServerInstanceType",
+            "WindowsServerNetBIOSName",
+            "WindowsServerPrivateIP"
+          ]
+        },
+        {
+          "Label": {
+            "default": "Active Directory Configuration"
+          },
+          "Parameters": [
+            "DomainDNSName",
+            "DomainAdminUser",
+            "DomainAdminPassword"
+          ]
+        },
+        {
+          "Label": {
+            "default": "Other Configuration"
+          },
+          "Parameters": ["FirewallCertURL", "PrepScriptURL"]
         }
-    },
-    "Parameters": {
+      ],
+      "ParameterLabels": {
         "WindowsServerInstanceType": {
-            "AllowedValues": [
-                "t2.large",
-                "m3.large",
-                "m3.xlarge",
-                "m3.2xlarge",
-                "m4.large",
-                "m4.xlarge",
-                "m4.2xlarge",
-                "m4.4xlarge"
-            ],
-            "Default": "t2.large",
-            "Description": "Amazon EC2 instance type for the Server instance",
-            "Type": "String"
+          "default": "Server Instance Type"
         },
         "WindowsServerNetBIOSName": {
-            "AllowedPattern": "[a-zA-Z0-9\\-]+",
-            "Default": "Server1",
-            "Description": "NetBIOS name of the Server (up to 15 characters)",
-            "MaxLength": "15",
-            "MinLength": "1",
-            "Type": "String"
+          "default": "Server NetBIOS Name"
         },
         "WindowsServerPrivateIP": {
-            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$",
-            "Default": "10.0.50.25",
-            "Description": "Fixed private IP for the Server",
-            "Type": "String"
+          "default": "Server Private IP Address"
         },
-        "GatewayIP": {
-            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$",
-            "Default": "10.0.50.11",
-            "Description": "Default Gateway IP Address",
-            "Type": "String"
-        },		
         "DomainAdminPassword": {
-            "AllowedPattern": "(?=^.{6,255}$)((?=.*\\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*",
-            "Description": "Password for the domain admin user. Must be at least 8 characters containing letters, numbers and symbols",
-            "MaxLength": "32",
-            "MinLength": "8",
-            "NoEcho": "true",
-            "Type": "String"
+          "default": "Domain Admin Password"
         },
         "DomainAdminUser": {
-            "AllowedPattern": "[a-zA-Z0-9]*",
-            "Default": "developer",
-            "Description": "User name for the account that will be added as Domain Administrator. This is separate from the default \"Administrator\" account",
-            "MaxLength": "25",
-            "MinLength": "5",
-            "Type": "String"
+          "default": "Domain Admin User Name"
         },
         "DomainDNSName": {
-            "AllowedPattern": "[a-zA-Z0-9\\-]+\\..+",
-            "Default": "cortexlab.local",
-            "Description": "Fully qualified domain name (FQDN) of the forest root domain e.g. example.com",
-            "MaxLength": "25",
-            "MinLength": "3",
-            "Type": "String"
+          "default": "Domain DNS Name"
         },
         "KeyPairName": {
-            "Description": "Public/private key pairs allow you to securely connect to your instance after it launches",
-            "Type": "AWS::EC2::KeyPair::KeyName"
+          "default": "Key Pair Name"
         },
         "PrivateSubnet1CIDR": {
-            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(1[6-9]|2[0-8]))$",
-            "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
-            "Default": "10.0.50.0/24",
-            "Description": "CIDR block for private subnet",
-            "Type": "String"
+          "default": "Private Subnet CIDR"
         },
         "PrivateSubnet1ID": {
-            "Description": "ID of the private subnet (e.g., subnet-a0246dcd)",
-            "Type": "AWS::EC2::Subnet::Id"
+          "default": "Private Subnet ID"
+        },
+        "GatewayIP": {
+          "default": "Gateway IP Address"
         },
         "SecurityGroupWideOpen": {
-            "Description": "Security Group that allows all traffic",
-            "Type": "AWS::EC2::SecurityGroup::Id"
-        },		
+          "default": "Security Group That Allows All Traffic"
+        },
         "VPCCIDR": {
-            "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(1[6-9]|2[0-8]))$",
-            "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
-            "Default": "10.0.0.0/16",
-            "Description": "CIDR Block for the VPC",
-            "Type": "String"
+          "default": "VPC CIDR"
         },
         "VPCID": {
-            "Description": "ID of the VPC (e.g., vpc-0343606e)",
-            "Type": "AWS::EC2::VPC::Id"
+          "default": "VPC ID"
         },
-		"FirewallCertURL":{
-			"Description": "Firewall Certificate URL",
-			"Type": "String",
-			"Default": "https://s3.amazonaws.com/cortexlab-conf/opt/cortexlabca.pem"
+        "FirewallCertURL": {
+          "default": "Firewall Default Certificate URL"
         },
-		"PrepScriptURL":{
-			"Description": "Final Preparation Script URL",
-			"Type": "String",
-			"Default": "https://s3.amazonaws.com/cortexlab-conf/opt/WindowsPrep.ps1"
-        }        
+        "PrepScriptURL": {
+          "default": "Final Preparation Script URL"
+        }
+      }
+    }
+  },
+  "Parameters": {
+    "WindowsServerInstanceType": {
+      "AllowedValues": [
+        "t2.large",
+        "m3.large",
+        "m3.xlarge",
+        "m3.2xlarge",
+        "m4.large",
+        "m4.xlarge",
+        "m4.2xlarge",
+        "m4.4xlarge"
+      ],
+      "Default": "t2.large",
+      "Description": "Amazon EC2 instance type for the Server instance",
+      "Type": "String"
     },
-    "Rules": {
-        "SubnetsInVPC": {
-            "Assertions": [
-                {
-                    "Assert": {
-                        "Fn::EachMemberIn": [
-                            {
-                                "Fn::ValueOfAll": [
-                                    "AWS::EC2::Subnet::Id",
-                                    "VpcId"
-                                ]
-                            },
-                            {
-                                "Fn::RefAll": "AWS::EC2::VPC::Id"
-                            }
-                        ]
-                    },
-                    "AssertDescription": "All subnets must in the VPC"
-                }
+    "WindowsServerNetBIOSName": {
+      "AllowedPattern": "[a-zA-Z0-9\\-]+",
+      "Default": "Server1",
+      "Description": "NetBIOS name of the Server (up to 15 characters)",
+      "MaxLength": "15",
+      "MinLength": "1",
+      "Type": "String"
+    },
+    "WindowsServerPrivateIP": {
+      "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$",
+      "Default": "10.0.50.25",
+      "Description": "Fixed private IP for the Server",
+      "Type": "String"
+    },
+    "GatewayIP": {
+      "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$",
+      "Default": "10.0.50.11",
+      "Description": "Default Gateway IP Address",
+      "Type": "String"
+    },
+    "DomainAdminPassword": {
+      "AllowedPattern": "(?=^.{6,255}$)((?=.*\\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*",
+      "Description": "Password for the domain admin user. Must be at least 8 characters containing letters, numbers and symbols",
+      "MaxLength": "32",
+      "MinLength": "8",
+      "NoEcho": "true",
+      "Type": "String"
+    },
+    "DomainAdminUser": {
+      "AllowedPattern": "[a-zA-Z0-9]*",
+      "Default": "developer",
+      "Description": "User name for the account that will be added as Domain Administrator. This is separate from the default \"Administrator\" account",
+      "MaxLength": "25",
+      "MinLength": "5",
+      "Type": "String"
+    },
+    "DomainDNSName": {
+      "AllowedPattern": "[a-zA-Z0-9\\-]+\\..+",
+      "Default": "cortexlab.local",
+      "Description": "Fully qualified domain name (FQDN) of the forest root domain e.g. example.com",
+      "MaxLength": "25",
+      "MinLength": "3",
+      "Type": "String"
+    },
+    "KeyPairName": {
+      "Description": "Public/private key pairs allow you to securely connect to your instance after it launches",
+      "Type": "AWS::EC2::KeyPair::KeyName"
+    },
+    "PrivateSubnet1CIDR": {
+      "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(1[6-9]|2[0-8]))$",
+      "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
+      "Default": "10.0.50.0/24",
+      "Description": "CIDR block for private subnet",
+      "Type": "String"
+    },
+    "PrivateSubnet1ID": {
+      "Description": "ID of the private subnet (e.g., subnet-a0246dcd)",
+      "Type": "AWS::EC2::Subnet::Id"
+    },
+    "SecurityGroupWideOpen": {
+      "Description": "Security Group that allows all traffic",
+      "Type": "AWS::EC2::SecurityGroup::Id"
+    },
+    "VPCCIDR": {
+      "AllowedPattern": "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\\/(1[6-9]|2[0-8]))$",
+      "ConstraintDescription": "CIDR block parameter must be in the form x.x.x.x/16-28",
+      "Default": "10.0.0.0/16",
+      "Description": "CIDR Block for the VPC",
+      "Type": "String"
+    },
+    "VPCID": {
+      "Description": "ID of the VPC (e.g., vpc-0343606e)",
+      "Type": "AWS::EC2::VPC::Id"
+    },
+    "FirewallCertURL": {
+      "Description": "Firewall Certificate URL",
+      "Type": "String",
+      "Default": "https://s3.amazonaws.com/cortexlab-conf/opt/cortexlabca.pem"
+    },
+    "PrepScriptURL": {
+      "Description": "Final Preparation Script URL",
+      "Type": "String",
+      "Default": "https://s3.amazonaws.com/cortexlab-conf/opt/WindowsPrep.ps1"
+    }
+  },
+  "Rules": {
+    "SubnetsInVPC": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::EachMemberIn": [
+              {
+                "Fn::ValueOfAll": ["AWS::EC2::Subnet::Id", "VpcId"]
+              },
+              {
+                "Fn::RefAll": "AWS::EC2::VPC::Id"
+              }
             ]
+          },
+          "AssertDescription": "All subnets must in the VPC"
         }
-    },
+      ]
+    }
+  },
 
-    "Mappings": {
-        "AWSAMIRegionMap": {
-            "AMI": {"WS2012R2": "Windows_Server-2012-R2_RTM-English-64Bit-Base-2019.04.26"},
-            "eu-north-1": { "WS2012R2": "ami-0568f6fec2ee2b41c" },
-            "ap-south-1": { "WS2012R2": "ami-02f0a763aeda0077b" },
-            "eu-west-3": { "WS2012R2": "ami-07c11c4d4df6d5a81" },
-            "eu-west-2": { "WS2012R2": "ami-0ddbb61e1ac0b740c" },
-            "eu-west-1": { "WS2012R2": "ami-03cc072e1eb1504ad" },
-            "ap-northeast-2": { "WS2012R2": "ami-0025e3f1eacf7d130" },
-            "ap-northeast-1": { "WS2012R2": "ami-046ee6b9fdfea3161" },
-            "sa-east-1": { "WS2012R2": "ami-06e9846cb29996e35" },
-            "ca-central-1": { "WS2012R2": "ami-077d8740d7c88a083" },
-            "ap-southeast-1": { "WS2012R2": "ami-0a0a6f3903d43aedb" },
-            "ap-southeast-2": { "WS2012R2": "ami-011faffd94de75db6" },
-            "eu-central-1": { "WS2012R2": "ami-02e33b7f1cfec85c3" },
-            "us-east-1": { "WS2012R2": "ami-0b6158cfa2ae7b493" },
-            "us-east-2": { "WS2012R2": "ami-0f33ca435060daee9" },
-            "us-west-1": { "WS2012R2": "ami-0d4f8a9abc53cca9c" },
-            "us-west-2": { "WS2012R2": "ami-00ddbceb28e44364c" }
-        }
-    },
-    "Resources": {
-
-        "WindowsServer": {
-            "Type": "AWS::EC2::Instance",
-            "Metadata": {
-                "AWS::CloudFormation::Init": {
-                    "configSets": {
-                        "config": [
-                            "setup",
-                            "rename",
-                            "passwordcomplexity",
-                            "installFWcert",
-                            "disableWindowsFirewall",
-                            "joindomain",
-                            "disableWindowsFirewall",
-                            "executePrepScript",
-                            "finalize"
-                        ]
-                    },
-                    "setup": {
-                        "files": {
-                            "c:\\cfn\\cfn-hup.conf": {
-                                "content": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "[main]\n",
-                                            "stack=",
-                                            {
-                                                "Ref": "AWS::StackName"
-                                            },
-                                            "\n",
-                                            "region=",
-                                            {
-                                                "Ref": "AWS::Region"
-                                            },
-                                            "\n"
-                                        ]
-                                    ]
-                                }
-                            },
-                            "c:\\cfn\\hooks.d\\cfn-auto-reloader.conf": {
-                                "content": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "[cfn-auto-reloader-hook]\n",
-                                            "triggers=post.update\n",
-                                            "path=Resources.WindowsServer.Metadata.AWS::CloudFormation::Init\n",
-                                            "action=cfn-init.exe -v -c config -s ",
-                                            {
-                                                "Ref": "AWS::StackId"
-                                            },
-                                            " -r WindowsServer",
-                                            " --region ",
-                                            {
-                                                "Ref": "AWS::Region"
-                                            },
-                                            "\n"
-                                        ]
-                                    ]
-                                }
-                            },
-                            "c:\\cfn\\firewallcert.crt": {
-                                "source": { "Ref" : "FirewallCertURL" }
-                            }						
-                        },
-                        "services": {
-                            "windows": {
-                                "cfn-hup": {
-                                    "enabled": "true",
-                                    "ensureRunning": "true",
-                                    "files": [
-                                        "c:\\cfn\\cfn-hup.conf",
-                                        "c:\\cfn\\hooks.d\\cfn-auto-reloader.conf"
-                                    ]
-                                }
-                            }
-                        },
-                        "commands": {
-                            "a-disable-win-fw": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"Get-NetFirewallProfile | Set-NetFirewallProfile -Enabled False\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            },
-                            "b-set-execution-policy": {
-                                "command": "powershell.exe -command Set-ExecutionPolicy RemoteSigned -Force",
-                                "waitAfterCompletion": "0"
-                            },
-							"d-download-password": {
-                                "command": {
-                                    "Fn::Join": [
-										"",
-										[
-											"md c:\\cfn\\scripts & echo ",
-											{ "Fn::Base64" : {"Ref" : "DomainAdminPassword" } },
-											" > c:\\cfn\\scripts\\pw_b64.txt"
-										]
-                                    ]
-                                },								
-								"waitAfterCompletion": "0"
-							},
-							"e-decode-password": {
-								"command": "c:\\windows\\system32\\certutil.exe -decode c:\\cfn\\scripts\\pw_b64.txt c:\\cfn\\scripts\\pw.txt",
-								"waitAfterCompletion": "0"
-							},
-							"f-del-b64-pw": {
-								"command": "del c:\\cfn\\scripts\\pw_b64.txt",
-								"waitAfterCompletion": "0"
-							}
-                        }
-                    },
-                    "rename": {
-                        "commands": {
-                            "b-execute-powershell-script-RenameComputer": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe Rename-Computer -NewName ",
-                                            {
-                                                "Ref": "WindowsServerNetBIOSName"
-                                            },
-                                            " -Restart"
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "forever"
-                            }
-                        }
-                    },
-                    "passwordcomplexity": {
-                        "commands": {
-							"31-rm-pwd-complexity-1": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command secedit /export /cfg c:\\secpol.cfg"
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            },							
-							"32-rm-pwd-complexity-2": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command \"(gc C:\\secpol.cfg).replace('PasswordComplexity = 1', 'PasswordComplexity = 0') | Out-File C:\\secpol.cfg\""
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            },	
-							"33-rm-pwd-complexity-3": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command secedit /configure /db c:\\windows\\security\\local.sdb /cfg c:\\secpol.cfg /areas SECURITYPOLICY"
-                                        ]
-                                    ]
-                                },
-                                "waitAfterCompletion": "0"
-                            }
-                        }
-                    },
-                    "installFWcert": {
-                        "commands": {
-							"b-import-fwcert": {
-								"command": "powershell.exe -Command certutil -addstore \"Root\" c:\\cfn\\firewallcert.crt",
-								"waitAfterCompletion": "10"
-							}
-                        }
-                    },
-                    "joindomain": {
-                        "commands": {
-							"a-joindomain": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command ",
-                                            "\"$pw=get-content c:\\cfn\\scripts\\pw.txt; $cred = New-Object System.Management.Automation.PSCredential -ArgumentList ",
-                                            {
-                                                "Ref": "DomainAdminUser"
-                                            },
-                                            "@",
-                                            {
-                                                "Ref": "DomainDNSName"
-                                            },                                            
-                                            ",(ConvertTo-SecureString $pw -AsPlainText -Force); ",
-                                            "Add-Computer -DomainName ",
-                                            {
-                                                "Ref": "DomainDNSName"
-                                            },
-                                            " -Credential $cred -Restart -ErrorAction Stop\""
-                                        ]
-                                    ]
-                                },
-								"waitAfterCompletion": "forever"
-                            }                            
-                        }
-                    },
-                    "executePrepScript": {
-                        "commands": {
-                            "a-download-script": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "powershell.exe -Command ",
-                                            "\"(new-object System.Net.WebClient).DownloadFile('",
-                                            {
-                                                "Ref": "PrepScriptURL"
-                                            },
-                                            "', 'c:\\cfn\\scripts\\WindowsPrep.ps1');\""
-                                        ]
-                                    ]
-                                },
-								"waitAfterCompletion": "5"                                
-                            },                                
-                            "b-exec-script": {
-                                "command": "powershell.exe -Command \"If(Test-Path c:\\cfn\\scripts\\WindowsPrep.ps1) { & C:\\cfn\\scripts\\WindowsPrep.ps1 } Else { \"Cannot not find Prep Script\" }\"",
-                                "waitAftercompletition": "30"
-                            }
-
-                        }
-                    },
-                    "disableWindowsFirewall": {
-                        "commands": {
-							"a-disable-winfw": {
-								"command": "powershell.exe -Command \"Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False\"",
-								"waitAfterCompletion": "10"
-							}
-                        }
-                    },
-                    "finalize": {
-                        "commands": {
-                            "a-signal-success": {
-                                "command": {
-                                    "Fn::Join": [
-                                        "",
-                                        [
-                                            "cfn-signal.exe -e 0 \"",
-                                            {
-                                                "Ref": "WindowsServerWaitHandle"
-                                            },
-                                            "\""
-                                        ]
-                                    ]
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "Properties": {
-                "ImageId": {
-                    "Fn::FindInMap": [
-                        "AWSAMIRegionMap",
-                        {
-                            "Ref": "AWS::Region"
-                        },
-                        "WS2012R2"
+  "Mappings": {
+    "AWSAMIRegionMap": {
+      "AMI": {
+        "WS2012R2": "Windows_Server-2012-R2_RTM-English-64Bit-Base-2020.01.15"
+      },
+      "eu-north-1": { "WS2012R2": "ami-0af8c27050b68c9ac" },
+      "ap-south-1": { "WS2012R2": "ami-0ed889b4a59795a32" },
+      "eu-west-3": { "WS2012R2": "ami-098e42db816ef64a8" },
+      "eu-west-2": { "WS2012R2": "ami-040d07b284d8ded6b" },
+      "eu-west-1": { "WS2012R2": "ami-0c12af89247c70572" },
+      "ap-northeast-2": { "WS2012R2": "ami-03e603f10c77a5463" },
+      "ap-northeast-1": { "WS2012R2": "ami-0eee9047b95b1f74c" },
+      "sa-east-1": { "WS2012R2": "ami-0b3e238c9181e2d52" },
+      "ca-central-1": { "WS2012R2": "ami-05b0f7544383bc098" },
+      "ap-southeast-1": { "WS2012R2": "ami-0331be4a84b3b2e75" },
+      "ap-southeast-2": { "WS2012R2": "ami-087682590b598bde5" },
+      "eu-central-1": { "WS2012R2": "ami-02bafaa0e5f273fe6" },
+      "us-east-1": { "WS2012R2": "ami-0b7fbf81b6d5e4ac5" },
+      "us-east-2": { "WS2012R2": "ami-002c8e8f81577a96c" },
+      "us-west-1": { "WS2012R2": "ami-073e71ca7a28f7de4" },
+      "us-west-2": { "WS2012R2": "ami-07872c9dbb86b69ed" }
+    }
+  },
+  "Resources": {
+    "WindowsServer": {
+      "Type": "AWS::EC2::Instance",
+      "Metadata": {
+        "AWS::CloudFormation::Init": {
+          "configSets": {
+            "config": [
+              "setup",
+              "rename",
+              "passwordcomplexity",
+              "installFWcert",
+              "disableWindowsFirewall",
+              "joindomain",
+              "disableWindowsFirewall",
+              "executePrepScript",
+              "finalize"
+            ]
+          },
+          "setup": {
+            "files": {
+              "c:\\cfn\\cfn-hup.conf": {
+                "content": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "[main]\n",
+                      "stack=",
+                      {
+                        "Ref": "AWS::StackName"
+                      },
+                      "\n",
+                      "region=",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      "\n"
                     ]
-                },
-                "InstanceType": {
-                    "Ref": "WindowsServerInstanceType"
-                },
-                "SubnetId": {
-                    "Ref": "PrivateSubnet1ID"
-                },
-                "Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": "CortexLab Windows Server"
-                    }
-                ],
-                "BlockDeviceMappings": [
-                    {
-                        "DeviceName": "/dev/sda1",
-                        "Ebs": {
-                            "VolumeSize": "30",
-                            "VolumeType": "gp2"
-                        }
-                    }
-                ],
-                "SecurityGroupIds": [
-                    {
-                        "Ref": "SecurityGroupWideOpen"
-                    }
-                ],
-                "PrivateIpAddress": {
-                    "Ref": "WindowsServerPrivateIP"
-                },
-                "KeyName": {
-                    "Ref": "KeyPairName"
-                },
-                "UserData": {
-                    "Fn::Base64": {
-                        "Fn::Join": [
-                            "",
-                            [
-                                "<script>\n",
-								"route add 0.0.0.0 mask 128.0.0.0 ",
-								{
-									"Ref" : "GatewayIP"
-								},
-								" -p\n",						
-								"route add 128.0.0.0 mask 128.0.0.0 ",
-								{
-									"Ref" : "GatewayIP"
-								},
-								" -p\n",
-								"powershell.exe -Command \"do { Write-Host waiting_10s_for_network; sleep 10 } until(Test-NetConnection www.google.com -Port 443 | ? { $_.TcpTestSucceeded } )\"\n",
-								"powershell.exe -Command \"[System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true};(New-Object Net.WebClient).DownloadFile('",
-                                {
-                                    "Ref": "FirewallCertURL"
-                                },
-								"','firewallcert.crt')\"\n",
-								"powershell.exe -Command certutil -addstore \"Root\" firewallcert.crt\n",
-								"type \"c:\\Program Files\\Amazon\\cfn-bootstrap\\cacert.pem\" firewallcert.crt > \"c:\\Program Files\\Amazon\\cfn-bootstrap\\cacert.pem\"\n",
- 								"cfn-init.exe -v -c config -s ",
-                                {
-                                    "Ref": "AWS::StackId"
-                                },
-                                " -r WindowsServer",
-                                " --region ",	
-                                {
-                                    "Ref": "AWS::Region"
-                                },
-                                "\n",
-                                "</script>\n"
-                            ]
-                        ]
-                    }
+                  ]
                 }
-            }
-        },
-        "WindowsServerWaitCondition": {
-            "Type": "AWS::CloudFormation::WaitCondition",
-            "DependsOn": "WindowsServer",
-            "Properties": {
-                "Handle": {
-                    "Ref": "WindowsServerWaitHandle"
+              },
+              "c:\\cfn\\hooks.d\\cfn-auto-reloader.conf": {
+                "content": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "[cfn-auto-reloader-hook]\n",
+                      "triggers=post.update\n",
+                      "path=Resources.WindowsServer.Metadata.AWS::CloudFormation::Init\n",
+                      "action=cfn-init.exe -v -c config -s ",
+                      {
+                        "Ref": "AWS::StackId"
+                      },
+                      " -r WindowsServer",
+                      " --region ",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      "\n"
+                    ]
+                  ]
+                }
+              },
+              "c:\\cfn\\firewallcert.crt": {
+                "source": { "Ref": "FirewallCertURL" }
+              }
+            },
+            "services": {
+              "windows": {
+                "cfn-hup": {
+                  "enabled": "true",
+                  "ensureRunning": "true",
+                  "files": [
+                    "c:\\cfn\\cfn-hup.conf",
+                    "c:\\cfn\\hooks.d\\cfn-auto-reloader.conf"
+                  ]
+                }
+              }
+            },
+            "commands": {
+              "a-disable-win-fw": {
+                "command": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "powershell.exe -Command \"Get-NetFirewallProfile | Set-NetFirewallProfile -Enabled False\""
+                    ]
+                  ]
                 },
-                "Timeout": "3600"
+                "waitAfterCompletion": "0"
+              },
+              "b-set-execution-policy": {
+                "command": "powershell.exe -command Set-ExecutionPolicy RemoteSigned -Force",
+                "waitAfterCompletion": "0"
+              },
+              "d-download-password": {
+                "command": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "md c:\\cfn\\scripts & echo ",
+                      { "Fn::Base64": { "Ref": "DomainAdminPassword" } },
+                      " > c:\\cfn\\scripts\\pw_b64.txt"
+                    ]
+                  ]
+                },
+                "waitAfterCompletion": "0"
+              },
+              "e-decode-password": {
+                "command": "c:\\windows\\system32\\certutil.exe -decode c:\\cfn\\scripts\\pw_b64.txt c:\\cfn\\scripts\\pw.txt",
+                "waitAfterCompletion": "0"
+              },
+              "f-del-b64-pw": {
+                "command": "del c:\\cfn\\scripts\\pw_b64.txt",
+                "waitAfterCompletion": "0"
+              }
             }
-        },
-        "WindowsServerWaitHandle": {
-            "Type": "AWS::CloudFormation::WaitConditionHandle"
+          },
+          "rename": {
+            "commands": {
+              "b-execute-powershell-script-RenameComputer": {
+                "command": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "powershell.exe Rename-Computer -NewName ",
+                      {
+                        "Ref": "WindowsServerNetBIOSName"
+                      },
+                      " -Restart"
+                    ]
+                  ]
+                },
+                "waitAfterCompletion": "forever"
+              }
+            }
+          },
+          "passwordcomplexity": {
+            "commands": {
+              "31-rm-pwd-complexity-1": {
+                "command": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "powershell.exe -Command secedit /export /cfg c:\\secpol.cfg"
+                    ]
+                  ]
+                },
+                "waitAfterCompletion": "0"
+              },
+              "32-rm-pwd-complexity-2": {
+                "command": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "powershell.exe -Command \"(gc C:\\secpol.cfg).replace('PasswordComplexity = 1', 'PasswordComplexity = 0') | Out-File C:\\secpol.cfg\""
+                    ]
+                  ]
+                },
+                "waitAfterCompletion": "0"
+              },
+              "33-rm-pwd-complexity-3": {
+                "command": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "powershell.exe -Command secedit /configure /db c:\\windows\\security\\local.sdb /cfg c:\\secpol.cfg /areas SECURITYPOLICY"
+                    ]
+                  ]
+                },
+                "waitAfterCompletion": "0"
+              }
+            }
+          },
+          "installFWcert": {
+            "commands": {
+              "b-import-fwcert": {
+                "command": "powershell.exe -Command certutil -addstore \"Root\" c:\\cfn\\firewallcert.crt",
+                "waitAfterCompletion": "10"
+              }
+            }
+          },
+          "joindomain": {
+            "commands": {
+              "a-joindomain": {
+                "command": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "powershell.exe -Command ",
+                      "\"$pw=get-content c:\\cfn\\scripts\\pw.txt; $cred = New-Object System.Management.Automation.PSCredential -ArgumentList ",
+                      {
+                        "Ref": "DomainAdminUser"
+                      },
+                      "@",
+                      {
+                        "Ref": "DomainDNSName"
+                      },
+                      ",(ConvertTo-SecureString $pw -AsPlainText -Force); ",
+                      "Add-Computer -DomainName ",
+                      {
+                        "Ref": "DomainDNSName"
+                      },
+                      " -Credential $cred -Restart -ErrorAction Stop\""
+                    ]
+                  ]
+                },
+                "waitAfterCompletion": "forever"
+              }
+            }
+          },
+          "executePrepScript": {
+            "commands": {
+              "a-download-script": {
+                "command": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "powershell.exe -Command ",
+                      "\"(new-object System.Net.WebClient).DownloadFile('",
+                      {
+                        "Ref": "PrepScriptURL"
+                      },
+                      "', 'c:\\cfn\\scripts\\WindowsPrep.ps1');\""
+                    ]
+                  ]
+                },
+                "waitAfterCompletion": "5"
+              },
+              "b-exec-script": {
+                "command": "powershell.exe -Command \"If(Test-Path c:\\cfn\\scripts\\WindowsPrep.ps1) { & C:\\cfn\\scripts\\WindowsPrep.ps1 } Else { \"Cannot not find Prep Script\" }\"",
+                "waitAftercompletition": "30"
+              }
+            }
+          },
+          "disableWindowsFirewall": {
+            "commands": {
+              "a-disable-winfw": {
+                "command": "powershell.exe -Command \"Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False\"",
+                "waitAfterCompletion": "10"
+              }
+            }
+          },
+          "finalize": {
+            "commands": {
+              "a-signal-success": {
+                "command": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "cfn-signal.exe -e 0 \"",
+                      {
+                        "Ref": "WindowsServerWaitHandle"
+                      },
+                      "\""
+                    ]
+                  ]
+                }
+              }
+            }
+          }
         }
+      },
+      "Properties": {
+        "ImageId": {
+          "Fn::FindInMap": [
+            "AWSAMIRegionMap",
+            {
+              "Ref": "AWS::Region"
+            },
+            "WS2012R2"
+          ]
+        },
+        "InstanceType": {
+          "Ref": "WindowsServerInstanceType"
+        },
+        "SubnetId": {
+          "Ref": "PrivateSubnet1ID"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "CortexLab Windows Server"
+          }
+        ],
+        "BlockDeviceMappings": [
+          {
+            "DeviceName": "/dev/sda1",
+            "Ebs": {
+              "VolumeSize": "30",
+              "VolumeType": "gp2"
+            }
+          }
+        ],
+        "SecurityGroupIds": [
+          {
+            "Ref": "SecurityGroupWideOpen"
+          }
+        ],
+        "PrivateIpAddress": {
+          "Ref": "WindowsServerPrivateIP"
+        },
+        "KeyName": {
+          "Ref": "KeyPairName"
+        },
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Join": [
+              "",
+              [
+                "<script>\n",
+                "route add 0.0.0.0 mask 128.0.0.0 ",
+                {
+                  "Ref": "GatewayIP"
+                },
+                " -p\n",
+                "route add 128.0.0.0 mask 128.0.0.0 ",
+                {
+                  "Ref": "GatewayIP"
+                },
+                " -p\n",
+                "powershell.exe -Command \"do { Write-Host waiting_10s_for_network; sleep 10 } until(Test-NetConnection www.google.com -Port 443 | ? { $_.TcpTestSucceeded } )\"\n",
+                "powershell.exe -Command \"[System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true};(New-Object Net.WebClient).DownloadFile('",
+                {
+                  "Ref": "FirewallCertURL"
+                },
+                "','firewallcert.crt')\"\n",
+                "powershell.exe -Command certutil -addstore \"Root\" firewallcert.crt\n",
+                "type \"c:\\Program Files\\Amazon\\cfn-bootstrap\\cacert.pem\" firewallcert.crt > \"c:\\Program Files\\Amazon\\cfn-bootstrap\\cacert.pem\"\n",
+                "cfn-init.exe -v -c config -s ",
+                {
+                  "Ref": "AWS::StackId"
+                },
+                " -r WindowsServer",
+                " --region ",
+                {
+                  "Ref": "AWS::Region"
+                },
+                "\n",
+                "</script>\n"
+              ]
+            ]
+          }
+        }
+      }
     },
-    "Outputs": {}
+    "WindowsServerWaitCondition": {
+      "Type": "AWS::CloudFormation::WaitCondition",
+      "DependsOn": "WindowsServer",
+      "Properties": {
+        "Handle": {
+          "Ref": "WindowsServerWaitHandle"
+        },
+        "Timeout": "3600"
+      }
+    },
+    "WindowsServerWaitHandle": {
+      "Type": "AWS::CloudFormation::WaitConditionHandle"
+    }
+  },
+  "Outputs": {}
 }
