@@ -18,22 +18,22 @@
   },
   "Mappings": {
     "UbuntuRegionMap": {
-      "eu-north-1": { "AMI": "ami-0b47beea55400168b" },
-      "ap-south-1": { "AMI": "ami-0979cb27961aadbf7" },
-      "eu-west-3": { "AMI": "ami-0a5f39196a2cf5c4a" },
-      "eu-west-2": { "AMI": "ami-0a99b53e387548f98" },
-      "eu-west-1": { "AMI": "ami-0b508e9b54730f606" },
-      "ap-northeast-2": { "AMI": "ami-025376d8670c1a73f" },
-      "ap-northeast-1": { "AMI": "ami-018e83eeb86cbe915" },
-      "sa-east-1": { "AMI": "ami-0b2044c8d1b29388f" },
-      "ca-central-1": { "AMI": "ami-038c40a61ea4741d9" },
-      "ap-southeast-1": { "AMI": "ami-0216473266cb8902d" },
-      "ap-southeast-2": { "AMI": "ami-04dc124dae2db71ce" },
-      "eu-central-1": { "AMI": "ami-0e0104f9044920d13" },
-      "us-east-1": { "AMI": "ami-0bfb5f753b6c2d30b" },
-      "us-east-2": { "AMI": "ami-0bf3d772090752dc5" },
-      "us-west-1": { "AMI": "ami-086be1694c3196bfb" },
-      "us-west-2": { "AMI": "ami-06c94f9acb4ba21b2" }
+      "eu-north-1": { "AMI": "ami-0e550b70af815ca41" },
+      "ap-south-1": { "AMI": "ami-08ae9523f9bafbb44" },
+      "eu-west-3": { "AMI": "ami-0821411471dff648d" },
+      "eu-west-2": { "AMI": "ami-09623236df3ab2b4e" },
+      "eu-west-1": { "AMI": "ami-06e66bbcdfad2fa1c" },
+      "ap-northeast-2": { "AMI": "ami-06b122784730f0988" },
+      "ap-northeast-1": { "AMI": "ami-06de458186b985c2a" },
+      "sa-east-1": { "AMI": "ami-0a847aef8583415b0" },
+      "ca-central-1": { "AMI": "ami-07d0c9a1e5fb4ef6f" },
+      "ap-southeast-1": { "AMI": "ami-0330cf4f3ab84d683" },
+      "ap-southeast-2": { "AMI": "ami-0886acf24b094c418" },
+      "eu-central-1": { "AMI": "ami-0490776051bb657cc" },
+      "us-east-1": { "AMI": "ami-0fcf65d66fe3e1f92" },
+      "us-east-2": { "AMI": "ami-05acda3052a524949" },
+      "us-west-1": { "AMI": "ami-041f2a8b252bb8ff7" },
+      "us-west-2": { "AMI": "ami-039d8ba38d6aff04b" }
     }
   },
   "Resources": {
