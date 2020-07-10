@@ -1,4 +1,4 @@
-# appframeworklab
-Application Framework Lab Repo
+# Next Generation Firewall AWS Lab
+NGFW Lab
 
-Use the Wiki for information: <https://github.com/PaloAltoNetworks/appframeworklab/wiki>
+This project is not currently maintained.
