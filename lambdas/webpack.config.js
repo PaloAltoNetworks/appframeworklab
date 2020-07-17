@@ -18,14 +18,6 @@ module.exports = (env, argv) => {
         );
     }
 
-    const develFiles = [];
-    // if (argv.mode === 'development') {
-    //     develFiles.push({
-    //         from: '../local.settings.json',
-    //         to: ''
-    //     });
-    // }
-
     return {
         stats: 'minimal',
         context: path.resolve(__dirname, 'src'),
@@ -71,19 +63,6 @@ module.exports = (env, argv) => {
             ]
         },
         plugins: [
-            new CopyWebpackPlugin(
-                [
-                    // {
-                    //     from: '**/host.json',
-                    //     to: ''
-                    // },
-                    ...develFiles
-                ],
-                {
-                    copyUnmodified: true,
-                    debug: 'info'
-                }
-            ),
             ...plugins
         ]
     };
