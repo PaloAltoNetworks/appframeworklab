@@ -71,11 +71,11 @@
       retries: 2
       delay: 60
 
-    # Wait 60 seconds for restart to begin
-    - pause: seconds=60
+    # Wait 240 seconds for restart to begin
+    - pause: seconds=240
 
-    # check for 10 times, every 30 seconds, if device
-    # is ready, using credentials admin/admin
+    # check for 10 times, every 60 seconds, if device
+    # is ready, using credentials admin with password
     - name: NGFW Wait for reboot
       panos_check:
         ip_address: "{{ngfw_ip}}"
@@ -84,7 +84,7 @@
       register: result
       until: not result is failed
       retries: 10
-      delay: 30
+      delay: 60
 
     - name: NGFW Add second authcode
       panos_lic:
