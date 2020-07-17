@@ -958,7 +958,7 @@
 		"PanOSVersion":{
 			"Description": "NGFW Version",
 			"Type": "String",
-			"Default": "9.1.3"
+			"Default": "latest"
         },
 
 		"AnsibleRepo":{
@@ -1899,9 +1899,9 @@
             "yum install -y wget git\n",
 			"yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(rpm -E '%{rhel}').noarch.rpm\n",
 			"yum -y install https://centos7.iuscommunity.org/ius-release.rpm\n",
-			"yum -y install python36u-devel\n",
+			"yum -y install python3\n",
 			"sleep 2s\n",
-            "yum -y install python36u-pip\n",
+            "yum -y install python3-pip\n",
             "pip3.6 install boto3 awscli paramiko ansible requests requests_toolbelt\n",
             "ln -s /bin/pip3.6 /bin/pip3\n",
             "/usr/bin/easy_install --script-dir /opt/aws/bin https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz",
@@ -1960,7 +1960,7 @@
             "rm -f ${DEPLOYPATH}/vars.sh\n",
             "echo \"#!/bin/bash\" >> ${DEPLOYPATH}/vars.sh\n",
             "echo DEPLOYPATH=\\\"${DEPLOYPATH}\\\" >> ${DEPLOYPATH}/vars.sh\n",
-            "chmod +x ./${DEPLOYPATH}/vars.sh\n",
+            "chmod +x ${DEPLOYPATH}/vars.sh\n",
             "\n# Download Deployment scripts from S3\n",
             "aws --region ${S3BUCKETREGION} s3 cp --recursive s3://${S3BUCKETNAME}/deploy ${DEPLOYPATH}\n",
             "\n# Start build script\n",
