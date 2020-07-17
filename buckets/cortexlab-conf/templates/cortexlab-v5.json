@@ -1,6 +1,6 @@
 {
 	"AWSTemplateFormatVersion": "2010-09-09",
-	"Description": "Palo Alto Networks Cortex Lab",
+	"Description": "Palo Alto Networks NGFW Lab",
 	"Metadata": {
 		"AWS::CloudFormation::Interface": {
 			"ParameterGroups": [
@@ -958,7 +958,7 @@
 		"PanOSVersion":{
 			"Description": "NGFW Version",
 			"Type": "String",
-			"Default": "9.0.2"
+			"Default": "9.1.3"
         },
 
 		"AnsibleRepo":{
